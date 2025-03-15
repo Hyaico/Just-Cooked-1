@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Just Cook</title>
+    <link rel="icon" type="image/svg+xml" href="assets/Icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            content: ["./*.{html,js}"],
+            theme: {
+                extend: {},
+            },
+            plugins: [],
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="font-['Inter']">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="index.html" class="flex items-center">
+                <img src="assets/JustCookIcon.svg" alt="Just Cook Logo" class="h-12">
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="faq.html" class="nav-link">FAQ</a>
+                <a href="terms.html" class="nav-link">Terms</a>
+                <a href="privacy.html" class="nav-link">Privacy</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- FAQ Section -->
+        <section class="pt-32 pb-16">
+            <div class="container mx-auto px-4">
+                <h1 class="text-4xl font-bold text-center mb-12 animate-fade-in">Frequently Asked Questions</h1>
+                <div class="max-w-3xl mx-auto space-y-6">
+                    <!-- FAQ Item 1 -->
+                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
+                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
+                            <span class="font-semibold">How does Just Cook work?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
+                            <p>Just Cook uses advanced AI to analyze your available ingredients and generate personalized recipes. Simply scan your ingredients using your phone's camera, and our AI will suggest recipes based on what you have, your cooking time preferences, and dietary restrictions.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 3 -->
+                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
+                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
+                            <span class="font-semibold">What types of recipes can Just Cook generate?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
+                            <p>Just Cook can generate a wide variety of recipes, including vegetarian, vegan, gluten-free, and other dietary preferences. The app considers your available ingredients, cooking time, and skill level to suggest appropriate recipes.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 4 -->
+                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
+                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
+                            <span class="font-semibold">How accurate is the ingredient scanning?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
+                            <p>Our ingredient scanning technology uses advanced AI and machine learning to achieve high accuracy in recognizing ingredients. The system is continuously improving and learning from user feedback to provide better results.</p>
+                        </div>
+                    </div>
+
+                    <!-- FAQ Item 5 -->
+                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
+                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
+                            <span class="font-semibold">Can I save my favorite recipes?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
+                            <p>Yes! Just Cook allows you to save your favorite recipes, create custom collections, and share them with friends and family.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-8 md:mb-0">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cook Logo" class="h-12">
+                </div>
+                <div>
+                    <p class="text-center text-gray-500 text-sm">
+                        © <script>document.write(new Date().getFullYear())</script> HYAICO. All rights reserved.
+                    </p>
+                </div>
+                <div class="flex flex-wrap justify-center md:justify-end space-x-6">
+                    <a href="index.html" class="text-gray-600 hover:text-orange-500">Home</a>
+                    <a href="faq.html" class="text-gray-600 hover:text-orange-500">FAQ</a>
+                    <a href="terms.html" class="text-gray-600 hover:text-orange-500">Terms</a>
+                    <a href="privacy.html" class="text-gray-600 hover:text-orange-500">Privacy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html> 
