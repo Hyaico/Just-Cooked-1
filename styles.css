@@ -41,6 +41,14 @@ main {
     width: 100%;
 }
 
+.nav-link.active {
+    color: #F97316;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
+
 /* CTA Button */
 .cta-button {
     display: inline-block;
