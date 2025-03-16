@@ -1,4 +1,4 @@
-# Just Cook Website Requirements
+# Just Cooked Website Requirements
 
 ## **Design Overview**  
 - **Theme:** Clean, white, and sleek design with a modern, high-tech feel.  
@@ -11,7 +11,7 @@
 
 ## **Header**  
 - **Logo:**  
-  - Place the Just Cook logo in the top left corner.  
+  - Place the Just Cooked logo in the top left corner.  
   - Clicking the logo should return to the homepage.  
 
 - **Navigation:**  
@@ -27,9 +27,9 @@
 
 ## **Landing Page**  
 ### **Hero Section**  
-- Large, simple headline introducing Just Cook (e.g., "Cook Smarter with AI")  
+- Large, simple headline introducing Just Cooked (e.g., "Cook Smarter with AI")  
 - Subheading with a brief app description:  
-    > "Just Cook helps you create meals effortlessly by scanning ingredients and generating AI-powered recipes tailored to your time and taste."  
+    > "Just Cooked helps you create meals effortlessly by scanning ingredients and generating AI-powered recipes tailored to your time and taste."  
 - Clean, high-quality background (consider an abstract or subtle kitchen-themed pattern)  
 - Subtle fade-in animation for text and background  
 
@@ -44,7 +44,7 @@
 
 ## **About Section**  
 - Clean two-column layout:  
-    - Left side → Short description of the app’s core features:  
+    - Left side → Short description of the app's core features:  
         - AI-powered recipe generation  
         - Ingredient scanning  
         - Smart digital fridge tracking  
@@ -65,7 +65,7 @@
 ---
 
 ## **Footer**  
-- **Left side:** Just Cook logo  
+- **Left side:** Just Cooked logo  
 - **Right side:**  
     - Quick links: Home, FAQ, Terms and Conditions, Privacy Policy  
     - Social media icons (if applicable)  

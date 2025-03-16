@@ -1,6 +1,6 @@
-# Just Cook Website
+# Just Cooked Website
 
-This is the official website for Just Cook, an AI-powered cooking assistant app.
+This is the official website for Just Cooked, an AI-powered cooking assistant app.
 
 ## Features
 
@@ -30,7 +30,7 @@ This is the official website for Just Cook, an AI-powered cooking assistant app.
    ```
 
 3. Create an `assets` folder and add the following images:
-   - `logo.png` - Just Cook logo
+   - `logo.png` - Just Cooked logo
    - `app-mockup.png` - App interface mockup
 
 4. The website is ready to be deployed to GitHub Pages.
