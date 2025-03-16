@@ -26,6 +26,7 @@
             <a href="/" class="flex items-center">
                 <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
             </a>
+            <!-- Desktop Navigation -->
             <div class="hidden md:flex space-x-8">
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="faq.html" class="nav-link">FAQ</a>
@@ -34,46 +35,63 @@
                 <a href="cookies.html" class="nav-link">Cookies</a>
                 <a href="disclaimer.html" class="nav-link">Disclaimer</a>
             </div>
+            <!-- Mobile Navigation Button -->
+            <button class="md:hidden mobile-menu-button">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
         </nav>
+        <!-- Mobile Navigation Menu -->
+        <div class="md:hidden mobile-menu hidden">
+            <div class="px-4 py-2 space-y-2 bg-white border-t border-gray-200">
+                <a href="index.html" class="block py-2 text-orange-500 font-medium">Home</a>
+                <a href="faq.html" class="block py-2 text-gray-600 hover:text-orange-500">FAQ</a>
+                <a href="terms.html" class="block py-2 text-gray-600 hover:text-orange-500">Terms</a>
+                <a href="privacy.html" class="block py-2 text-gray-600 hover:text-orange-500">Privacy</a>
+                <a href="cookies.html" class="block py-2 text-gray-600 hover:text-orange-500">Cookies</a>
+                <a href="disclaimer.html" class="block py-2 text-gray-600 hover:text-orange-500">Disclaimer</a>
+            </div>
+        </div>
     </header>
 
     <main>
         <!-- Hero Section -->
-        <section class="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-orange-50">
+        <section class="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-orange-50 py-20">
             <div class="container mx-auto px-4 text-center">
-                <h1 class="text-6xl font-bold mb-6 animate-fade-in">Cook Smarter with AI</h1>
-                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto animate-fade-in">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">Cook Smarter with AI</h1>
+                <p class="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto animate-fade-in px-4">
                     Just Cooked™ helps you create meals effortlessly by scanning ingredients and generating AI-powered recipes tailored to your time and taste.
                 </p>
-                <div class="max-w-2xl mx-auto mb-12">
-                    <h2 class="text-3xl font-bold mb-6">Smart Cooking Made Simple</h2>
-                    <ul class="space-y-4 mb-8">
-                        <li class="flex items-center justify-center">
-                            <span class="text-orange-500 mr-2">•</span>
-                            AI-powered recipe generation
+                <div class="max-w-2xl mx-auto mb-12 px-4">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6">Smart Cooking Made Simple</h2>
+                    <ul class="space-y-4 mb-8 text-left max-w-md mx-auto">
+                        <li class="flex items-center">
+                            <span class="text-orange-500 mr-3 text-xl">•</span>
+                            <span>AI-powered recipe generation</span>
                         </li>
-                        <li class="flex items-center justify-center">
-                            <span class="text-orange-500 mr-2">•</span>
-                            Ingredient scanning
+                        <li class="flex items-center">
+                            <span class="text-orange-500 mr-3 text-xl">•</span>
+                            <span>Ingredient scanning</span>
                         </li>
-                        <li class="flex items-center justify-center">
-                            <span class="text-orange-500 mr-2">•</span>
-                            Smart digital fridge tracking
+                        <li class="flex items-center">
+                            <span class="text-orange-500 mr-3 text-xl">•</span>
+                            <span>Smart digital fridge tracking</span>
                         </li>
-                        <li class="flex items-center justify-center">
-                            <span class="text-orange-500 mr-2">•</span>
-                            Tailored to time and cuisine preferences
+                        <li class="flex items-center">
+                            <span class="text-orange-500 mr-3 text-xl">•</span>
+                            <span>Tailored to time and cuisine preferences</span>
                         </li>
                     </ul>
-                    <div class="flex items-center justify-center space-x-4">
-                        <div class="app-store-button bg-black text-white px-6 py-3 rounded-xl flex items-center space-x-2">
+                    <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                        <div class="app-store-button bg-black text-white px-6 py-3 rounded-xl flex items-center space-x-2 w-64 sm:w-auto justify-center">
                             <i class="fab fa-apple text-2xl"></i>
                             <div class="text-left">
                                 <div class="text-xs">Download on the</div>
                                 <div class="text-lg font-semibold">App Store</div>
                             </div>
                         </div>
-                        <div class="app-store-button bg-black text-white px-6 py-3 rounded-xl flex items-center space-x-2">
+                        <div class="app-store-button bg-black text-white px-6 py-3 rounded-xl flex items-center space-x-2 w-64 sm:w-auto justify-center">
                             <i class="fab fa-google-play text-2xl"></i>
                             <div class="text-left">
                                 <div class="text-xs">GET IT ON</div>
@@ -83,7 +101,6 @@
                     </div>
                     <p class="text-sm text-gray-500 mt-4">Available now on both platforms</p>
                 </div>
-
             </div>
         </section>
     </main>

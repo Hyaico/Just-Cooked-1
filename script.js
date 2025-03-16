@@ -73,22 +73,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Mobile menu toggle (if needed in the future)
-const mobileMenuButton = document.createElement('button');
-mobileMenuButton.className = 'md:hidden p-2';
-mobileMenuButton.innerHTML = `
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
-`;
+// Mobile menu functionality
+document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.querySelector('.mobile-menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
 
-// Add mobile menu button to header
-const nav = document.querySelector('nav');
-nav.appendChild(mobileMenuButton);
+    menuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-// Initialize mobile menu functionality
-let isMobileMenuOpen = false;
-mobileMenuButton.addEventListener('click', () => {
-    isMobileMenuOpen = !isMobileMenuOpen;
-    // Add mobile menu implementation here when needed
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!menuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
 }); 
