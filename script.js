@@ -78,7 +78,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const menuButton = document.querySelector('.mobile-menu-button');
     const mobileMenu = document.querySelector('.mobile-menu');
 
-    menuButton.addEventListener('click', () => {
+    menuButton.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent event from bubbling up
         mobileMenu.classList.toggle('hidden');
     });
 
@@ -87,5 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!menuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
             mobileMenu.classList.add('hidden');
         }
+    });
+
+    // Prevent menu from closing when clicking inside it
+    mobileMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
     });
 }); 
