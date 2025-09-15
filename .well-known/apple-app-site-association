@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "5JFTA66NRD.com.hyaico.justcooked",
+        "paths": ["/auth/*", "/reset-password*"]
+      }
+    ]
+  }
+}
