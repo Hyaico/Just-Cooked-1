@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Just Cooked – Signing you in…</title>
+  </head>
+  <body>
+    <p>Completing sign-in…</p>
+    <script type="module">
+      import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+      // In Vercel, store these in environment variables instead of hardcoding
+      const supabase = createClient(
+        "https://sglxaaehziokuimtnnqw.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNnbHhhYWVoemlva3VpbXRubnF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEwOTY5NDIsImV4cCI6MjA1NjY3Mjk0Mn0.U57h2MPm5ZyNa3VgN0PFlFpZutY4UGxblOZMecHznrM"
+      );
+
+      (async () => {
+        const { error } = await supabase.auth.exchangeCodeForSession(window.location.href);
+        if (error) {
+          console.error("Sign-in error:", error);
+          document.body.innerHTML = "<p>Sign-in failed. Please return to the app and try again.</p>";
+          return;
+        }
+        window.location.replace("/");
+      })();
+    </script>
+  </body>
+</html>
