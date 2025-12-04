@@ -3,221 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Policy - Just Cooked™</title>
-    <link rel="icon" type="image/svg+xml" href="assets/Icon.svg">
+    <title>Cookie & Tracking Policy - Just Cooked™</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             content: ["./*.{html,js}"],
             theme: {
-                extend: {},
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
             },
-            plugins: [],
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-['Inter']">
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
     <!-- Header -->
-    <header class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300">
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="faq.html" class="nav-link">FAQ</a>
-                <a href="terms.html" class="nav-link">Terms</a>
-                <a href="privacy.html" class="nav-link">Privacy</a>
-                <a href="cookies.html" class="nav-link active">Cookies</a>
-                <a href="disclaimer.html" class="nav-link">Disclaimer</a>
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium active">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
             </div>
-            <button class="md:hidden mobile-menu-button">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden">
-            <div class="px-4 py-2 space-y-2 bg-white border-t border-gray-200">
-                <a href="index.html" class="block py-2 text-gray-600 hover:text-orange-500">Home</a>
-                <a href="faq.html" class="block py-2 text-gray-600 hover:text-orange-500">FAQ</a>
-                <a href="terms.html" class="block py-2 text-gray-600 hover:text-orange-500">Terms</a>
-                <a href="privacy.html" class="block py-2 text-gray-600 hover:text-orange-500">Privacy</a>
-                <a href="cookies.html" class="block py-2 text-orange-500 font-medium">Cookies</a>
-                <a href="disclaimer.html" class="block py-2 text-gray-600 hover:text-orange-500">Disclaimer</a>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- Cookie Policy Section -->
-        <section class="pt-32 pb-16">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-center mb-12 animate-fade-in">Cookie Policy</h1>
-                <div class="max-w-3xl mx-auto prose prose-lg">
-                    <div class="bg-white rounded-lg shadow-sm p-8 space-y-6 animate-fade-in">
-                        <div class="mb-8">
-                            <h2 class="text-3xl font-bold mb-6">The Use of Cookies and Similar Technologies</h2>
-                        </div>
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16 animate-entry">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Cookie & Tracking Policy</h1>
+                <p class="text-lg text-gray-500">Last updated: 03/12/25</p>
+            </div>
 
-                        <div class="space-y-6">
-                            <div>
-                                <p class="text-gray-500 mb-6"><strong>Last Updated:</strong> 19th March 2025</p>
-                                <h3 class="text-2xl font-bold mb-4">Types of Cookies and Technologies We Use</h3>
-                                <p class="mb-4">Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on your Device when You go offline, while Session Cookies are deleted as soon as You close your web browser or exit the App.</p>
-                                <p class="mb-4"><strong>Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Disclaimer) refers to Hyaico Ltd, 41 Woodcross Fold. Use both session and persistent Cookies and similar technologies for the purposes set out below:</p>
-                                <ul class="space-y-6 list-none pl-0">
-                                    <li class="bg-gray-50 p-6 rounded-lg">
-                                        <p class="font-bold mb-2">Necessary / Essential Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Type: Session Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Administered by: Us</p>
-                                        <p>Purpose: These Cookies are essential to provide You with services available through the Website and App and to enable You to use some of their features. They help to authenticate users, prevent fraudulent use of user accounts, and ensure the security of your data. Without these Cookies, the services that You have asked for cannot be provided, and We only use these Cookies to provide You with those services.</p>
-                                    </li>
-                                    <li class="bg-gray-50 p-6 rounded-lg">
-                                        <p class="font-bold mb-2">Functionality Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Type: Persistent Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Administered by: Us</p>
-                                        <p>Purpose: These Cookies allow us to remember choices You make when You use the Website or App, such as remembering your preferences, device information, or language selection. The purpose of these Cookies is to provide You with a more personal experience and to avoid You having to re-enter your preferences every time You use the Website or App.</p>
-                                    </li>
-                                    <li class="bg-gray-50 p-6 rounded-lg">
-                                        <p class="font-bold mb-2">Analytics and Performance Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Type: Persistent Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Administered by: Us and Our Service Providers</p>
-                                        <p>Purpose: These Cookies are used to collect information about how You use our Website and App, which pages or features You visit, the time spent on each page or feature, which links You click on, and other actions You take in the Website or App. This data is used to analyze and improve the performance and usability of our Website and App, and to understand user behaviors to enhance our services.</p>
-                                    </li>
-                                    <li class="bg-gray-50 p-6 rounded-lg">
-                                        <p class="font-bold mb-2">Social Media Authentication Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Type: Persistent Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Administered by: Third Parties (Google and Apple)</p>
-                                        <p>Purpose: These Cookies are set by Google and Apple when You choose to log in to our App using their authentication services. They allow You to sign in to our App using your Google or Apple account credentials, eliminating the need to remember additional passwords and providing a more seamless user experience. These Cookies may collect certain information from your social media accounts as outlined in our Privacy Policy.</p>
-                                    </li>
-                                    <li class="bg-gray-50 p-6 rounded-lg">
-                                        <p class="font-bold mb-2">Tracking and Targeting Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Type: Persistent Cookies</p>
-                                        <p class="text-sm text-gray-600 mb-2">Administered by: Our Service Providers</p>
-                                        <p>Purpose: These Cookies help us deliver relevant content and features based on Your interests and preferences. They may be used to deliver targeted advertising or to limit the number of times You see an advertisement. These Cookies remember that You have visited our Website or used our App and may share this information with other organizations such as advertisers.</p>
-                                    </li>
-                                </ul>
-                            </div>
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
+                <div class="prose prose-lg max-w-none">
+                    <p>This Cookie & Tracking Policy explains how <strong>Hyaico Ltd</strong> (“<strong>Hyaico</strong>”, “<strong>we</strong>”, “<strong>us</strong>”, “<strong>our</strong>”) uses cookies and similar technologies when you visit our websites or use the <strong>Just Cooked™</strong> mobile application (together, the “<strong>Service</strong>”).</p>
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Social Media Login Cookies</h3>
-                                <p class="mb-4">Our App offers You the ability to register and login using your Google or Apple accounts. When You choose to log in using these services:</p>
-                                <ul class="list-disc pl-6 space-y-2 mb-4">
-                                    <li>Google may set cookies to authenticate Your identity and provide Us with access to basic profile information such as your email address, name, and profile picture.</li>
-                                    <li>Apple may use similar technologies to authenticate Your identity while providing enhanced privacy features, which may include options to hide your email address through their private email relay service.</li>
-                                </ul>
-                                <p class="mb-4">The information collected through these authentication processes is subject to the respective privacy policies of Google and Apple, as well as Our own Privacy Policy. We use this information strictly for authentication purposes, to create and manage your account, and to provide our services to You.</p>
-                                <p>By using social media login functionality, You authorize Us to collect, store, and use the information provided by these third-party services in accordance with this Cookies Policy and our Privacy Policy.</p>
-                            </div>
+                    <p>It should be read together with our <strong>Privacy Policy</strong>, which explains how we handle personal data more generally.</p>
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Mobile App Identifiers</h3>
-                                <p class="mb-4">In addition to cookies, our App may use device identifiers, mobile analytics software, and other similar technologies. These technologies collect information that helps Us analyze how users interact with our App, what features they use, and how to improve the user experience. These may include:</p>
-                                <ul class="list-disc pl-6 space-y-2">
-                                    <li><strong>Device Identifiers:</strong> Unique identification numbers associated with your mobile device, such as the device ID or advertising ID.</li>
-                                    <li><strong>Local Storage:</strong> Data stored locally on your device that allows the App to remember your preferences and settings.</li>
-                                    <li><strong>Cache Data:</strong> Information stored temporarily to improve App performance and reduce loading times.</li>
-                                </ul>
-                            </div>
+                    <hr class="my-8 border-gray-100">
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Your Choices Regarding Cookies</h3>
-                                <p class="mb-4">If You prefer to avoid the use of Cookies on the Website, first You must disable the use of Cookies in your browser and then delete the Cookies saved in your browser associated with this website. You may use this option for preventing the use of Cookies at any time.</p>
-                                <p class="mb-4">For the App, You can manage cookies and similar technologies through your device settings. Most mobile devices allow You to control tracking and analytics in the device settings or privacy menus. You can also reset your device's advertising identifier or opt-out of personalized ads.</p>
-                                <p class="mb-4">If You do not accept Our Cookies or disable similar technologies in the App, You may experience some inconvenience in your use of the Website or App, and some features may not function properly.</p>
-                                <p>If You'd like to delete Cookies from your browser or instruct your web browser to delete or refuse Cookies, please visit the help pages of your web browser:</p>
-                                <ul class="list-disc pl-6 space-y-2 mt-4">
-                                    <li>
-                                        <p>For the Chrome web browser, please visit this page from Google: <a href="https://support.google.com/accounts/answer/32050" rel="external nofollow noopener" target="_blank" class="text-blue-600 hover:text-blue-800">https://support.google.com/accounts/answer/32050</a></p>
-                                    </li>
-                                    <li>
-                                        <p>For the Internet Explorer web browser, please visit this page from Microsoft: <a href="http://support.microsoft.com/kb/278835" rel="external nofollow noopener" target="_blank" class="text-blue-600 hover:text-blue-800">http://support.microsoft.com/kb/278835</a></p>
-                                    </li>
-                                    <li>
-                                        <p>For the Firefox web browser, please visit this page from Mozilla: <a href="https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored" rel="external nofollow noopener" target="_blank" class="text-blue-600 hover:text-blue-800">https://support.mozilla.org/en-US/kb/delete-cookies-remove-info-websites-stored</a></p>
-                                    </li>
-                                    <li>
-                                        <p>For the Safari web browser, please visit this page from Apple: <a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" rel="external nofollow noopener" target="_blank" class="text-blue-600 hover:text-blue-800">https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac</a></p>
-                                    </li>
-                                </ul>
-                                <p class="mt-4">For any other web browser, please visit your web browser's official web pages.</p>
-                            </div>
+                    <h2>1. Who we are</h2>
+                    <p>The Service is provided by:</p>
+                    <blockquote>
+                        <p>Hyaico Ltd<br>
+                        41 Woodcross Fold<br>
+                        Leeds, West Yorkshire<br>
+                        LS27 9JW<br>
+                        United Kingdom<br>
+                        Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                    </blockquote>
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Cookie Management on Mobile Devices</h3>
-                                <p class="mb-4">To manage cookies and data collection in our App:</p>
-                                <ul class="list-disc pl-6 space-y-4">
-                                    <li>
-                                        <p><strong>For iOS devices:</strong> Go to "Settings" > "Privacy & Security" > "Tracking" and disable "Allow Apps to Request to Track". You can also manage app permissions in "Settings" > "Privacy & Security" > [specific permission categories].</p>
-                                    </li>
-                                    <li>
-                                        <p><strong>For Android devices:</strong> Go to "Settings" > "Privacy" > "Ads" and enable "Opt out of Ads Personalization". You can also manage app permissions in "Settings" > "Apps" > [select app] > "Permissions".</p>
-                                    </li>
-                                </ul>
-                            </div>
+                    <hr class="my-8 border-gray-100">
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Do Not Track</h3>
-                                <p>Please note that We do not alter our Website's or App's data collection and use practices when We see a Do Not Track signal from your browser or device.</p>
-                            </div>
+                    <h2>2. What are cookies and similar technologies?</h2>
+                    <ul>
+                        <li><strong>Cookies</strong> are small text files stored on your browser or device when you visit a website.</li>
+                        <li><strong>Local storage</strong> and <strong>session storage</strong> are browser-based storage mechanisms similar to cookies.</li>
+                        <li><strong>SDKs</strong>, <strong>device identifiers</strong> and similar technologies are used within mobile apps to perform comparable functions (e.g. remembering you, measuring performance, maintaining security).</li>
+                    </ul>
+                    <p>We refer to all of these together as “<strong>cookies</strong>” or “<strong>tracking technologies</strong>” in this Policy.</p>
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Data Retention</h3>
-                                <p>Different cookies have different lifespans. Most of our cookies are "session cookies," which means they are deleted when you end your session on our Website or close our App. Others are "persistent cookies," meaning they survive after your browser or app is closed. The expiration period for persistent cookies varies depending on the purpose of the cookie and the specific cookie provider.</p>
-                            </div>
+                    <hr class="my-8 border-gray-100">
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Changes to This Cookies Policy</h3>
-                                <p class="mb-4">We may update Our Cookies Policy from time to time. We will notify You of any changes by posting the new Cookies Policy on this page and updating the "Last updated" date at the top of this page. You are advised to review this Cookies Policy periodically for any changes.</p>
-                                <p>Changes to this Cookies Policy are effective when they are posted on this page.</p>
-                            </div>
+                    <h2>3. Where we use them</h2>
+                    <p>We may use cookies and similar technologies:</p>
+                    <ul>
+                        <li>On our <strong>websites</strong> (including landing pages, marketing pages and legal pages).</li>
+                        <li>Within the <strong>Just Cooked™ mobile app</strong> (iOS and Android), via:
+                            <ul>
+                                <li>Local storage and cache on your device</li>
+                                <li>Device identifiers</li>
+                                <li>App store / subscription identifiers</li>
+                                <li>Third-party SDKs (e.g. authentication, crash reporting, paywall management)</li>
+                            </ul>
+                        </li>
+                    </ul>
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">More Information about Cookies</h3>
-                                <p>You can learn more about cookies and how they work at resources such as: <a href="https://www.allaboutcookies.org/" target="_blank" class="text-blue-600 hover:text-blue-800">All About Cookies</a> or <a href="https://www.cookiesandyou.com/" target="_blank" class="text-blue-600 hover:text-blue-800">Cookies and You</a>.</p>
-                            </div>
+                    <hr class="my-8 border-gray-100">
 
-                            <div>
-                                <h3 class="text-2xl font-bold mb-4">Contact Us</h3>
-                                <p class="mb-4">If you have any questions about this Cookies Policy, You can contact us:</p>
-                                <ul class="list-disc pl-6 space-y-2">
-                                    <li>By email: support@justcooked.app</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <h2>4. Why we use cookies and tracking technologies</h2>
+                    <p>We use cookies and similar technologies for the following purposes:</p>
+                    <ol>
+                        <li><strong>Strictly necessary / essential</strong>
+                            <ul>
+                                <li>To operate the Service and enable core functionality.</li>
+                                <li>Examples:
+                                    <ul>
+                                        <li>Keeping you logged in and managing your session.</li>
+                                        <li>Enforcing security and preventing abuse or fraudulent activity.</li>
+                                        <li>Remembering your basic settings and privacy choices.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Functionality</strong>
+                            <ul>
+                                <li>To remember your choices and enhance your experience.</li>
+                                <li>Examples:
+                                    <ul>
+                                        <li>Remembering your preferred language or region.</li>
+                                        <li>Remembering some app-level preferences so you don’t have to re-enter them.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Performance and reliability</strong>
+                            <ul>
+                                <li>To understand how the Service performs and to detect issues (e.g. crashes).</li>
+                                <li>Examples:
+                                    <ul>
+                                        <li>Crash logs and basic performance metrics.</li>
+                                        <li>Aggregate, non-identifying usage statistics (e.g. which screens are used most, whether a feature fails).</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Analytics and improvement (future / optional)</strong>
+                            <ul>
+                                <li>We may in future use analytics tools to better understand how users interact with the Service, so we can improve it.</li>
+                                <li>If we introduce analytics that rely on non-essential cookies or similar tracking, we will update this Policy and, where required, seek your consent.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Marketing and advertising (not currently used)</strong>
+                            <ul>
+                                <li>We do <strong>not currently use</strong> advertising or marketing cookies on the Just Cooked™ website or in the app.</li>
+                                <li>If this changes in future, we will:
+                                    <ul>
+                                        <li>Update this Policy, and</li>
+                                        <li>Implement appropriate consent mechanisms where required by law.</li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>5. Types of cookies and technologies we use</h2>
+
+                    <h3>5.1 Strictly necessary / essential</h3>
+                    <p>These are required for the Service to function. They may be set by us or by third parties acting on our behalf.</p>
+                    <p>Examples include:</p>
+                    <ul>
+                        <li>Session cookies to keep you signed in.</li>
+                        <li>Security cookies to help detect and prevent malicious activity.</li>
+                        <li>Authentication tokens used by our backend (e.g. Supabase) to verify your identity.</li>
+                        <li>App store / subscription identifiers used to verify your Premium status.</li>
+                    </ul>
+                    <p>You cannot disable these without breaking core functionality.</p>
+
+                    <h3>5.2 Functionality</h3>
+                    <p>These help remember settings and choices to make the Service more convenient.</p>
+                    <p>Examples include:</p>
+                    <ul>
+                        <li>Remembering that you are on a particular step or screen.</li>
+                        <li>Remembering certain in-app UI or preference choices (where technically implemented).</li>
+                    </ul>
+                    <p>If you disable these, the Service may still work but with reduced convenience.</p>
+
+                    <h3>5.3 Performance and reliability</h3>
+                    <p>These help us understand how the Service performs in aggregate and diagnose technical problems.</p>
+                    <p>Examples include:</p>
+                    <ul>
+                        <li>Crash reporting SDKs</li>
+                        <li>Basic performance metrics, such as load times or error rates</li>
+                        <li>Anonymous or aggregated statistics (e.g. which features are used most)</li>
+                    </ul>
+                    <p>We use this information to maintain and improve the Service, not to build personal profiles for advertising.</p>
+
+                    <h3>5.4 Analytics (future)</h3>
+                    <p>If we implement analytics tools (e.g. to measure user flows or feature adoption), they may set cookies or use app SDKs. Where such analytics go beyond strictly necessary purposes, we will:</p>
+                    <ul>
+                        <li>Configure them to minimise personal data where possible (e.g. IP truncation, aggregation).</li>
+                        <li>Update this Policy to name the tools used.</li>
+                        <li>Obtain any required consent (for example via a cookie banner on the website).</li>
+                    </ul>
+
+                    <h3>5.5 Advertising (future)</h3>
+                    <p>We currently do <strong>not</strong> use advertising cookies or SDKs.</p>
+                    <p>If we decide to introduce them in future, we will:</p>
+                    <ul>
+                        <li>Update this Policy,</li>
+                        <li>Provide clear information about what is used and by whom, and</li>
+                        <li>Obtain consent where required before we set such cookies.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>6. Cookies and tracking in the Just Cooked™ mobile app</h2>
+                    <p>Within the mobile app, we may use:</p>
+                    <ul>
+                        <li><strong>Local storage / on-device cache</strong> – to store your preferences or data needed for offline use.</li>
+                        <li><strong>Device identifiers</strong> – such as IDFV/IDFA (iOS) or Advertising ID (Android), subject to your device settings and any platform-level consent.</li>
+                        <li><strong>Authentication tokens and encrypted keys</strong> – to keep your account secure and maintain your session.</li>
+                        <li><strong>Subscription and entitlement identifiers</strong> – used by app stores and subscription management services to verify that you have access to Premium features.</li>
+                        <li><strong>SDKs for security, crash reporting and performance</strong> – to help detect issues and maintain reliability.</li>
+                    </ul>
+                    <p>You can control some of these via your device settings (see Section 7).</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>7. Managing your cookie and tracking preferences</h2>
+
+                    <h3>7.1 On the website (browser)</h3>
+                    <p>Most web browsers allow you to:</p>
+                    <ul>
+                        <li>View which cookies are stored.</li>
+                        <li>Delete cookies.</li>
+                        <li>Block cookies for specific sites.</li>
+                        <li>Block third-party cookies.</li>
+                        <li>Clear local storage and similar data.</li>
+                    </ul>
+                    <p>You can usually find these controls under your browser’s “Settings”, “Privacy” or “Security” menus.</p>
+                    <p>Be aware:</p>
+                    <ul>
+                        <li>Blocking or deleting cookies may cause some features of the website to work less reliably or not at all.</li>
+                        <li>Strictly necessary cookies are required for basic operation.</li>
+                    </ul>
+
+                    <h3>7.2 In the mobile app</h3>
+                    <p>Control options include:</p>
+                    <ul>
+                        <li><strong>Operating system settings</strong> – for example:
+                            <ul>
+                                <li>Limiting ad tracking / resetting advertising IDs.</li>
+                                <li>Controlling which apps can use mobile data, background refresh, etc.</li>
+                            </ul>
+                        </li>
+                        <li><strong>App-level settings</strong> (where implemented) – you may be able to adjust certain privacy or telemetry settings within the Just Cooked™ app itself.</li>
+                    </ul>
+                    <p>Disabling certain permissions or identifiers may reduce functionality or prevent some features from working correctly (e.g. login, subscription verification, push notifications).</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>8. Do Not Track and similar signals</h2>
+                    <p>Some browsers and devices allow you to send a “Do Not Track” (DNT) signal. There is currently no consistent industry standard for how to respond to these signals.</p>
+                    <p>At present, we do not specifically respond to DNT signals. We will review this if and when an accepted standard emerges.</p>
+                    <p>You can still use the other controls described in this Policy to manage cookies and tracking technologies.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>9. Relationship with our Privacy Policy</h2>
+                    <p>This Cookie & Tracking Policy is part of, and should be read together with, our <strong>Privacy Policy</strong>.</p>
+                    <ul>
+                        <li>The Privacy Policy explains <strong>what personal data we collect</strong>, <strong>how we use it</strong>, <strong>who we share it with</strong> and <strong>your rights</strong>.</li>
+                        <li>This Policy focuses specifically on <strong>cookies and similar technologies</strong>.</li>
+                    </ul>
+                    <p>If anything in this Policy conflicts with the Privacy Policy, the Privacy Policy prevails for data protection purposes.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>10. Changes to this Policy</h2>
+                    <p>We may update this Cookie & Tracking Policy from time to time, for example if:</p>
+                    <ul>
+                        <li>We introduce new cookies, SDKs or tracking technologies;</li>
+                        <li>We start using analytics or advertising cookies;</li>
+                        <li>Legal or regulatory requirements change.</li>
+                    </ul>
+                    <p>When we make material changes, we will:</p>
+                    <ul>
+                        <li>Update the “Last updated” date at the top of this page; and</li>
+                        <li>Take reasonable steps to inform you, for example via the website or within the app.</li>
+                    </ul>
+                    <p>Your continued use of the Service after any changes take effect will constitute your acceptance of the updated Policy.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>11. Contact</h2>
+                    <p>If you have any questions or concerns about this Cookie & Tracking Policy, please contact us at:</p>
+                    <blockquote>
+                        <p>Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                    </blockquote>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white py-12">
+    <footer class="bg-white border-t border-gray-100 py-16">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-8 md:mb-0">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
-                </div>
-                <div>
-                    <p class="text-center text-gray-500 text-sm">
-                        © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                <div class="flex flex-col items-center md:items-start space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
+                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
                     </p>
                 </div>
-                <div class="flex flex-wrap justify-center md:justify-end space-x-6">
-                    <a href="index.html" class="text-gray-600 hover:text-orange-500">Home</a>
-                    <a href="faq.html" class="text-gray-600 hover:text-orange-500">FAQ</a>
-                    <a href="terms.html" class="text-gray-600 hover:text-orange-500">Terms</a>
-                    <a href="privacy.html" class="text-gray-600 hover:text-orange-500">Privacy</a>
-                    <a href="cookies.html" class="text-gray-600 hover:text-orange-500 !text-orange-500">Cookies</a>
-                    <a href="disclaimer.html" class="text-gray-600 hover:text-orange-500">Disclaimer</a>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-orange-500 font-medium transition-colors">Cookies</a>
+                    <a href="/disclaimer" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">EULA</a>
                 </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
+                <p class="text-gray-400 text-xs">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>

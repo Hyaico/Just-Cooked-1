@@ -4,230 +4,453 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Privacy Policy - Just Cooked™</title>
-    <link rel="icon" type="image/svg+xml" href="assets/Icon.svg">
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             content: ["./*.{html,js}"],
             theme: {
-                extend: {},
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
             },
-            plugins: [],
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-['Inter']">
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
     <!-- Header -->
-    <header class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300">
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="faq.html" class="nav-link">FAQ</a>
-                <a href="terms.html" class="nav-link">Terms</a>
-                <a href="privacy.html" class="nav-link active">Privacy</a>
-                <a href="cookies.html" class="nav-link">Cookies</a>
-                <a href="disclaimer.html" class="nav-link">Disclaimer</a>
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium active">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
             </div>
-            <button class="md:hidden mobile-menu-button">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden">
-            <div class="px-4 py-2 space-y-2 bg-white border-t border-gray-200">
-                <a href="index.html" class="block py-2 text-gray-600 hover:text-orange-500">Home</a>
-                <a href="faq.html" class="block py-2 text-gray-600 hover:text-orange-500">FAQ</a>
-                <a href="terms.html" class="block py-2 text-gray-600 hover:text-orange-500">Terms</a>
-                <a href="privacy.html" class="block py-2 text-orange-500 font-medium">Privacy</a>
-                <a href="cookies.html" class="block py-2 text-gray-600 hover:text-orange-500">Cookies</a>
-                <a href="disclaimer.html" class="block py-2 text-gray-600 hover:text-orange-500">Disclaimer</a>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- Privacy Section -->
-        <section class="pt-32 pb-16">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-center mb-12 animate-fade-in">Privacy Policy</h1>
-                <div class="max-w-3xl mx-auto prose prose-lg">
-                    <div class="bg-white rounded-lg shadow-sm p-8 animate-fade-in">
-                        <h1 class="text-3xl font-bold mb-6">Privacy Policy</h1>
-                        <p class="text-gray-500 mb-6"><strong>Last Updated:</strong> 15th March 2025</p>
-                        
-                        <div class="space-y-6">
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Introduction</h2>
-                            <p>Welcome to <strong>Just Cooked™</strong> ("the App"), operated by Hyaico Ltd, 41 Woodcross Fold ("the Company", "We", "Our", or "Us"). We respect your privacy and are committed to protecting your personal data. This privacy policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and services.</p>
-                            <p>This policy applies to users worldwide, with specific provisions for users in the United Kingdom, European Economic Area, and other jurisdictions with similar data protection laws. By using our App, you consent to the data practices described in this privacy policy.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Information We Collect</h2>
-                            <h3 class="text-xl font-semibold mt-6 mb-3">Types of Data Collected</h3>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li><strong>Personal Data:</strong> While using our App, we collect personally identifiable information including but not limited to: name, email address, phone number, postal address, payment information, and profile data.</li>
-                                <li><strong>User-Generated Content:</strong> Images you upload, recipes you save, and any other content you create within the App.</li>
-                                <li><strong>Usage Data:</strong> Collected automatically when using the App, including device information (device type, operating system, unique device identifiers), IP address, browser type, mobile network information, app usage statistics, and crash reports.</li>
-                                <li><strong>Location Data:</strong> With your explicit consent, we may collect and process information about your precise or approximate location.</li>
-                                <li><strong>Tracking Technologies and Cookies:</strong> We use cookies, beacons, tags, scripts, and similar tracking technologies to collect and track information and to improve and analyze our App.</li>
-                            </ul>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Use of Your Personal Data</h2>
-                            <p>We use your personal data for the following purposes:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li><strong>To provide and maintain our App:</strong> Including to process image uploads, generate recipes, monitor usage, and ensure technical functionality.</li>
-                                <li><strong>To manage Your Account:</strong> Managing your registration and providing access to different features of our App.</li>
-                                <li><strong>For the performance of a contract:</strong> Fulfilling our obligations in relation to any contracts between us, including subscription services.</li>
-                                <li><strong>To contact You:</strong> By email, phone, SMS, or other equivalent forms of electronic communication regarding updates, security alerts, and administrative messages.</li>
-                                <li><strong>To provide You with offers:</strong> Including news, special offers, and general service information unless you opt out of such communications.</li>
-                                <li><strong>To manage Your requests:</strong> Attending to and handling any requests you make to us.</li>
-                                <li><strong>To improve our AI and machine learning models:</strong> Using anonymized data to train our recipe generation algorithms and enhance performance.</li>
-                                <li><strong>For business transfers:</strong> Evaluating or conducting a merger, divestiture, restructuring, reorganization, dissolution, or sale of assets.</li>
-                                <li><strong>For research and analytics:</strong> Understanding how users interact with our App to improve functionality and user experience.</li>
-                                <li><strong>For legal compliance:</strong> Complying with legal obligations, resolving disputes, and enforcing our legal agreements and policies.</li>
-                            </ul>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Legal Basis for Processing Personal Data</h2>
-                            <p>We process your personal data under the following legal bases:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li><strong>Consent:</strong> You have given consent for processing for specific purposes.</li>
-                                <li><strong>Performance of a Contract:</strong> Processing necessary for a contract with you.</li>
-                                <li><strong>Legitimate Interests:</strong> Processing necessary for our legitimate interests, provided these interests don't override your fundamental rights.</li>
-                                <li><strong>Legal Obligations:</strong> Processing necessary to comply with a legal obligation.</li>
-                            </ul>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Sharing of Your Personal Data</h2>
-                            <p>We may share your personal information with:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li><strong>Service Providers:</strong> Third-party vendors who perform services on our behalf (e.g., payment processing, data analysis, email delivery, hosting services, customer service).</li>
-                                <li><strong>AI Processing Partners:</strong> Third parties that assist in processing images and generating recipes using artificial intelligence.</li>
-                                <li><strong>For business transfers:</strong> In connection with any merger, sale of company assets, financing, or acquisition of all or a portion of our business.</li>
-                                <li><strong>With Affiliates:</strong> With our parent company, subsidiaries, joint venture partners, or other companies under common control.</li>
-                                <li><strong>With business partners:</strong> To offer certain products, services, or promotions jointly.</li>
-                                <li><strong>With other users:</strong> When you share personal information or interact in public areas of the App.</li>
-                                <li><strong>With Your consent:</strong> With third parties if you have given us specific consent to do so.</li>
-                            </ul>
-                        
-                            <h3 class="text-xl font-semibold mt-6 mb-3">International Data Transfers</h3>
-                            <p>Your information may be transferred to and processed in countries other than your country of residence. These countries may have data protection laws that differ from those in your country.</p>
-                            <p>When we transfer your data internationally, we implement appropriate safeguards in accordance with applicable law, including:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>Using EU Standard Contractual Clauses or UK International Data Transfer Agreements</li>
-                                <li>Transferring to countries with adequacy decisions</li>
-                                <li>Implementing binding corporate rules</li>
-                                <li>Obtaining your explicit consent for certain transfers</li>
-                            </ul>
-                        
-                            <h3 class="text-xl font-semibold mt-6 mb-3">Retention of Your Personal Data</h3>
-                            <p>We retain your personal data only for as long as necessary to fulfill the purposes outlined in this Privacy Policy, including for legal, accounting, or reporting requirements. Different types of data may be kept for different periods:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>Account information: Retained for the duration of your account plus 30 days after deletion</li>
-                                <li>User-generated content: Retained until you delete it or close your account</li>
-                                <li>Payment information: Retained as required by financial regulations</li>
-                                <li>Usage data: Retained for up to 25 months</li>
-                            </ul>
-                            <p>When personal data is no longer needed, we will securely delete or anonymize it.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Your Data Protection Rights</h2>
-                            <p>Depending on your location, you may have the following rights:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li><strong>Right to Access:</strong> Request copies of your personal data</li>
-                                <li><strong>Right to Rectification:</strong> Request correction of inaccurate information</li>
-                                <li><strong>Right to Erasure:</strong> Request deletion of your personal data</li>
-                                <li><strong>Right to Restrict Processing:</strong> Request restriction of processing your data</li>
-                                <li><strong>Right to Data Portability:</strong> Request transfer of your data to another organization</li>
-                                <li><strong>Right to Object:</strong> Object to processing of your personal data</li>
-                                <li><strong>Right to Withdraw Consent:</strong> Withdraw consent where we rely on consent to process your data</li>
-                            </ul>
-                            <p>To exercise these rights, please contact us using the details provided below. We may need to verify your identity before responding to your request.</p>
-                        
-                            <h3 class="text-xl font-semibold mt-6 mb-3">Disclosure of Your Personal Data</h3>
-                            <h4 class="text-lg font-semibold mt-4 mb-2">Business Transactions</h4>
-                            <p>If we are involved in a merger, acquisition, or asset sale, your Personal Data may be transferred. We will provide notice before your data is transferred and becomes subject to a different Privacy Policy.</p>
-                        
-                            <h4 class="text-lg font-semibold mt-4 mb-2">Law Enforcement</h4>
-                            <p>We may disclose your data if required to do so by law or in response to valid requests by public authorities (e.g., court, government agency).</p>
-                        
-                            <h4 class="text-lg font-semibold mt-4 mb-2">Other Legal Requirements</h4>
-                            <p>We may disclose your information in good faith belief that such action is necessary to:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>Comply with a legal obligation</li>
-                                <li>Protect and defend our rights or property</li>
-                                <li>Prevent or investigate possible wrongdoing in connection with the App</li>
-                                <li>Protect the personal safety of users or the public</li>
-                                <li>Protect against legal liability</li>
-                            </ul>
-                        
-                            <h3 class="text-xl font-semibold mt-6 mb-3">Security of Your Personal Data</h3>
-                            <p>We implement appropriate technical and organizational measures to protect your personal data, including:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>Encryption of data in transit and at rest</li>
-                                <li>Regular security assessments and penetration testing</li>
-                                <li>Access controls and authentication procedures</li>
-                                <li>Staff training on data protection</li>
-                            </ul>
-                            <p>However, no method of transmission over the Internet or electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your personal data, we cannot guarantee its absolute security.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Children's Privacy</h2>
-                            <p>Our App is not intended for use by anyone under the age of 16. We do not knowingly collect personal data from children under 16. If you are a parent or guardian and believe your child has provided us with personal data, please contact us immediately. If we become aware that we have collected personal data from children without verification of parental consent, we will take steps to remove that information from our servers.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Third-Party Links and Services</h2>
-                            <p>Our App may contain links to or integrate with other websites, services, or content that are not owned or controlled by us. We are not responsible for the privacy practices or content of any third parties. We encourage you to review the privacy policies of any third-party sites or services before providing any information to them.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Cookies and Tracking Technologies</h2>
-                            <p>We use cookies and similar tracking technologies to track activity on our App and store certain information. You can instruct your device to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our App.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Do Not Track Signals</h2>
-                            <p>We do not currently respond to Do Not Track (DNT) signals. We may revisit this policy as industry standards evolve.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Changes to this Privacy Policy</h2>
-                            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
-                            <p>For material changes, we will provide more prominent notice or obtain consent as required by law.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Governing Law</h2>
-                            <p>This Privacy Policy shall be governed by and construed in accordance with the laws of the United Kingdom, without regard to its conflict of law provisions.</p>
-                        
-                            <h2 class="text-2xl font-bold mt-8 mb-4">Contact Us</h2>
-                            <p>If you have any questions about this Privacy Policy or our data practices, please contact us:</p>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>By email: support@justcooked.app</li>
-                            </ul>
-                            <p>If you are located in the European Union, you also have the right to lodge a complaint with your local data protection authority.</p>
-                        </div>
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16 animate-entry">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Privacy Policy</h1>
+                <p class="text-lg text-gray-500">Last updated: 03/12/25</p>
+            </div>
+
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
+                <div class="prose prose-lg max-w-none">
+                    <p>This Privacy Policy explains how <strong>Hyaico Ltd</strong> (“<strong>Hyaico</strong>”, “<strong>we</strong>”, “<strong>us</strong>”, “<strong>our</strong>”) collects, uses and shares information about you when you use the <strong>Just Cooked™</strong> mobile application and related websites, services and features (together, the “<strong>App</strong>” or “<strong>Service</strong>”).</p>
+
+                    <p>We are committed to handling your personal data fairly, transparently and in compliance with applicable data protection law, including the <strong>UK GDPR</strong> and the <strong>Data Protection Act 2018</strong>.</p>
+                    
+                    <p>If you do not agree with this Policy, please do not use the App.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>1. Who we are (Data Controller)</h2>
+                    <p>The data controller responsible for your personal data is:</p>
+                    <blockquote>
+                        <p>Hyaico Ltd<br>
+                        41 Woodcross Fold<br>
+                        Leeds, West Yorkshire<br>
+                        LS27 9JW<br>
+                        United Kingdom</p>
+                        <ul>
+                            <li><strong>Email:</strong> <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></li>
+                            <li><strong>ICO Registration Number:</strong> <strong>00012401021</strong></li>
+                        </ul>
+                    </blockquote>
+                    <p>We have <strong>not</strong> appointed a Data Protection Officer, but you can contact us using the details above for any privacy-related questions.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>2. Scope</h2>
+                    <p>This Policy applies to:</p>
+                    <ul>
+                        <li>The <strong>Just Cooked™</strong> mobile app (iOS and Android)</li>
+                        <li>Any websites operated by Hyaico in connection with Just Cooked™ (including legal pages, marketing sites and landing pages)</li>
+                    </ul>
+                    <p>It does <strong>not</strong> apply to third-party services you access via the App (such as Apple App Store, Google Play Store or external websites); those have their own privacy policies.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>3. Data we collect</h2>
+                    <p>We only collect the information we need to operate, secure and improve Just Cooked™, and to comply with our legal obligations.</p>
+
+                    <h3>3.1 Categories of data</h3>
+                    <p>Depending on how you use the App, we may collect the following categories of data:</p>
+
+                    <h4>A. Account & Identification Data</h4>
+                    <ul>
+                        <li>Email address</li>
+                        <li>Password hash (if you sign up with email)</li>
+                        <li>Third-party identifiers (e.g. Apple / Google sign-in IDs)</li>
+                        <li>User ID generated by our systems</li>
+                    </ul>
+
+                    <h4>B. Profile & Personalisation Data</h4>
+                    <ul>
+                        <li>Name and/or display name</li>
+                        <li>Username</li>
+                        <li>Country / region (if provided or inferred)</li>
+                        <li>Cooking preferences (e.g. cuisines you like, skill level)</li>
+                    </ul>
+
+                    <h4>C. Health-Related & Special Category Data (Allergies etc.)</h4>
+                    <p>If you choose to provide it, we may collect information such as:</p>
+                    <ul>
+                        <li>Food allergies and intolerances</li>
+                        <li>Dietary restrictions (e.g. vegetarian, vegan, halal, kosher, etc.)</li>
+                        <li>Other health-related notes you enter into the App in relation to recipes</li>
+                    </ul>
+                    <blockquote>
+                        <p>Important: These data may constitute “special category data” under the UK GDPR. You are not required to provide this information, but if you do, we will only process it with your explicit consent and solely to personalise recipes and filter ingredients according to your preferences.</p>
+                    </blockquote>
+                    <p>We <strong>do not</strong> intend to process medical records or clinical diagnostic information.</p>
+
+                    <h4>D. Physical & Nutrition-Related Data</h4>
+                    <p>If you choose to provide it, we may collect:</p>
+                    <ul>
+                        <li>Date of birth or age range</li>
+                        <li>Gender</li>
+                        <li>Height and weight</li>
+                        <li>High-level goals (e.g. gain muscle, lose fat, eat healthier)</li>
+                    </ul>
+                    <p>We use this to personalise recipe suggestions and approximate nutritional information. This is <strong>not</strong> clinical or diagnostic health advice.</p>
+
+                    <h4>E. Content & Usage Data</h4>
+                    <ul>
+                        <li>Recipes you view, generate, save or cook</li>
+                        <li>Pantry items and ingredients you add</li>
+                        <li>Your cooking history and in-app actions (e.g. starting a cook session, completing a recipe)</li>
+                        <li>Notes you attach to recipes</li>
+                        <li><strong>Photos you upload</strong> (e.g. pictures of food or pantry items), including any metadata provided by your device</li>
+                        <li>Timestamps and basic interaction logs (such as screens viewed, button taps, error events)</li>
+                    </ul>
+
+                    <h4>F. Technical & Device Data</h4>
+                    <ul>
+                        <li>Device model, operating system, app version</li>
+                        <li>IP address, approximate location (city/region-level, derived from IP, if available)</li>
+                        <li>Device identifiers (e.g. IDFV / IDFA / Android Advertising ID), where permitted</li>
+                        <li>Language and time zone settings</li>
+                        <li>Crash logs and performance metrics</li>
+                    </ul>
+
+                    <h4>G. Subscription & Payment Data</h4>
+                    <p>We do <strong>not</strong> store your full payment card details. Payments and subscriptions are processed by the app stores (Apple App Store, Google Play Store).</p>
+                    <p>We do receive and/or generate:</p>
+                    <ul>
+                        <li>Information that a subscription or purchase has been made (from Apple/Google)</li>
+                        <li>Your subscription tier, status (active/cancelled/expired) and renewal dates</li>
+                        <li>Internal IDs used by our subscription management provider (e.g. RevenueCat)</li>
+                    </ul>
+
+                    <h4>H. Communications Data</h4>
+                    <ul>
+                        <li>Emails you send to us (support requests, feedback)</li>
+                        <li>In-app support messages (if implemented)</li>
+                        <li>Marketing preferences (if you opt in)</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>4. How we collect your data</h2>
+                    <p>We collect data in the following ways:</p>
+                    <ul>
+                        <li><strong>Directly from you</strong> – when you register, edit your profile, input pantry items, set allergies, upload photos, contact support, etc.</li>
+                        <li><strong>Automatically</strong> – when you use the App, we collect usage, device and technical data for security and performance.</li>
+                        <li><strong>From third parties</strong> – e.g. app stores (Apple/Google) for subscriptions and sign-in, and our service providers (such as Supabase, RevenueCat) for usage/telemetry data.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>5. Why we use your data and legal bases</h2>
+                    <p>Under the UK GDPR, we must have a lawful basis for each use of your personal data. We rely on:</p>
+                    <ul>
+                        <li><strong>Performance of a contract</strong> – to provide you with the App and its features</li>
+                        <li><strong>Explicit consent</strong> – for special category data (allergies) and certain profile data</li>
+                        <li><strong>Legitimate interests</strong> – for security, service improvement and fraud prevention</li>
+                        <li><strong>Legal obligation</strong> – where we must comply with law, tax or regulatory duties</li>
+                    </ul>
+
+                    <h3>5.1 Table of purposes and legal bases</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full border-collapse border border-gray-200 rounded-lg">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="border p-3 text-left">Purpose</th>
+                                    <th class="border p-3 text-left">Data used</th>
+                                    <th class="border p-3 text-left">Legal basis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="border p-3">Create and manage your account</td><td class="border p-3">Account data, profile data</td><td class="border p-3">Contract</td></tr>
+                                <tr><td class="border p-3">Provide core recipe and cooking features</td><td class="border p-3">Account data, profile data, content & usage data</td><td class="border p-3">Contract</td></tr>
+                                <tr><td class="border p-3">Personalise recipes and suggestions</td><td class="border p-3">Profile data, nutrition-related data, content & usage data</td><td class="border p-3">Legitimate interests (personalisation); Consent where special category (allergies)</td></tr>
+                                <tr><td class="border p-3">Filter recipes according to your allergies</td><td class="border p-3">Allergy / dietary data (special category)</td><td class="border p-3"><strong>Explicit consent</strong></td></tr>
+                                <tr><td class="border p-3">Process subscriptions and verify entitlement</td><td class="border p-3">Account data, subscription data, device data</td><td class="border p-3">Contract; Legal obligation (financial records)</td></tr>
+                                <tr><td class="border p-3">Maintain security, prevent abuse and fraud</td><td class="border p-3">Account data, usage data, technical data</td><td class="border p-3">Legitimate interests (security)</td></tr>
+                                <tr><td class="border p-3">Improve and debug the App</td><td class="border p-3">Usage data, technical data, crash logs, content data (in aggregate)</td><td class="border p-3">Legitimate interests (service improvement)</td></tr>
+                                <tr><td class="border p-3">Communicate with you about your account and service changes</td><td class="border p-3">Contact details, account data</td><td class="border p-3">Contract / Legal obligation</td></tr>
+                                <tr><td class="border p-3">Send optional marketing messages (if enabled)</td><td class="border p-3">Contact details, usage data (where permitted)</td><td class="border p-3">Consent / Legitimate interests (soft opt-in)</td></tr>
+                                <tr><td class="border p-3">Comply with legal obligations (tax, accounting, regulatory)</td><td class="border p-3">Transaction records, account data</td><td class="border p-3">Legal obligation</td></tr>
+                            </tbody>
+                        </table>
                     </div>
+                    <p class="mt-4">You can withdraw your consent at any time where we rely on consent (e.g. for allergy data) by updating your settings in the App or contacting us.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>6. AI and automated processing</h2>
+                    <p>Just Cooked™ uses AI services to generate recipes and analyse food images.</p>
+
+                    <h3>6.1 Recipe generation (OpenAI or similar models)</h3>
+                    <p>When you request AI-generated recipes, we may send to our AI provider:</p>
+                    <ul>
+                        <li>A list of ingredients (from your pantry and/or image analysis)</li>
+                        <li>Your preferences (e.g. dietary choices, cuisine styles)</li>
+                        <li>High-level constraints (e.g. time to cook)</li>
+                    </ul>
+                    <p>We do <strong>not</strong> send your full name or email to the AI provider for recipe generation.</p>
+                    <p>We use the AI responses to display recipes within the App. AI may make mistakes; recipe content may be incomplete, inaccurate or unsuitable for you. You must always check ingredients and use your own judgement before cooking or eating anything. (See our separate <strong>Disclaimer</strong> and Terms of Use.)</p>
+
+                    <h3>6.2 Ingredient recognition (image analysis)</h3>
+                    <p>If you upload photos for ingredient recognition, the images are sent to an image recognition provider (e.g. Google Cloud Vision) to detect food items and text on packaging (where possible). The provider processes the image to return labelled ingredients or other structured data. We use that result to help populate ingredients and suggest recipes.</p>
+
+                    <h3>6.3 Automated decisions</h3>
+                    <p>We do not make decisions that produce legal or similarly significant effects solely based on automated processing. AI is used to <strong>assist</strong> your cooking experience, not to make legal, financial or medical decisions about you.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>7. Cookies and similar technologies</h2>
+                    <p>On our <strong>website</strong>, we may use cookies and similar technologies (such as local storage, pixels or SDKs) for:</p>
+                    <ul>
+                        <li>Authentication and security</li>
+                        <li>Basic functionality</li>
+                        <li>Measuring performance and usage</li>
+                    </ul>
+                    <p>In the <strong>App</strong>, we may use:</p>
+                    <ul>
+                        <li>Local storage and device identifiers</li>
+                        <li>App store / subscription identifiers</li>
+                        <li>SDKs for crash reporting and performance</li>
+                    </ul>
+                    <p>For detailed information about the cookies and similar technologies we use, please see our <strong>Cookie & Tracking Policy</strong>, which forms part of this Privacy Policy.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>8. How we share your data</h2>
+                    <p>We do <strong>not</strong> sell your personal data.</p>
+                    <p>We may share your data with:</p>
+
+                    <h3>8.1 Service providers (processors)</h3>
+                    <p>We use carefully chosen third parties to help us operate the App. These may include:</p>
+                    <ul>
+                        <li><strong>Supabase</strong> – authentication, database, storage and backend hosting</li>
+                        <li><strong>AI service providers</strong> (e.g. OpenAI) – recipe generation, language processing</li>
+                        <li><strong>Image recognition providers</strong> (e.g. Google Cloud Vision) – analysing food images</li>
+                        <li><strong>Subscription management services</strong> (e.g. RevenueCat) – tracking subscription status and entitlements</li>
+                        <li><strong>Paywall/experiment providers</strong> (e.g. Superwall) – managing in-app paywalls and experiments</li>
+                        <li><strong>Cloud hosting and infrastructure providers</strong> – running our services</li>
+                        <li><strong>Customer support tools</strong> (if used) – managing support emails and tickets</li>
+                        <li><strong>Analytics / performance tools</strong> (if and when implemented) – measuring usage in aggregate</li>
+                    </ul>
+                    <p>These providers act as our <strong>data processors</strong> and may only process your personal data on our instructions and for the purposes described in this Policy. We take steps to ensure they implement appropriate security measures.</p>
+
+                    <h3>8.2 App stores and payment providers</h3>
+                    <p>When you subscribe or make in-app purchases, your transaction is processed by:</p>
+                    <ul>
+                        <li>Apple App Store (for iOS users)</li>
+                        <li>Google Play Store (for Android users)</li>
+                    </ul>
+                    <p>We receive limited information from these platforms (e.g. that a payment was successful, your subscription status and renewal date). We do not receive or store your full payment card details.</p>
+
+                    <h3>8.3 Professional advisers and legal authorities</h3>
+                    <p>We may share your data with:</p>
+                    <ul>
+                        <li>Lawyers, accountants, auditors and insurers, where necessary for advice or compliance</li>
+                        <li>Law enforcement bodies, regulators or courts, when required by law or to protect our rights, users or others</li>
+                    </ul>
+
+                    <h3>8.4 Business transfers</h3>
+                    <p>If we are involved in a merger, acquisition, financing, reorganisation, sale of assets or similar transaction, your data may be transferred as part of that deal. We will ensure appropriate protections are in place and will notify you if required by law.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>9. International transfers</h2>
+                    <p>We are based in the <strong>United Kingdom</strong>, but many of our service providers are located in other countries, including the <strong>European Economic Area (EEA)</strong> and the <strong>United States</strong>.</p>
+                    <p>When your personal data is transferred outside the UK/EEA, we ensure an adequate level of protection by:</p>
+                    <ul>
+                        <li>Relying on an <strong>adequacy decision</strong> (where applicable), or</li>
+                        <li>Using <strong>Standard Contractual Clauses (SCCs)</strong> and, where necessary, the UK’s <strong>International Data Transfer Addendum</strong>, or</li>
+                        <li>Implementing other appropriate safeguards as required by law.</li>
+                    </ul>
+                    <p>You can contact us if you would like more details about the specific transfer mechanisms we rely on.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>10. Data retention</h2>
+                    <p>We keep your personal data only for as long as necessary for the purposes described in this Policy, including:</p>
+                    <ul>
+                        <li>For as long as you have an active account</li>
+                        <li>For a limited period after you delete your account, to allow for recovery (if offered) and to comply with legal obligations</li>
+                        <li>For as long as required by law for tax, accounting or regulatory reasons</li>
+                        <li>For a limited period for backup and security logs</li>
+                    </ul>
+                    <p>In general:</p>
+                    <ul>
+                        <li><strong>Account data</strong> – retained while your account is active, then deleted or anonymised within a reasonable period afterwards</li>
+                        <li><strong>Allergy and profile data</strong> – retained while your account is active or until you delete or change it</li>
+                        <li><strong>Content (recipes saved, notes, photos)</strong> – retained while your account is active or until you delete it</li>
+                        <li><strong>Subscription and transaction data</strong> – retained for the applicable statutory retention periods (e.g. 6 years for accounting records in the UK)</li>
+                        <li><strong>Logs and technical data</strong> – retained for a limited period for security and performance analysis, then deleted or aggregated</li>
+                    </ul>
+                    <p>When we no longer need personal data, we will delete it or anonymise it so that it can no longer be linked to you.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>11. Security</h2>
+                    <p>We use appropriate technical and organisational measures to protect your personal data from unauthorised access, loss, misuse, alteration or destruction, including:</p>
+                    <ul>
+                        <li>Encrypted connections (HTTPS/TLS)</li>
+                        <li>Access controls and least-privilege principles for staff and systems</li>
+                        <li>Secure storage of passwords (hashed, not plain text)</li>
+                        <li>Regular updates and security patches for our infrastructure</li>
+                        <li>Monitoring for abuse and suspicious activity</li>
+                    </ul>
+                    <p>However, no system can be completely secure. You are responsible for keeping your account credentials confidential and for securing your own device.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>12. Your rights</h2>
+                    <p>Under the UK GDPR, you have the following rights (subject to certain conditions):</p>
+                    <ul>
+                        <li><strong>Right of access</strong> – to obtain a copy of your personal data we hold about you</li>
+                        <li><strong>Right to rectification</strong> – to have inaccurate or incomplete data corrected</li>
+                        <li><strong>Right to erasure</strong> – to request deletion of your personal data in certain circumstances</li>
+                        <li><strong>Right to restriction</strong> – to ask us to restrict the processing of your data in certain cases</li>
+                        <li><strong>Right to data portability</strong> – to receive your data in a structured, commonly used format and to have it transmitted to another controller, where technically feasible and lawful basis is consent or contract</li>
+                        <li><strong>Right to object</strong> – to object to processing based on our legitimate interests, and to object to direct marketing</li>
+                        <li><strong>Right to withdraw consent</strong> – where we rely on your consent (e.g. for allergies), you can withdraw it at any time</li>
+                    </ul>
+                    <p>You can exercise many of these rights directly within the App (e.g. updating your profile, changing settings, deleting your account). For other requests, contact us at <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a>.</p>
+                    <p>We may need to verify your identity before processing your request and we may refuse or limit requests where we are legally entitled to do so (for example, where they are manifestly unfounded, excessive or impact the rights of others).</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>13. Children and age restrictions</h2>
+                    <p>Just Cooked™ is <strong>not intended for children under 16</strong>.</p>
+                    <ul>
+                        <li>You must be at least <strong>16 years old</strong> to use the App.</li>
+                        <li>We do not knowingly collect personal data from children under 16.</li>
+                        <li>If you are a parent or guardian and believe your child has provided us with personal data, please contact us so we can delete it.</li>
+                    </ul>
+                    <p>If we become aware that we have collected personal data from someone under 16, we will delete it as soon as reasonably practicable.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>14. Account deletion</h2>
+                    <p>You can request deletion of your account <strong>from within the App</strong> (where this feature is available), or by contacting us.</p>
+                    <p>When you delete your account:</p>
+                    <ul>
+                        <li>We will delete or anonymise personal data that we no longer need</li>
+                        <li>We may retain certain information where required by law (e.g. invoices, basic transaction records) or for our legitimate interests (e.g. fraud prevention, security logs) for the applicable retention period</li>
+                    </ul>
+                    <p>Details of the account deletion process and its effects are described in the App and/or in our Terms of Use.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>15. Complaints</h2>
+                    <p>If you have questions or concerns about this Policy or how we handle your personal data, please contact us first at:</p>
+                    <blockquote>
+                        <p>Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                    </blockquote>
+                    <p>You also have the right to lodge a complaint with your local data protection authority. In the UK, this is the:</p>
+                    <blockquote>
+                        <p>Information Commissioner’s Office (ICO)<br>
+                        Website: <a href="https://ico.org.uk" target="_blank" rel="noopener noreferrer" class="text-orange-500 hover:underline">https://ico.org.uk/</a></p>
+                    </blockquote>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>16. Changes to this Privacy Policy</h2>
+                    <p>We may update this Privacy Policy from time to time to reflect changes in our practices, technologies, legal requirements or other factors.</p>
+                    <p>When we make material changes, we will:</p>
+                    <ul>
+                        <li>Update the “Last updated” date at the top, and</li>
+                        <li>Provide notice in the App and/or by email where appropriate</li>
+                    </ul>
+                    <p>Your continued use of the App after any changes take effect will constitute your acceptance of the updated Policy. If you do not agree with the changes, you should stop using the App and delete your account.</p>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white py-12">
+    <footer class="bg-white border-t border-gray-100 py-16">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-8 md:mb-0">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
-                </div>
-                <div>
-                    <p class="text-center text-gray-500 text-sm">
-                        © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                <div class="flex flex-col items-center md:items-start space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
+                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
                     </p>
                 </div>
-                <div class="flex flex-wrap justify-center md:justify-end space-x-6">
-                    <a href="index.html" class="text-gray-600 hover:text-orange-500">Home</a>
-                    <a href="faq.html" class="text-gray-600 hover:text-orange-500">FAQ</a>
-                    <a href="terms.html" class="text-gray-600 hover:text-orange-500">Terms</a>
-                    <a href="privacy.html" class="text-gray-600 hover:text-orange-500 !text-orange-500">Privacy</a>
-                    <a href="cookies.html" class="text-gray-600 hover:text-orange-500">Cookies</a>
-                    <a href="disclaimer.html" class="text-gray-600 hover:text-orange-500">Disclaimer</a>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-orange-500 font-medium transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Cookies</a>
+                    <a href="/disclaimer" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">EULA</a>
                 </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
+                <p class="text-gray-400 text-xs">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>

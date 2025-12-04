@@ -3,295 +3,520 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms and Conditions - Just Cooked™</title>
-    <link rel="icon" type="image/svg+xml" href="assets/Icon.svg">
+    <title>Terms of Use - Just Cooked™</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             content: ["./*.{html,js}"],
             theme: {
-                extend: {},
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
             },
-            plugins: [],
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
         }
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-['Inter']">
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
     <!-- Header -->
-    <header class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300">
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="faq.html" class="nav-link">FAQ</a>
-                <a href="terms.html" class="nav-link active">Terms</a>
-                <a href="privacy.html" class="nav-link">Privacy</a>
-                <a href="cookies.html" class="nav-link">Cookies</a>
-                <a href="disclaimer.html" class="nav-link">Disclaimer</a>
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium active">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
             </div>
-            <button class="md:hidden mobile-menu-button">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden">
-            <div class="px-4 py-2 space-y-2 bg-white border-t border-gray-200">
-                <a href="index.html" class="block py-2 text-gray-600 hover:text-orange-500">Home</a>
-                <a href="faq.html" class="block py-2 text-gray-600 hover:text-orange-500">FAQ</a>
-                <a href="terms.html" class="block py-2 text-orange-500 font-medium">Terms</a>
-                <a href="privacy.html" class="block py-2 text-gray-600 hover:text-orange-500">Privacy</a>
-                <a href="cookies.html" class="block py-2 text-gray-600 hover:text-orange-500">Cookies</a>
-                <a href="disclaimer.html" class="block py-2 text-gray-600 hover:text-orange-500">Disclaimer</a>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- Terms Section -->
-        <section class="pt-32 pb-16">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-center mb-12 animate-fade-in">Terms and Conditions</h1>
-                <div class="max-w-3xl mx-auto prose prose-lg">
-                    <div class="bg-white rounded-lg shadow-sm p-8 animate-fade-in">
-                        <h1 class="text-3xl font-bold mb-6">Terms and Conditions</h1>
-                        <p class="text-gray-500 mb-6"><strong>Last Updated:</strong> 15th March 2025</p>
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16 animate-entry">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Terms of Use</h1>
+                <p class="text-lg text-gray-500">Last updated: 03/12/25</p>
+            </div>
 
-                        <div class="space-y-6">
-                            <p>Welcome to <strong>Just Cooked™</strong> ("the App"), operated by Hyaico Ltd, 41 Woodcross Fold ("the Company", "We", "Our", or "Us"). These Terms and Conditions ("Terms") constitute a legally binding agreement between you and the Company governing your use of the App and Our services. By downloading, accessing, or using the App, you acknowledge that you have read, understood, and agree to be bound by these Terms. If you do not agree with any part of these Terms, you must immediately cease using the App and delete it from your device.</p>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">1. Definitions</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>"App" means the Just Cooked™ mobile application, including all content, features, and functionality.</li>
-                                <li>"Content" means all information, text, graphics, photos, videos, software, and other materials available through the App.</li>
-                                <li>"User", "You", and "Your" refer to the individual accessing or using the App.</li>
-                                <li>"User Content" means any content, including images of ingredients, that you submit to the App.</li>
-                                <li>"Generated Content" means recipes, meal plans, or other content created by the App's AI technology.</li>
-                                <li>"Subscription" means any paid plan that grants access to premium features of the App.</li>
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
+                <div class="prose prose-lg max-w-none">
+                    <p>These Terms of Use (“<strong>Terms</strong>”) govern your access to and use of the <strong>Just Cooked™</strong> mobile application and related websites, services and features (together, the “<strong>App</strong>” or “<strong>Service</strong>”), which are operated by <strong>Hyaico Ltd</strong> (“<strong>Hyaico</strong>”, “<strong>we</strong>”, “<strong>us</strong>”, “<strong>our</strong>”).</p>
+
+                    <p>Please read these Terms carefully. By creating an account or using the App, you agree to be bound by these Terms. If you do not agree, do not use the App.</p>
+
+                    <p>These Terms incorporate by reference our:</p>
+                    <ul>
+                        <li><strong>Privacy Policy</strong></li>
+                        <li><strong>Cookie & Tracking Policy</strong></li>
+                        <li><strong>Medical / Allergy & AI Disclaimer</strong> (“Disclaimer”)</li>
+                    </ul>
+                    <p>(together, the “<strong>Legal Documents</strong>”).</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>1. Who we are</h2>
+                    <p>The App is provided by:</p>
+                    <blockquote>
+                        <p>Hyaico Ltd<br>
+                        41 Woodcross Fold<br>
+                        Leeds, West Yorkshire<br>
+                        LS27 9JW<br>
+                        United Kingdom<br>
+                        Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                    </blockquote>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>2. Eligibility</h2>
+                    <ul>
+                        <li>You must be <strong>at least 16 years old</strong> to use the App.</li>
+                        <li>By using the App, you confirm that you are at least 16.</li>
+                        <li>The App is intended for <strong>personal, non-commercial use</strong> only.</li>
+                    </ul>
+                    <p>If you use the App on behalf of another person (for example, helping a family member), you are responsible for ensuring they understand these Terms.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>3. Your account</h2>
+                    <h3>3.1 Registration</h3>
+                    <p>To use certain features, you must create an account using an email address and password or a supported third-party sign-in (such as Apple or Google).</p>
+                    <p>You agree to:</p>
+                    <ul>
+                        <li>Provide accurate and up-to-date information.</li>
+                        <li>Keep your login credentials secure.</li>
+                        <li>Not share your account with others.</li>
+                        <li>Notify us immediately if you suspect unauthorised use.</li>
+                    </ul>
+                    <p>You are responsible for all activity that occurs under your account.</p>
+
+                    <h3>3.2 Account deletion</h3>
+                    <p>You may delete your account:</p>
+                    <ul>
+                        <li>Via the in-app <strong>Delete Account</strong> feature (where available), or</li>
+                        <li>By contacting us at <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a>.</li>
+                    </ul>
+                    <p>Deleting your account will:</p>
+                    <ul>
+                        <li>Remove or anonymise your profile and most associated data, subject to our <strong>Privacy Policy</strong> and any legal retention obligations (for example, transaction records).</li>
+                        <li>Permanently remove access to your saved data and history in the App.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>4. Description of the Service (not medical advice)</h2>
+                    <p>The App is a consumer tool that helps you:</p>
+                    <ul>
+                        <li>Generate and view <strong>recipes</strong> (including AI-generated recipes).</li>
+                        <li>Log <strong>pantry items</strong>, ingredients and cooking history.</li>
+                        <li>Receive <strong>suggestions</strong> based on your preferences and inputs.</li>
+                    </ul>
+                    <p>The App may allow you to enter information about:</p>
+                    <ul>
+                        <li>Food allergies and intolerances.</li>
+                        <li>Dietary preferences and restrictions.</li>
+                        <li>Basic physical or nutrition-related details (e.g. height, weight, goals).</li>
+                    </ul>
+                    <blockquote>
+                        <p>The App is NOT medical, nutritional or professional advice.</p>
+                        <p>It is not intended to diagnose, treat, cure, or prevent any disease, allergy or condition.</p>
+                        <p>You must always use your own judgement, read product labels and, where appropriate, consult qualified healthcare professionals.</p>
+                    </blockquote>
+                    <p>For more detail, see our separate <strong>Medical / Allergy & AI Disclaimer</strong>, which is incorporated into these Terms.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>5. Subscriptions, payments and trials</h2>
+                    <h3>5.1 Premium features</h3>
+                    <p>Some features of the App are only available on a <strong>paid subscription</strong> (“<strong>Premium</strong>”). Details of Premium plans, including:</p>
+                    <ul>
+                        <li>Which features are included</li>
+                        <li>Billing period (for example, monthly or yearly)</li>
+                        <li>Price and applicable taxes</li>
+                        <li>Free trial, introductory offers or discounts (if any)</li>
+                    </ul>
+                    <p>are shown in the App and/or in the relevant app store at the time you subscribe.</p>
+                    <p>We may change what is included in each plan from time to time, but will not remove core features of an existing paid plan without taking reasonable steps to inform you.</p>
+
+                    <h3>5.2 Payments and app stores</h3>
+                    <p>Subscriptions and in-app purchases are processed by:</p>
+                    <ul>
+                        <li><strong>Apple App Store</strong> (for iOS users), and/or</li>
+                        <li><strong>Google Play Store</strong> (for Android users).</li>
+                    </ul>
+                    <p>By purchasing a subscription, you agree to the <strong>app store’s own terms and conditions</strong>, in addition to these Terms.</p>
+                    <p>We do not receive or store your full payment card details.</p>
+
+                    <h3>5.3 Auto-renewal</h3>
+                    <p>Unless otherwise stated:</p>
+                    <ul>
+                        <li>Subscriptions automatically <strong>renew</strong> at the end of each billing period.</li>
+                        <li>The renewal price will be the then-current price displayed in the app store at the time of renewal.</li>
+                    </ul>
+                    <p>You authorise the app store to charge the renewal fee until you cancel.</p>
+
+                    <h3>5.4 Free trials and introductory offers</h3>
+                    <p>We may offer free trials or promotional pricing from time to time. The <strong>duration</strong> and <strong>conditions</strong> of any offer will be shown in the App or app store at the time of sign-up.</p>
+                    <p>Unless you cancel before the end of the trial/offer period, your subscription will automatically continue at the standard price for the chosen plan.</p>
+
+                    <h3>5.5 Cancellation</h3>
+                    <p>You can cancel your subscription at any time through the <strong>account settings of the relevant app store</strong> (Apple or Google). Deleting the App or your Just Cooked™ account does <strong>not</strong> automatically cancel your subscription.</p>
+                    <p>After cancellation:</p>
+                    <ul>
+                        <li>You will retain access to Premium features until the end of the current paid period.</li>
+                        <li>You will not be billed for further periods, provided you cancelled in accordance with the app store’s instructions and any notice requirements.</li>
+                    </ul>
+
+                    <h3>5.6 Refunds</h3>
+                    <p>Any refunds for subscriptions or in-app purchases are generally handled by the relevant app store under its own policies. We do not have authority to override app store refund decisions.</p>
+                    <p>Nothing in these Terms affects any statutory rights you may have under applicable consumer law.</p>
+
+                    <h3>5.7 Changes to pricing or plans</h3>
+                    <p>We may change our pricing and subscription structure from time to time. We will inform you of any price change in accordance with app store rules, and the change will apply from the next billing period.</p>
+                    <p>If you do not agree to a price change, you must cancel your subscription before the change takes effect.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>6. Access, fair use and service changes</h2>
+                    <h3>6.1 Access and usage limits</h3>
+                    <p>We aim to provide a reliable service, but we do not guarantee that the App will always be available or uninterrupted.</p>
+                    <p>To protect the performance, security and integrity of the App, we may, at our discretion:</p>
+                    <ul>
+                        <li>Impose reasonable limits on the frequency or extent of use of certain features (for example, how many recipes you can generate or requests you can make within a period).</li>
+                        <li>Monitor usage patterns for signs of abuse, fraud or security threats.</li>
+                        <li>Reduce, suspend or block access to certain features or to your account if we reasonably believe your use:
+                            <ul>
+                                <li>Is abusive, excessive or inconsistent with normal personal use; or</li>
+                                <li>Threatens our infrastructure, security or the experience of other users.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">2. Eligibility</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You must be at least 16 years old to use the App. If you are under 18, you must have obtained parental or guardian consent to use the App and accept these Terms.</li>
-                                <li>By using the App, you represent and warrant that you have the legal capacity to enter into a binding agreement under the laws of your jurisdiction.</li>
-                                <li>You affirm that you are not located in a country subject to a U.S. government embargo or designated as a "terrorist supporting" country, and are not listed on any U.S. government list of prohibited or restricted parties.</li>
-                                <li>If you are using the App on behalf of a company or organization, you represent that you have authority to bind that entity to these Terms.</li>
+                        </li>
+                    </ul>
+                    <p>We will use reasonable efforts to avoid unfair or arbitrary restrictions.</p>
+
+                    <h3>6.2 Changes to the Service</h3>
+                    <p>We may update, modify or discontinue parts of the App at any time, for example to:</p>
+                    <ul>
+                        <li>Add or change features</li>
+                        <li>Improve performance and security</li>
+                        <li>Comply with law or third-party requirements</li>
+                    </ul>
+                    <p>Where changes are significant and materially affect you, we will take reasonable steps to notify you within the App or by other appropriate means.</p>
+                    <p>We are not liable to you if we change, suspend or discontinue any part of the App, provided we act in accordance with applicable consumer law and your existing subscription period.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>7. Acceptable use</h2>
+                    <p>You agree <strong>not</strong> to do any of the following in connection with the App:</p>
+                    <ol>
+                        <li>Use the App in any way that violates applicable law or regulation.</li>
+                        <li>Use the App for any commercial purpose or for the benefit of any third party, except as expressly permitted by us.</li>
+                        <li>Access, use, copy, reproduce, distribute, publicly display, publicly perform, or create derivative works from the App or its content (including recipes) beyond what is expressly permitted by these Terms or normal App functionality.</li>
+                        <li>Attempt to reverse engineer, decompile, disassemble or otherwise derive source code or underlying models, except to the extent such restriction is expressly prohibited by law.</li>
+                        <li>Interfere with or disrupt the operation of the App or our networks, including by:
+                            <ul>
+                                <li>Introducing viruses, malware or other harmful code;</li>
+                                <li>Attempting to gain unauthorised access to accounts, systems or networks;</li>
+                                <li>Using automated tools (such as bots, scrapers or crawlers) to access the App in a way that burdens or abuses our systems.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">3. Subscription and Payment</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>The App offers both free and subscription-based access with different tiers and features. Current pricing and payment terms are available on the subscription page within the App.</li>
-                                <li>By subscribing, you authorize Us or Our payment processor to charge your chosen payment method on a recurring basis according to your selected subscription plan. You must provide accurate and complete billing information.</li>
-                                <li>All payments are non-refundable except as expressly provided in these Terms or as required by applicable law. Your subscription will automatically renew unless canceled at least 24 hours before the end of the current billing period.</li>
-                                <li>We reserve the right to change our subscription fees at any time with reasonable notice. Any price changes will be communicated to you at least 30 days in advance and will take effect upon your next renewal date. Continued use of the App after price changes constitutes acceptance of the new prices.</li>
-                                <li>If your payment fails, we may suspend or terminate your access to premium features. You remain responsible for all charges incurred before termination.</li>
-                                <li>Free trials, if offered, are available to new subscribers only, unless otherwise specified. At the end of the free trial period, you will be automatically charged for the subscription unless you cancel before the trial ends.</li>
-                                <li>Promotional offers may be subject to additional terms disclosed at the time of the offer.</li>
+                        </li>
+                        <li>Circumvent or attempt to circumvent any security or usage controls we implement.</li>
+                        <li>Upload, share or transmit content that is:
+                            <ul>
+                                <li>Illegal, defamatory, obscene, abusive, hateful, threatening or otherwise objectionable;</li>
+                                <li>Infringing the intellectual property or privacy rights of others.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">4. Account Registration and Security</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You must create an account to access certain features of the App. You agree to provide accurate, current, and complete information during registration and to update this information to keep it accurate, current, and complete.</li>
-                                <li>You are solely responsible for maintaining the confidentiality and security of your login credentials and for all activities that occur under your account. You must select a strong password and change it regularly.</li>
-                                <li>You agree to notify Us immediately at support@justcooked.app if you become aware of any unauthorized access to or use of your account or any other breach of security.</li>
-                                <li>We reserve the right to disable any user account at any time if, in our reasonable opinion, you have failed to comply with these Terms or if we suspect fraudulent or abusive activity.</li>
-                                <li>You may not share your account credentials with any third party or allow multiple users to access the App through a single account.</li>
+                        </li>
+                        <li>Misrepresent your identity or affiliation, including by creating accounts for others without their permission.</li>
+                    </ol>
+                    <p>We may investigate suspected violations and cooperate with law enforcement where required by law.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>8. User content</h2>
+                    <p>“<strong>User Content</strong>” means any content you upload, submit or store in the App, including:</p>
+                    <ul>
+                        <li>Photos, images and videos (e.g. of food or ingredients)</li>
+                        <li>Notes and comments</li>
+                        <li>Pantry items and labels you manually add</li>
+                        <li>Other input you provide (beyond basic account data)</li>
+                    </ul>
+                    <p>You retain ownership of your User Content, subject to the licence you grant us below.</p>
+
+                    <h3>8.1 Licence you grant to us</h3>
+                    <p>By submitting User Content, you grant Hyaico a worldwide, non-exclusive, royalty-free licence (with the right to sublicense to our service providers) to:</p>
+                    <ul>
+                        <li>Use, reproduce, modify, host, store, display and process your User Content <strong>solely</strong> for the purposes of:
+                            <ul>
+                                <li>Operating, providing and improving the App;</li>
+                                <li>Personalising your experience (for example, saving your pantry, notes and history);</li>
+                                <li>Ensuring security, preventing abuse and debugging issues.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">5. Use of the App</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>The App allows you to:
-                                    <ul class="list-disc pl-6 mt-2 space-y-1">
-                                        <li>Scan and log ingredients using your device's camera.</li>
-                                        <li>Generate AI-driven recipes based on available ingredients, cooking time, and preferences.</li>
-                                        <li>Track stored ingredients and expiration dates.</li>
-                                        <li>Save and organize recipes.</li>
-                                        <li>Share recipes with other users (if available).</li>
-                                    </ul>
-                                </li>
-                                <li>The App is provided for personal, non-commercial use only. Commercial use is strictly prohibited without Our express written permission.</li>
-                                <li>You may not:
-                                    <ul class="list-disc pl-6 mt-2 space-y-1">
-                                        <li>Reverse engineer, decompile, disassemble, modify, or create derivative works of the App or any part thereof.</li>
-                                        <li>Interfere with or disrupt the App's security measures, servers, or networks.</li>
-                                        <li>Circumvent, disable, or otherwise interfere with security-related features of the App.</li>
-                                        <li>Use the App for any illegal, harmful, fraudulent, infringing, or abusive purpose.</li>
-                                        <li>Misuse the AI features or input inappropriate, offensive, or harmful content.</li>
-                                        <li>Use automated systems, bots, scrapers, or similar technology to access or extract data from the App.</li>
-                                        <li>Attempt to gain unauthorized access to any portion of the App or any other systems connected to the App.</li>
-                                        <li>Transmit any viruses, malware, or other harmful code through the App.</li>
-                                        <li>Engage in any activity that could disable, overburden, or impair the proper working of the App.</li>
-                                        <li>Use the App in any manner that could interfere with other users' enjoyment of the App.</li>
-                                    </ul>
-                                </li>
-                                <li>We reserve the right to monitor your use of the App to ensure compliance with these Terms.</li>
-                                <li>We may update the App from time to time, but are not obligated to provide updates or continue to support older versions.</li>
+                        </li>
+                    </ul>
+                    <p>We will not sell your User Content or use it to promote third-party products without your separate consent.</p>
+
+                    <h3>8.2 Your responsibilities</h3>
+                    <p>You are responsible for ensuring that:</p>
+                    <ul>
+                        <li>You have the right to upload the User Content.</li>
+                        <li>Your User Content does not infringe the rights of others or violate these Terms.</li>
+                        <li>You do not upload inappropriate, illegal or harmful content.</li>
+                    </ul>
+                    <p>We may remove or disable access to any User Content that we reasonably believe breaches these Terms or applicable law.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>9. AI-generated content and ingredient recognition</h2>
+                    <p>The App uses artificial intelligence (“<strong>AI</strong>”) and related technologies to:</p>
+                    <ul>
+                        <li>Generate or adapt recipes and cooking suggestions (“<strong>AI Content</strong>”)</li>
+                        <li>Analyse images of food or packaging to identify ingredients or text</li>
+                    </ul>
+
+                    <h3>9.1 Nature of AI Content</h3>
+                    <p>You acknowledge and agree that:</p>
+                    <ul>
+                        <li>AI Content is generated automatically based on model outputs and your inputs.</li>
+                        <li>AI may make <strong>errors</strong>, omit information, or produce recipes or suggestions that are incomplete, inaccurate, unsafe or unsuitable for you.</li>
+                        <li>AI Content may not reflect accurate nutritional information, cooking times, temperatures, food safety standards or allergen status.</li>
+                    </ul>
+                    <p>We do not guarantee that AI Content is correct, safe, nutritionally appropriate or suitable for any particular person.</p>
+
+                    <h3>9.2 Food safety and allergies</h3>
+                    <p>You are <strong>solely responsible</strong> for:</p>
+                    <ul>
+                        <li>Checking all ingredients, products and packaging for allergens and suitability.</li>
+                        <li>Ensuring food is stored, prepared and cooked safely and thoroughly.</li>
+                        <li>Using your own judgement and, where appropriate, seeking professional medical or nutritional advice.</li>
+                    </ul>
+                    <p>You must <strong>not</strong> rely on the App (including any AI Content or ingredient recognition) as a substitute for:</p>
+                    <ul>
+                        <li>Professional medical advice, diagnosis or treatment;</li>
+                        <li>Professional dietary or nutritional advice;</li>
+                        <li>Professional allergy testing or management.</li>
+                    </ul>
+                    <p>For more detail and explicit disclaimers, see our <strong>Medical / Allergy & AI Disclaimer</strong>, which forms part of these Terms.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>10. Intellectual property</h2>
+                    <h3>10.1 Our IP</h3>
+                    <p>The App, including:</p>
+                    <ul>
+                        <li>Software, code and architecture</li>
+                        <li>Design, logos, branding and trademarks (including <strong>Just Cooked™</strong> and Hyaico branding)</li>
+                        <li>Databases, compilations and interfaces</li>
+                        <li>Any content we create</li>
+                    </ul>
+                    <p>are owned by Hyaico and/or our licensors and are protected by intellectual property laws.</p>
+                    <p>Subject to your compliance with these Terms, we grant you a <strong>personal, limited, revocable, non-exclusive, non-transferable licence</strong> to use the App on devices you own or control, for your <strong>personal, non-commercial use</strong> only.</p>
+                    <p>You obtain <strong>no ownership</strong> in the App or its content by using it.</p>
+
+                    <h3>10.2 AI Content</h3>
+                    <p>Subject to applicable law and third-party terms:</p>
+                    <ul>
+                        <li>We (or our licensors) own any rights in AI systems and underlying models.</li>
+                        <li>You may use AI Content generated for you <strong>for your own personal, non-commercial purposes</strong>, such as cooking, saving recipes and sharing with friends and family.</li>
+                    </ul>
+                    <p>You must not use AI Content in a way that:</p>
+                    <ul>
+                        <li>Suggests professional endorsement or medical/nutritional authority;</li>
+                        <li>Violates these Terms or applicable law;</li>
+                        <li>Infringes the rights of third parties.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>11. Third-party services</h2>
+                    <p>The App may contain links to, or integrations with, third-party services (for example, app stores, login providers, hosting platforms or external websites).</p>
+                    <p>We do not control and are not responsible for:</p>
+                    <ul>
+                        <li>The content, policies or practices of third-party services; or</li>
+                        <li>Any transactions or interactions between you and such third parties.</li>
+                    </ul>
+                    <p>Your use of third-party services is governed by their own terms and privacy policies.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>12. Privacy</h2>
+                    <p>Your use of the App is also governed by our <strong>Privacy Policy</strong> and <strong>Cookie & Tracking Policy</strong>, which describe:</p>
+                    <ul>
+                        <li>What personal data we collect</li>
+                        <li>How we use and share it</li>
+                        <li>Your rights under data protection law</li>
+                    </ul>
+                    <p>By using the App, you acknowledge that we will process your personal data in accordance with those documents.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>13. Disclaimers</h2>
+                    <p>To the fullest extent permitted by law:</p>
+                    <ul>
+                        <li>The App is provided on an “<strong>as is</strong>” and “<strong>as available</strong>” basis, without warranties of any kind, whether express or implied.</li>
+                        <li>We do not warrant that the App will be uninterrupted, secure or error-free, or that defects will be corrected.</li>
+                        <li>We do not warrant the accuracy, completeness, reliability or suitability of:
+                            <ul>
+                                <li>Any recipes, nutritional information or cooking instructions;</li>
+                                <li>Any AI-generated content;</li>
+                                <li>Any ingredient recognition results.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">6. Intellectual Property</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>All content, trademarks, logos, software, designs, and intellectual property associated with the App (including AI models, algorithms, recipes, and code) are owned by Hyaico Ltd or licensed to Us. These materials are protected by copyright, trademark, patent, trade secret, and other intellectual property laws.</li>
-                                <li>You are granted a limited, non-exclusive, non-transferable, revocable license to use the App for personal, non-commercial use only, subject to these Terms.</li>
-                                <li>You may not copy, modify, distribute, sell, lease, publicly perform or display, transmit, publish, edit, adapt, create derivative works from, or otherwise exploit any part of the App without Our prior written consent.</li>
-                                <li>The App name, logo, and all related names, logos, product and service names, designs, and slogans are trademarks of Hyaico Ltd or its affiliates or licensors. You may not use such marks without Our prior written permission.</li>
-                                <li>Any feedback, comments, or suggestions you provide regarding the App may be used by Us without any obligation to compensate you.</li>
+                        </li>
+                    </ul>
+                    <p>Without limitation, we expressly disclaim any warranties of:</p>
+                    <ul>
+                        <li>Fitness for a particular purpose (including medical or dietary purposes);</li>
+                        <li>Non-infringement;</li>
+                        <li>Reasonable skill and care (except to the extent required by law).</li>
+                    </ul>
+                    <p>Nothing in these Terms excludes or limits any warranties, rights or remedies that cannot be excluded or limited under applicable law (including your rights as a consumer).</p>
+                    <p>For additional specific disclaimers related to food safety, allergies, AI and nutritional information, please refer to our <strong>Medical / Allergy & AI Disclaimer</strong>.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>14. Limitation of liability</h2>
+                    <p>Nothing in these Terms excludes or limits our liability for:</p>
+                    <ul>
+                        <li>Death or personal injury caused by our negligence;</li>
+                        <li>Fraud or fraudulent misrepresentation;</li>
+                        <li>Any other liability that cannot be excluded or limited under applicable law.</li>
+                    </ul>
+                    <p>Subject to the above:</p>
+                    <ul>
+                        <li>We will not be liable for any <strong>indirect, incidental, consequential, special or punitive damages</strong>, including loss of profits, data, goodwill or other intangible losses, arising from or in connection with your use of (or inability to use) the App.</li>
+                        <li>To the maximum extent permitted by law, our <strong>total aggregate liability</strong> to you for all claims arising out of or relating to the App or these Terms shall not exceed:
+                            <ul>
+                                <li>The total amount you paid to us (via the app stores) for your use of the App during the <strong>12 months</strong> preceding the event giving rise to the claim; or</li>
+                                <li>If you have not paid anything, <strong>£50</strong>.</li>
                             </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">7. User-Generated Content</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You may submit information, including images of ingredients, recipes, preferences, and other content to the App ("User Content").</li>
-                                <li>By submitting User Content, you grant Us a worldwide, perpetual, irrevocable, royalty-free, fully-paid, non-exclusive, transferable, and sublicensable license to use, copy, modify, adapt, publish, translate, create derivative works from, distribute, perform, and display your User Content in any media or distribution methods now known or later developed, for any purpose, including to provide, promote, and improve the App's services.</li>
-                                <li>You represent and warrant that: (i) you own or have the necessary rights, licenses, consents, and permissions to use and authorize Us to use all intellectual property rights in and to your User Content; (ii) your User Content does not violate any third party's rights or applicable law; and (iii) your User Content is not fraudulent, false, misleading, or deceptive.</li>
-                                <li>We are not responsible for the accuracy, quality, or safety of User Content and make no representations or warranties regarding User Content.</li>
-                                <li>We reserve the right, without notice or liability, to remove, edit, or disable access to any User Content that we determine, in our sole discretion, violates these Terms, applicable laws, or is otherwise objectionable.</li>
-                                <li>We may use anonymized User Content to improve our AI models and services.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">8. AI-Generated Content</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>The App uses artificial intelligence to generate recipes and other content. All Generated Content is owned by Us.</li>
-                                <li>You are granted a limited, non-exclusive license to use Generated Content for personal, non-commercial purposes only.</li>
-                                <li>We do not guarantee the accuracy, quality, safety, or appropriateness of any Generated Content. You acknowledge that AI-generated recipes may contain errors, inaccuracies, or inappropriate suggestions.</li>
-                                <li>You are solely responsible for evaluating and verifying Generated Content before using or implementing it. We are not liable for any consequences resulting from your use of Generated Content.</li>
-                                <li>You may not represent Generated Content as your own or remove any attributions or notices associated with Generated Content.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">9. Privacy and Data Protection</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>We collect and process personal data in accordance with Our Privacy Policy, which is incorporated by reference into these Terms.</li>
-                                <li>By using the App, you consent to Our collection, use, and sharing of your data as described in the Privacy Policy.</li>
-                                <li>You are responsible for ensuring that any data you provide is accurate, complete, and up-to-date.</li>
-                                <li>You agree to comply with all applicable data protection and privacy laws when using the App.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">10. Third-Party Services and Links</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>The App may integrate with or provide links to third-party services (e.g., payment providers, social media platforms, AI services, or other websites).</li>
-                                <li>We are not responsible for the content, accuracy, policies, availability, or practices of any third-party services. Your use of third-party services is subject to their respective terms and conditions and privacy policies.</li>
-                                <li>We do not endorse any third-party services and provide any links or integrations for your convenience only.</li>
-                                <li>You acknowledge and agree that We shall not be responsible or liable for any loss or damage caused by your use of any third-party services.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">11. Disclaimer of Warranties</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>THE APP IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT ANY WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR COURSE OF PERFORMANCE.</li>
-                                <li>WE DO NOT WARRANT THAT: (A) THE APP WILL FUNCTION UNINTERRUPTED, SECURE, OR AVAILABLE AT ANY PARTICULAR TIME OR LOCATION; (B) ANY ERRORS OR DEFECTS WILL BE CORRECTED; (C) THE APP IS FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS; OR (D) THE RESULTS OF USING THE APP WILL MEET YOUR REQUIREMENTS.</li>
-                                <li>WE ARE NOT RESPONSIBLE FOR ANY DIETARY ISSUES, ALLERGIC REACTIONS, FOOD POISONING, OR OTHER ADVERSE EFFECTS CAUSED BY RECIPES, INGREDIENTS, OR COOKING METHODS SUGGESTED BY THE APP. YOU MUST INDEPENDENTLY VERIFY ALL GENERATED CONTENT FOR SAFETY AND APPROPRIATENESS.</li>
-                                <li>THE APP IS NOT INTENDED TO PROVIDE MEDICAL OR NUTRITIONAL ADVICE. CONSULT A HEALTHCARE PROFESSIONAL BEFORE MAKING SIGNIFICANT DIETARY CHANGES OR IF YOU HAVE ALLERGIES OR HEALTH CONDITIONS.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">12. Limitation of Liability</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL THE COMPANY, ITS DIRECTORS, EMPLOYEES, PARTNERS, AGENTS, SUPPLIERS, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING WITHOUT LIMITATION, LOSS OF PROFITS, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, RESULTING FROM: (A) YOUR ACCESS TO OR USE OF OR INABILITY TO ACCESS OR USE THE APP; (B) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE APP; (C) ANY CONTENT OBTAINED FROM THE APP; (D) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT; OR (E) ANY OTHER MATTER RELATING TO THE APP, WHETHER BASED ON WARRANTY, CONTRACT, TORT (INCLUDING NEGLIGENCE), PRODUCT LIABILITY, OR ANY OTHER LEGAL THEORY, AND WHETHER OR NOT THE COMPANY HAS BEEN INFORMED OF THE POSSIBILITY OF SUCH DAMAGE.</li>
-                                <li>IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS RELATED TO THE APP EXCEED THE AMOUNT PAID BY YOU TO US FOR USING THE APP DURING THE TWELVE (12) MONTHS PRECEDING THE CLAIM OR ONE HUNDRED POUNDS (£100), WHICHEVER IS GREATER.</li>
-                                <li>SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR THE LIMITATION OR EXCLUSION OF LIABILITY FOR INCIDENTAL OR CONSEQUENTIAL DAMAGES. ACCORDINGLY, SOME OF THE ABOVE LIMITATIONS MAY NOT APPLY TO YOU.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">13. Indemnification</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You agree to defend, indemnify, and hold harmless the Company, its affiliates, licensors, and service providers, and its and their respective officers, directors, employees, contractors, agents, licensors, suppliers, successors, and assigns from and against any claims, liabilities, damages, judgments, awards, losses, costs, expenses, or fees (including reasonable attorneys' fees) arising out of or relating to your violation of these Terms or your use of the App, including, but not limited to, your User Content, any use of the App's content, services, and products other than as expressly authorized in these Terms, or your use of any information obtained from the App.</li>
-                                <li>This indemnification obligation will survive these Terms and your use of the App.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">14. Termination</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>We may terminate or suspend your account and bar access to the App immediately, without prior notice or liability, under our sole discretion, for any reason whatsoever and without limitation, including but not limited to a breach of these Terms.</li>
-                                <li>You may terminate your account at any time by contacting us at support@justcooked.app. Termination of your account may not automatically cancel your subscription; you must separately cancel your subscription through your app store account or payment provider.</li>
-                                <li>If you terminate your account or subscription, you will not receive any refund for any unused portion of a subscription.</li>
-                                <li>All provisions of these Terms which by their nature should survive termination shall survive termination, including, without limitation, ownership provisions, warranty disclaimers, indemnity, and limitations of liability.</li>
-                                <li>Upon termination, your right to use the App will immediately cease. We may, but are not obligated to, delete or archive any User Content upon termination.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">15. Governing Law and Dispute Resolution</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>These Terms and your use of the App shall be governed by and construed in accordance with the laws of England and Wales, without giving effect to any choice or conflict of law provision or rule.</li>
-                                <li>Any legal suit, action, or proceeding arising out of, or related to, these Terms or the App shall be instituted exclusively in the courts of England and Wales, although we retain the right to bring any suit, action, or proceeding against you for breach of these Terms in your country of residence or any other relevant country.</li>
-                                <li>We encourage you to try to resolve any dispute informally by contacting us at support@justcooked.app. If we are unable to resolve the dispute informally within 30 days, either party may resort to formal dispute resolution.</li>
-                                <li>You agree to waive any right to participate in a class action lawsuit or class-wide arbitration against Us. Any dispute resolution proceedings will be conducted only on an individual basis and not in a class, consolidated, or representative action.</li>
-                                <li>Notwithstanding the foregoing, nothing in these Terms will prevent Us from seeking injunctive or other equitable relief in any court of competent jurisdiction.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">16. Changes to Terms and the App</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the updated Terms on the App, sending you an email, or by other reasonable means. Any changes will be effective immediately upon posting or notification.</li>
-                                <li>Your continued use of the App after any such changes constitutes your acceptance of the new Terms. If you do not agree to the revised Terms, you must stop using the App.</li>
-                                <li>We may update, change, suspend, or discontinue any aspect of the App at any time without notice or liability.</li>
-                                <li>It is your responsibility to check these Terms periodically for changes. We will indicate at the top of this page when these Terms were last updated.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">17. Force Majeure</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>We will not be liable or responsible for any failure to perform, or delay in performance of, any of our obligations under these Terms that is caused by events outside our reasonable control ("Force Majeure Event").</li>
-                                <li>A Force Majeure Event includes any act, event, non-happening, omission, or accident beyond our reasonable control and includes in particular (without limitation) strikes, lock-outs or other industrial action, civil commotion, riot, invasion, terrorist attack or threat of terrorist attack, war (whether declared or not) or threat or preparation for war, fire, explosion, storm, flood, earthquake, subsidence, epidemic, pandemic or other natural disaster, impossibility of the use of railways, shipping, aircraft, motor transport or other means of public or private transport, impossibility of the use of public or private telecommunications networks, and the acts, decrees, legislation, regulations or restrictions of any government.</li>
-                                <li>Our performance under these Terms is deemed to be suspended for the period that the Force Majeure Event continues, and we will have an extension of time for performance for the duration of that period.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">18. Severability and Waiver</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>If any provision of these Terms is held by a court or other tribunal of competent jurisdiction to be invalid, illegal, or unenforceable for any reason, such provision shall be eliminated or limited to the minimum extent such that the remaining provisions of the Terms will continue in full force and effect.</li>
-                                <li>No waiver by the Company of any term or condition set forth in these Terms shall be deemed a further or continuing waiver of such term or condition or a waiver of any other term or condition, and any failure of the Company to assert a right or provision under these Terms shall not constitute a waiver of such right or provision.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">19. Entire Agreement</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>These Terms, together with the Privacy Policy and any other agreements expressly incorporated by reference herein, constitute the sole and entire agreement between you and the Company with respect to the App and supersede all prior and contemporaneous understandings, agreements, representations and warranties, both written and oral, with respect to the App.</li>
-                                <li>Any ambiguities in the interpretation of these Terms shall not be construed against the drafting party.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">20. Assignment</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You may not assign, transfer, sublicense, or delegate any or all of your rights or obligations under these Terms without our prior written consent.</li>
-                                <li>We may assign, transfer, or delegate any or all of our rights and obligations under these Terms without your consent to any affiliate, successor in interest, or purchaser of our business or assets.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">21. Export Control</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>You agree to comply with all applicable domestic and international export and re-export control laws and regulations, including the Export Administration Regulations maintained by the U.S. Department of Commerce, trade and economic sanctions maintained by the Treasury Department's Office of Foreign Assets Control, and the International Traffic in Arms Regulations maintained by the Department of State.</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">22. Contact Information</h2>
-                            <ul class="list-disc pl-6 space-y-2">
-                                <li>Questions about these Terms should be directed to Us at the email address support@justcooked.app.</li>
-                                <li>For legal notices, please contact us at support@justcooked.app</li>
-                            </ul>
-                            
-                            <h2 class="text-2xl font-bold mt-8 mb-4">23. Acknowledgement</h2>
-                            <p>BY USING THE APP OR OTHER SERVICES PROVIDED BY US, YOU ACKNOWLEDGE THAT YOU HAVE READ THESE TERMS OF SERVICE AND AGREE TO BE BOUND BY THEM.</p>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
+                    <p>You are responsible for the decisions you make based on your use of the App, including any recipes you choose to cook and consume.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>15. Indemnity</h2>
+                    <p>To the extent permitted by law, you agree to indemnify and hold harmless Hyaico, its directors, employees and contractors from and against any claims, liabilities, damages, losses and expenses (including reasonable legal fees) arising out of or in connection with:</p>
+                    <ul>
+                        <li>Your breach of these Terms;</li>
+                        <li>Your misuse of the App;</li>
+                        <li>Your violation of any law or the rights of any third party;</li>
+                        <li>Any content you submit, upload or share via the App.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>16. Termination and suspension</h2>
+                    <p>We may suspend or terminate your access to the App (including your account) if:</p>
+                    <ul>
+                        <li>You materially or repeatedly breach these Terms or the Legal Documents;</li>
+                        <li>We reasonably believe your use poses a security risk or legal risk;</li>
+                        <li>We are required to do so by law or by a competent authority;</li>
+                        <li>We decide to discontinue the App (on reasonable notice where practicable).</li>
+                    </ul>
+                    <p>Where we reasonably can, we will notify you before suspending or terminating access. However, we may act without notice where necessary to protect the App, our users or our legal interests.</p>
+                    <p>You may stop using the App and/or delete your account at any time.</p>
+                    <p>Termination of your account or access does not affect:</p>
+                    <ul>
+                        <li>Any rights and obligations that have already accrued;</li>
+                        <li>Any provisions of these Terms that are intended to survive termination (including intellectual property, disclaimers, limitation of liability, indemnity and governing law).</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>17. Changes to these Terms</h2>
+                    <p>We may update these Terms from time to time, for example to:</p>
+                    <ul>
+                        <li>Reflect changes to the App or our business;</li>
+                        <li>Address legal, regulatory or security requirements.</li>
+                    </ul>
+                    <p>When we make material changes, we will:</p>
+                    <ul>
+                        <li>Update the “Last updated” date at the top; and</li>
+                        <li>Take reasonable steps to notify you (for example, via the App or by email).</li>
+                    </ul>
+                    <p>By continuing to use the App after the updated Terms take effect, you agree to be bound by them. If you do not agree to the changes, you must stop using the App and delete your account.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>18. Governing law and jurisdiction</h2>
+                    <p>These Terms, and any dispute or claim arising out of or in connection with them or your use of the App, are governed by the laws of <strong>England and Wales</strong>.</p>
+                    <p>If you are a consumer resident in the UK or EU, you may also have the benefit of any <strong>mandatory protections</strong> provided by the laws of your country of residence.</p>
+                    <p>The courts of <strong>England and Wales</strong> will have non-exclusive jurisdiction over any disputes arising in connection with these Terms or the App.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>19. Contact</h2>
+                    <p>If you have any questions about these Terms or the App, please contact us at:</p>
+                    <blockquote>
+                        <p>Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                    </blockquote>
                 </div>
             </div>
-        </section>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white py-12">
+    <footer class="bg-white border-t border-gray-100 py-16">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-8 md:mb-0">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
-                </div>
-                <div>
-                    <p class="text-center text-gray-500 text-sm">
-                        © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                <div class="flex flex-col items-center md:items-start space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
+                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
                     </p>
                 </div>
-                <div class="flex flex-wrap justify-center md:justify-end space-x-6">
-                    <a href="index.html" class="text-gray-600 hover:text-orange-500">Home</a>
-                    <a href="faq.html" class="text-gray-600 hover:text-orange-500">FAQ</a>
-                    <a href="terms.html" class="text-gray-600 hover:text-orange-500 !text-orange-500">Terms</a>
-                    <a href="privacy.html" class="text-gray-600 hover:text-orange-500">Privacy</a>
-                    <a href="cookies.html" class="text-gray-600 hover:text-orange-500">Cookies</a>
-                    <a href="disclaimer.html" class="text-gray-600 hover:text-orange-500">Disclaimer</a>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-orange-500 font-medium transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Cookies</a>
+                    <a href="/disclaimer" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">EULA</a>
                 </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
+                <p class="text-gray-400 text-xs">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
             </div>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
-</html> 
+</html>

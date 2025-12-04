@@ -4,132 +4,348 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - Just Cooked™</title>
-    <link rel="icon" type="image/svg+xml" href="assets/Icon.svg">
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             content: ["./*.{html,js}"],
             theme: {
-                extend: {},
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: {
+                            500: '#FF6B00',
+                            600: '#E65D00',
+                        },
+                        surface: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                },
             },
-            plugins: [],
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="premium.css">
+    <style>
+        .faq-answer {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .faq-answer.open {
+            max-height: 500px;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+        .faq-icon {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-btn[aria-expanded="true"] .faq-icon {
+            transform: rotate(180deg);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
+        }
+    </style>
 </head>
-<body class="font-['Inter']">
+<body class="font-sans antialiased text-gray-900 bg-[#FAFAFA]">
     <!-- Header -->
-    <header class="fixed w-full bg-white shadow-sm z-50 transition-all duration-300">
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="index.html" class="flex items-center">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
             </a>
             <div class="hidden md:flex space-x-8">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="faq.html" class="nav-link active">FAQ</a>
-                <a href="terms.html" class="nav-link">Terms</a>
-                <a href="privacy.html" class="nav-link">Privacy</a>
-                <a href="cookies.html" class="nav-link">Cookies</a>
-                <a href="disclaimer.html" class="nav-link">Disclaimer</a>
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium active">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
             </div>
-            <button class="md:hidden mobile-menu-button">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
                 <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden">
-            <div class="px-4 py-2 space-y-2 bg-white border-t border-gray-200">
-                <a href="index.html" class="block py-2 text-gray-600 hover:text-orange-500">Home</a>
-                <a href="faq.html" class="block py-2 text-orange-500 font-medium">FAQ</a>
-                <a href="terms.html" class="block py-2 text-gray-600 hover:text-orange-500">Terms</a>
-                <a href="privacy.html" class="block py-2 text-gray-600 hover:text-orange-500">Privacy</a>
-                <a href="cookies.html" class="block py-2 text-gray-600 hover:text-orange-500">Cookies</a>
-                <a href="disclaimer.html" class="block py-2 text-gray-600 hover:text-orange-500">Disclaimer</a>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
             </div>
         </div>
     </header>
 
-    <main>
-        <!-- FAQ Section -->
-        <section class="pt-32 pb-16">
-            <div class="container mx-auto px-4">
-                <h1 class="text-4xl font-bold text-center mb-12 animate-fade-in">Frequently Asked Questions</h1>
-                <div class="max-w-3xl mx-auto space-y-6">
-                    <!-- FAQ Item 1 -->
-                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
-                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold">How does Just Cooked™ work?</span>
-                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                        </button>
-                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
-                            <p>Just Cooked™ uses advanced AI to analyze your available ingredients and generate personalized recipes. Simply scan your ingredients using your phone's camera, and our AI will suggest recipes based on what you have.</p>
-                        </div>
-                    </div>
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-20 animate-fade-up">
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+                    Frequently Asked Questions
+                </h1>
+                <p class="text-xl text-gray-500 max-w-2xl mx-auto font-medium">
+                    Discover how to maximize your experience with the intelligent kitchen assistant.
+                </p>
+            </div>
 
-                    <!-- FAQ Item 3 -->
-                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
-                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold">What types of recipes can Just Cooked™ generate?</span>
-                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                        </button>
-                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
-                            <p>Just Cooked™ can generate a wide variety of recipes, including vegetarian, vegan, gluten-free, and other dietary preferences. The app considers your available ingredients, cooking time, and skill level to suggest recipes that match your needs.</p>
+            <div class="space-y-12">
+                
+                <!-- Section 1: Essentials -->
+                <div class="animate-fade-up" style="animation-delay: 0.1s;">
+                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Getting Started</h2>
+                    <div class="space-y-4">
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How do I add ingredients to my pantry?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    You can easily add items to your digital pantry manually or by scanning grocery receipts for instant bulk updates.
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- FAQ Item 4 -->
-                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
-                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold">How accurate is the ingredient scanning?</span>
-                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                        </button>
-                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
-                            <p>Our ingredient scanning technology uses advanced AI and machine learning to achieve high accuracy in recognizing ingredients. The system is continuously improving and learning from user feedback to provide better results.</p>
-                        </div>
-                    </div>
-
-                    <!-- FAQ Item 5 -->
-                    <div class="faq-item bg-white rounded-lg shadow-sm overflow-hidden animate-fade-in">
-                        <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
-                            <span class="font-semibold">Can I save my favorite recipes?</span>
-                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
-                        </button>
-                        <div class="faq-answer px-6 py-4 bg-gray-50 hidden">
-                            <p>Yes! Just Cooked™ allows you to save your favorite recipes, create custom collections, and share them with friends and family.</p>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How does Photo Cook work?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Simply snap a photo of the ingredients you have on hand, and the app will instantly identify them and suggest recipes you can cook right now. It's the fastest way to decide what to eat.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Section 2: Smart Recipe Generation -->
+                <div class="animate-fade-up" style="animation-delay: 0.2s;">
+                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Smart Recipe Generation</h2>
+                    <div class="space-y-4">
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How are recipes generated?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Our smart algorithms create unique recipes tailored specifically to you. The app considers your available inventory, selected dietary preferences, allergy profile, preferred cuisines, and available kitchen equipment to generate a perfect meal match every time.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">What is "Strict Pantry Mode"?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    When enabled, the system will only suggest recipes using ingredients currently in your digital pantry, making no assumptions about staples like salt or oil. This is ideal for minimizing waste or cooking with limited supplies.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Can I save recipes?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Absolutely. You can save any generated recipe to your personal Recipe Library. You can also organize them into custom folders such as "Quick Weeknights" or "Dinner Party" for easy access later.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Health & Safety -->
+                <div class="animate-fade-up" style="animation-delay: 0.3s;">
+                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Health & Dietary</h2>
+                    <div class="space-y-4">
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How does allergy protection work?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Our system utilizes comprehensive hidden allergen detection. For example, if you are allergic to peanuts, it won't just avoid "peanuts"—it will also exclude peanut oil, satay sauce, and dishes commonly associated with peanut ingredients. You can customize your allergy profile in the app settings.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">What dietary preferences are supported?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    We support over 12 dietary patterns, including Mediterranean, Keto, Paleo, Vegan, Vegetarian, Pescatarian, Halal, and Kosher. You can combine multiple preferences to suit your lifestyle.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Technical & Data -->
+                <div class="animate-fade-up" style="animation-delay: 0.4s;">
+                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Privacy & Data</h2>
+                    <div class="space-y-4">
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Is my data private?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Privacy is fundamental to our service. We do not sell your personal data. Your dietary preferences, pantry contents, and usage patterns are used solely to improve your personal experience and the quality of recipe recommendations.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Can I use the app on multiple devices?</span>
+                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
+                                    <i class="fas fa-chevron-down"></i>
+                                </span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
+                                    Yes. Simply sign in with your account on any iOS or Android device. Your pantry, saved recipes, preferences, and cooking history sync automatically in real-time.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </section>
+
+            <!-- Support Contact -->
+            <div class="mt-20 text-center animate-fade-up" style="animation-delay: 0.5s;">
+                <p class="text-gray-500 mb-4">Still have questions?</p>
+                <a href="mailto:support@justcooked.app" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-lg">
+                    <i class="far fa-envelope mr-2"></i> Contact Support
+                </a>
+            </div>
+        </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white py-12">
+    <footer class="bg-gray-50 border-t border-gray-200 pt-20 pb-12">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-8 md:mb-0">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12">
-                </div>
-                <div>
-                    <p class="text-center text-gray-500 text-sm">
-                        © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0 mb-16">
+                <div class="flex flex-col space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 w-auto opacity-80 hover:opacity-100 transition-opacity">
+                    <p class="text-gray-500 text-sm max-w-xs font-medium">
+                        The intelligent cooking companion for the modern home.
                     </p>
                 </div>
-                <div class="flex flex-wrap justify-center md:justify-end space-x-6">
-                    <a href="index.html" class="text-gray-600 hover:text-orange-500">Home</a>
-                    <a href="faq.html" class="text-gray-600 hover:text-orange-500 !text-orange-500">FAQ</a>
-                    <a href="terms.html" class="text-gray-600 hover:text-orange-500">Terms</a>
-                    <a href="privacy.html" class="text-gray-600 hover:text-orange-500">Privacy</a>
-                    <a href="cookies.html" class="text-gray-600 hover:text-orange-500">Cookies</a>
-                    <a href="disclaimer.html" class="text-gray-600 hover:text-orange-500">Disclaimer</a>
+                
+                <div class="flex flex-wrap gap-x-8 gap-y-4">
+                    <a href="/" class="text-sm text-gray-900 font-semibold hover:text-orange-600 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-orange-600 font-semibold transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-gray-500 hover:text-orange-600 transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-gray-500 hover:text-orange-600 transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-gray-500 hover:text-orange-600 transition-colors">Cookies</a>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
+                <p class="text-gray-400 text-xs font-medium">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">EULA</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Premium Accordion Script
+        document.querySelectorAll('.faq-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                
+                // Close all other FAQs
+                document.querySelectorAll('.faq-btn').forEach(otherBtn => {
+                    if (otherBtn !== button) {
+                        otherBtn.setAttribute('aria-expanded', 'false');
+                        const answer = otherBtn.nextElementSibling.querySelector('.faq-answer');
+                        answer.classList.remove('open');
+                    }
+                });
+
+                // Toggle current FAQ
+                button.setAttribute('aria-expanded', !isExpanded);
+                const answer = button.nextElementSibling.querySelector('.faq-answer');
+                if (!isExpanded) {
+                    answer.classList.add('open');
+                } else {
+                    answer.classList.remove('open');
+                }
+            });
+        });
+
+        // Mobile menu script
+        const btn = document.querySelector("button.mobile-menu-button");
+        const menu = document.querySelector(".mobile-menu");
+
+        btn.addEventListener("click", () => {
+            menu.classList.toggle("hidden");
+        });
+    </script>
 </body>
-</html> 
+</html>
