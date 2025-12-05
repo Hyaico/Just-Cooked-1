@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Your Account - Just Cooked™</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            content: ["./*.{html,js}"],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
+            },
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="premium.css">
+</head>
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
+            </div>
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16 animate-entry">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Delete Your JustCooked Account</h1>
+            </div>
+
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
+                <div class="prose prose-lg max-w-none">
+                    <h2>How to Delete Your Account</h2>
+                    <ol>
+                        <li>Open the JustCooked app</li>
+                        <li>Go to Profile → Settings</li>
+                        <li>Scroll down and tap "Delete Account"</li>
+                        <li>Confirm deletion</li>
+                    </ol>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>What Gets Deleted</h2>
+                    <p>When you delete your account, we permanently remove:</p>
+                    <ul>
+                        <li>Your profile information (name, email)</li>
+                        <li>Your saved recipes</li>
+                        <li>Your pantry items</li>
+                        <li>Your cooking history</li>
+                        <li>Your preferences and settings</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Data Retention</h2>
+                    <ul>
+                        <li>Account data is deleted immediately upon request</li>
+                        <li>Anonymized analytics data may be retained for up to 90 days</li>
+                        <li>Backup copies are purged within 30 days</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Need Help?</h2>
+                    <p>Contact us at: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                <div class="flex flex-col items-center md:items-start space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
+                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Cookies</a>
+                    <a href="/disclaimer" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">EULA</a>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
+                <p class="text-gray-400 text-xs">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
