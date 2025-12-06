@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Just Cooked™</title>
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            content: ["./*.{html,js}"],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                },
+            },
+            plugins: [
+                require('@tailwindcss/typography'),
+            ],
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="premium.css">
+</head>
+<body class="font-sans antialiased text-gray-900 bg-gray-50">
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center group">
+                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
+            </a>
+            <div class="hidden md:flex space-x-8">
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
+            </div>
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+            <!-- Header Section -->
+            <div class="text-center mb-16 animate-entry">
+                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Support</h1>
+                <p class="text-lg text-gray-500">We're here to help</p>
+            </div>
+
+            <!-- Content Card -->
+            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
+                <div class="prose prose-lg max-w-none">
+                    <h2>How Can We Help?</h2>
+                    <p>If you're experiencing issues with the JustCooked app or have questions about your account, our support team is ready to assist you.</p>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Contact Us</h2>
+                    <p>You can reach our support team through the following channels:</p>
+                    
+                    <div class="bg-orange-50 rounded-xl p-6 my-6 not-prose">
+                        <div class="flex items-center space-x-4 mb-4">
+                            <div class="bg-orange-100 rounded-full p-3">
+                                <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Email</p>
+                                <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline font-semibold">support@justcooked.app</a>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-orange-100 rounded-full p-3">
+                                <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 font-medium">Phone</p>
+                                <a href="tel:+443301333988" class="text-orange-500 hover:underline font-semibold">+44 330 133 3988</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Before You Contact Us</h2>
+                    <p>To help us resolve your issue as quickly as possible, please have the following information ready:</p>
+                    <ul>
+                        <li>The email address associated with your JustCooked account</li>
+                        <li>A description of the issue you're experiencing</li>
+                        <li>Your device type (iPhone, Android) and operating system version</li>
+                        <li>The version of the JustCooked app you're using</li>
+                        <li>Any error messages you've received</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Common Issues</h2>
+                    <p>Before reaching out, you may find answers to common questions in our <a href="/faq" class="text-orange-500 hover:underline">FAQ section</a>.</p>
+                    
+                    <h3>Account Issues</h3>
+                    <ul>
+                        <li><strong>Can't log in?</strong> Try resetting your password using the "Forgot Password" option on the login screen.</li>
+                        <li><strong>Want to delete your account?</strong> Visit our <a href="/delete" class="text-orange-500 hover:underline">account deletion page</a> for instructions.</li>
+                    </ul>
+
+                    <h3>Subscription Issues</h3>
+                    <ul>
+                        <li><strong>Billing questions?</strong> Subscriptions are managed through the App Store (iOS) or Google Play Store (Android). Check your store account for billing details.</li>
+                        <li><strong>Cancel subscription?</strong> Manage your subscription through your device's app store settings.</li>
+                    </ul>
+
+                    <hr class="my-8 border-gray-100">
+
+                    <h2>Response Times</h2>
+                    <p>We aim to respond to all support enquiries within <strong>24-48 hours</strong> during business days. For urgent issues, please call our support line.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-100 py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
+                <div class="flex flex-col items-center md:items-start space-y-4">
+                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
+                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center md:justify-end gap-8">
+                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
+                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
+                    <a href="/terms" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Terms</a>
+                    <a href="/privacy" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Privacy</a>
+                    <a href="/cookies" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Cookies</a>
+                    <a href="/disclaimer" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Disclaimer</a>
+                    <a href="/eula" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">EULA</a>
+                </div>
+            </div>
+            
+            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
+                <p class="text-gray-400 text-xs">
+                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
