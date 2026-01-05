@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "com.justcooked.app",
       "sha256_cert_fingerprints": [
-        "CB:8D:C6:F1:F2:AB:59:EE:25:EE:69:FA:13:D6:D9:58:B1:CD:9D:AD:13:6E:82:CF:59:80:8A:95:A1:EE:8D:9F"
+        "CB:8D:C6:F1:F2:AB:59:EE:25:EE:69:FA:13:D6:D9:58:B1:CD:9D:AD:13:6E:82:CF:59:80:8A:95:A1:EE:8D:9F",
+        "F4:9A:9B:EE:5C:06:B8:27:20:80:8D:AF:A0:CA:8D:F1:D3:BE:36:2F:56:91:75:D0:3A:27:35:FB:85:02:7F:76"
       ]
     }
   }
