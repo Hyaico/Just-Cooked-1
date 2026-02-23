@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Just Cooked™</title>
+    
+    <!-- Device Detection & Redirect Script -->
+    <script>
+        (function() {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            // iPadOS 13+ uses Macintosh as platform, so check for touch points
+            var isIOS = (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            var isAndroid = /android/i.test(userAgent);
+            
+            var appleUrl = 'https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071';
+            var androidUrl = 'https://play.google.com/store/apps/details?id=com.justcooked.app';
+
+            // Immediately redirect mobile users
+            if (isIOS) {
+                window.location.replace(appleUrl);
+            } else if (isAndroid) {
+                window.location.replace(androidUrl);
+            }
+            // If neither, the script finishes and the desktop page loads normally
+        })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="shortcut icon" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            content: ["./*.{html,js}"],
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: {
+                            500: '#FF6B00',
+                            600: '#E65D00',
+                        },
+                        surface: {
+                            50: '#F9FAFB',
+                            100: '#F3F4F6',
+                            200: '#E5E7EB',
+                        }
+                    },
+                    animation: {
+                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeUp: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/premium.css">
+</head>
+<body class="font-sans antialiased text-gray-900 bg-[#FAFAFA] min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="/" class="flex items-center group">
+                <!-- Larger Logo -->
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-12 md:h-14 transition-transform duration-300 group-hover:scale-105">
+            </a>
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-8">
+                <a href="/" class="nav-link-premium">Home</a>
+                <a href="/faq" class="nav-link-premium">FAQ</a>
+                <a href="/terms" class="nav-link-premium">Terms</a>
+                <a href="/privacy" class="nav-link-premium">Privacy</a>
+                <a href="/cookies" class="nav-link-premium">Cookies</a>
+                <a href="/disclaimer" class="nav-link-premium">Disclaimer</a>
+                <a href="/eula" class="nav-link-premium">EULA</a>
+            </div>
+            <!-- Mobile Navigation Button -->
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Navigation Menu -->
+        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+            <div class="px-4 py-2 space-y-1">
+                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
+                <a href="/terms" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Terms</a>
+                <a href="/privacy" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Privacy</a>
+                <a href="/cookies" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Cookies</a>
+                <a href="/disclaimer" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Disclaimer</a>
+                <a href="/eula" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">EULA</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content (Desktop Fallback) -->
+    <main class="flex-1 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+        <!-- Abstract Background -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-gradient-to-br from-orange-200/20 to-transparent rounded-full blur-[100px]"></div>
+        </div>
+
+        <div class="relative z-10 text-center max-w-3xl w-full mx-auto px-4 py-16 bg-white/60 backdrop-blur-xl border border-white/80 shadow-2xl rounded-[3rem] animate-fade-up opacity-0" style="animation-delay: 0.1s;">
+            
+            <div class="inline-flex items-center justify-center w-24 h-24 mb-8 bg-white rounded-3xl shadow-lg border border-gray-100">
+                <img src="/assets/Icon.svg" alt="App Icon" class="w-16 h-16 object-contain">
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+                Get Just Cooked™
+            </h1>
+            
+            <p class="text-xl text-gray-500 font-medium mb-12 max-w-xl mx-auto leading-relaxed">
+                Choose your platform below to download the Just Cooked app directly to your mobile device.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <!-- App Store Button -->
+                <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" class="w-full sm:w-auto group flex items-center justify-center bg-gray-900 text-white px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-orange-500/20">
+                    <i class="fab fa-apple text-3xl mr-3.5"></i>
+                    <div class="text-left">
+                        <div class="text-[10px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
+                        <div class="text-lg font-bold leading-none">App Store</div>
+                    </div>
+                </a>
+
+                <!-- Google Play Button -->
+                <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" class="w-full sm:w-auto group flex items-center justify-center bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:border-gray-300">
+                    <i class="fab fa-google-play text-3xl mr-3.5 text-gray-800"></i>
+                    <div class="text-left">
+                        <div class="text-[10px] font-bold tracking-wider uppercase text-gray-400">GET IT ON</div>
+                        <div class="text-lg font-bold leading-none">Google Play</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="mt-12 text-sm text-gray-400 font-medium">
+                Available for iOS 15.0+ and Android 8.0+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t border-gray-200 py-8 text-center mt-auto relative z-10">
+        <p class="text-gray-400 text-xs font-medium">
+            © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+        </p>
+    </footer>
+
+    <script src="/script.js"></script>
+</body>
+</html>
