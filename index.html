@@ -145,8 +145,8 @@
                             The advanced utility that transforms ingredients into delicious meals. Intelligent, intuitive, and tailored exclusively to you.
                         </p>
 
-                        <!-- Call to Action -->
-                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-6 animate-fade-up opacity-0" style="animation-delay: 0.4s;">
+                        <!-- Call to Action — desktop only (mobile buttons are below the hero image) -->
+                        <div class="hidden lg:flex items-center justify-start space-x-6 animate-fade-up opacity-0" style="animation-delay: 0.4s;">
                             <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" class="group flex items-center bg-gray-900 text-white px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-orange-500/20">
                                 <i class="fab fa-apple text-3xl mr-3.5"></i>
                                 <div class="text-left">
@@ -168,6 +168,24 @@
                     <div class="flex justify-center lg:justify-end animate-fade-up opacity-0" style="animation-delay: 0.35s;">
                         <img src="assets/MainHero.png" alt="Just Cooked App Preview" class="max-w-sm h-[550px] rounded-2xl object-cover">
                     </div>
+                </div>
+
+                <!-- Mobile download buttons — below hero image, side by side -->
+                <div class="flex lg:hidden items-center justify-center gap-3 mt-8 px-2 animate-fade-up opacity-0" style="animation-delay: 0.5s;">
+                    <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" class="flex-1 flex items-center justify-center bg-gray-900 text-white px-5 py-3.5 rounded-2xl hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-orange-500/20">
+                        <i class="fab fa-apple text-2xl mr-2.5"></i>
+                        <div class="text-left">
+                            <div class="text-[9px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
+                            <div class="text-base font-bold leading-none">App Store</div>
+                        </div>
+                    </a>
+                    <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" class="flex-1 flex items-center justify-center bg-white text-gray-900 border border-gray-200 px-5 py-3.5 rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <i class="fab fa-google-play text-2xl mr-2.5 text-gray-800"></i>
+                        <div class="text-left">
+                            <div class="text-[9px] font-bold tracking-wider uppercase text-gray-400">GET IT ON</div>
+                            <div class="text-base font-bold leading-none">Google Play</div>
+                        </div>
+                    </a>
                 </div>
 
                 <!-- Bento Grid Features -->
