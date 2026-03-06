@@ -8,6 +8,15 @@
   ],
   "headers": [
     {
+      "source": "/recipe/:shareId",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
+    },
+    {
       "source": "/.well-known/apple-app-site-association",
       "headers": [
         {
