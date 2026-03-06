@@ -1,5 +1,11 @@
 {
   "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/recipe/:shareId",
+      "destination": "https://sglxaaehziokuimtnnqw.supabase.co/functions/v1/serve-shared-recipe/:shareId"
+    }
+  ],
   "headers": [
     {
       "source": "/.well-known/apple-app-site-association",
