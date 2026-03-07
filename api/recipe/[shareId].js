@@ -116,11 +116,10 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   const attribution = authorLabel(recipe, ownerUsername);
   const ingredients = recipe.ingredients || [];
   const instructions = recipe.instructions || [];
-  const totalSteps = instructions.length;
 
-  const heroStyle = thumbnailUrl
-    ? `background:url('${thumbnailUrl}') center/cover no-repeat;`
-    : 'background:linear-gradient(135deg,#FF6B00 0%,#FF8C00 100%);';
+  const heroStyleBg = thumbnailUrl
+    ? `url('${thumbnailUrl}') center 30% / cover no-repeat`
+    : 'linear-gradient(145deg,#FF6B00 0%,#FF4500 60%,#CC2200 100%)';
 
   const ogImage = thumbnailUrl
     ? `<meta property="og:image" content="${thumbnailUrl}" />
@@ -128,48 +127,45 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   <meta name="twitter:card" content="summary_large_image" />`
     : '<meta name="twitter:card" content="summary" />';
 
-  // ── Ingredients HTML ────────────────────────────────────────────────────────
+  // ── Ingredients ─────────────────────────────────────────────────────────────
   const ingHtml = ingredients.map((ing, i) => {
-    const border = i < ingredients.length - 1
-      ? 'border-bottom:1px solid #F0EDE9;'
-      : '';
-    return `<div class="ing-row" style="${border}">
-      <span class="ing-name">${escHtml(ing.name)}</span>
-      <span class="ing-qty">${escHtml(ing.quantity || '')} ${escHtml(ing.unit || '')}</span>
+    const divider = i < ingredients.length - 1 ? 'border-bottom:1px solid #F3F1EE;' : '';
+    const qty = [ing.quantity, ing.unit].filter(Boolean).join(' ');
+    return `<div class="ing-row" style="${divider}">
+      <span class="ing-name">${escHtml(ing.name || '')}</span>
+      ${qty ? `<span class="ing-qty">${escHtml(qty)}</span>` : ''}
     </div>`;
   }).join('');
 
-  // ── Instructions HTML ───────────────────────────────────────────────────────
-  // Step 1: show text but fade bottom half out (mask + blur overlay)
-  // Steps 2+: fully blurred
-  const stepsHtml = instructions.map((step, idx) => {
-    const text = escHtml(step.description || '');
-    if (idx === 0) {
-      // First step: visible content with gradient fade on bottom half
-      return `<div class="step-item step-first">
-        <div class="step-row">
-          <div class="step-badge">1</div>
-          <p class="step-text step-text-fade">${text}</p>
-        </div>
-      </div>`;
-    }
-    // Blurred steps: opacity increases per step
-    const blurPx = Math.min(6 + (idx - 1) * 3, 18);
-    const ovAlpha = Math.min(0.55 + (idx - 1) * 0.1, 0.92);
-    return `<div class="step-item step-blurred" style="position:relative;overflow:hidden;">
-      <div class="step-row" style="filter:blur(${blurPx}px);user-select:none;pointer-events:none;">
-        <div class="step-badge">${idx + 1}</div>
-        <p class="step-text">${text}</p>
+  // ── Step 1 (partial) ─────────────────────────────────────────────────────────
+  const step1 = instructions[0];
+  const step1Html = step1 ? `
+    <div class="step-item step-first">
+      <div class="step-row">
+        <div class="step-num">1</div>
+        <p class="step-text">${escHtml(step1.description || '')}</p>
       </div>
-      <div style="position:absolute;inset:0;background:rgba(250,250,249,${ovAlpha});"></div>
-    </div>`;
-  }).join('');
+      <div class="step-fade-cover"></div>
+    </div>` : '';
 
-  // ── Meta pills ─────────────────────────────────────────────────────────────
+  // ── Abstract locked steps (no real text shown) ────────────────────────────
+  const abstractSteps = [0,1,2].map((_, i) => `
+    <div class="abstract-step">
+      <div class="abstract-num"></div>
+      <div class="abstract-lines">
+        <div class="abstract-line" style="width:${85 - i*8}%;opacity:${0.18 - i*0.03};"></div>
+        <div class="abstract-line short" style="width:${55 - i*6}%;opacity:${0.12 - i*0.02};"></div>
+      </div>
+    </div>`).join('');
+
+  // ── Meta pills ───────────────────────────────────────────────────────────────
+  const clockIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
+  const barIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`;
+  const userIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>`;
   const metaHtml = [
-    timeStr ? `<span class="pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>${timeStr}</span>` : '',
-    difficulty ? `<span class="pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Difficulty ${difficulty}/5</span>` : '',
-    servings ? `<span class="pill"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Serves ${servings}</span>` : '',
+    timeStr ? `<span class="pill">${clockIcon}${timeStr}</span>` : '',
+    difficulty ? `<span class="pill">${barIcon}Level ${difficulty}/5</span>` : '',
+    servings ? `<span class="pill">${userIcon}Serves ${servings}</span>` : '',
   ].filter(Boolean).join('');
 
   return `<!DOCTYPE html>
@@ -177,10 +173,12 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
   <title>${name} &mdash; Just Cooked</title>
+  <link rel="icon" href="/assets/Icon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet" />
   <meta property="og:title" content="${name}" />
   <meta property="og:description" content="${desc || 'A recipe shared on Just Cooked.'}" />
   <meta property="og:type" content="article" />
@@ -193,254 +191,333 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   <link rel="canonical" href="${canonicalUrl}" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { color-scheme: light; }
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #FAFAF9;
-      color: #1A1A1A;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F7F5F2;
+      color: #111827;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
-    /* ── Topbar ── */
+    /* ─── Topbar ─────────────────────────────────────────────── */
     .topbar {
-      position: sticky; top: 0; z-index: 50;
-      background: #fff;
-      border-bottom: 1px solid #EDEBE8;
-      padding: 0 20px;
-      height: 56px;
+      position: sticky; top: 0; z-index: 100;
+      height: 60px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 0 24px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .brand {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 17px; font-weight: 800; color: #FF6B00; letter-spacing: -0.4px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 17px; font-weight: 800; color: #111827; letter-spacing: -0.5px;
       text-decoration: none;
     }
-    .brand-dot {
-      width: 8px; height: 8px; background: #FF6B00; border-radius: 50%;
+    .brand-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      object-fit: cover; flex-shrink: 0;
     }
-    .open-btn {
-      background: #FF6B00; color: #fff; border: none; border-radius: 22px;
-      padding: 9px 20px; font-size: 13px; font-weight: 700; font-family: inherit;
-      cursor: pointer; text-decoration: none; display: inline-block;
-      white-space: nowrap;
+    .brand-name { color: #111827; }
+    .topbar-cta {
+      background: #FF6B00; color: #fff !important;
+      border-radius: 100px; padding: 9px 22px;
+      font-size: 13px; font-weight: 700; font-family: inherit;
+      text-decoration: none; white-space: nowrap;
+      transition: background 0.15s, transform 0.1s;
     }
-    .open-btn:hover { background: #E65D00; }
+    .topbar-cta:hover { background: #E55D00; transform: translateY(-1px); }
+    .topbar-cta:active { transform: scale(0.97); }
 
-    /* ── Hero ── */
+    /* ─── Hero ───────────────────────────────────────────────── */
     .hero {
-      width: 100%; height: 300px;
+      width: 100%; height: 380px;
+      background: ${heroStyleBg};
       position: relative; overflow: hidden;
-      ${heroStyle}
     }
-    @media (min-width: 768px) { .hero { height: 420px; } }
+    @media (min-width: 900px) { .hero { height: 560px; } }
     .hero-overlay {
       position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, transparent 40%, rgba(0,0,0,0.6) 100%);
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.12) 0%,
+        rgba(0,0,0,0.05) 35%,
+        rgba(0,0,0,0.55) 75%,
+        rgba(0,0,0,0.82) 100%
+      );
     }
     .hero-content {
-      position: absolute; bottom: 0; left: 0; right: 0; padding: 24px 20px;
-      color: #fff;
-    }
-    .attr-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: rgba(255,255,255,0.15); backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.25);
-      padding: 5px 12px; border-radius: 20px;
-      font-size: 12px; color: rgba(255,255,255,0.95); font-weight: 500;
-      margin-bottom: 10px;
-    }
-    .hero-title {
-      font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1.15;
-      text-shadow: 0 1px 8px rgba(0,0,0,0.4);
-    }
-    @media (min-width: 768px) { .hero-title { font-size: 36px; } }
-
-    /* ── Layout ── */
-    .page-wrap {
-      max-width: 1080px; margin: 0 auto; padding: 24px 16px 100px;
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 32px 28px;
+      max-width: 780px;
     }
     @media (min-width: 900px) {
-      .page-wrap { display: grid; grid-template-columns: 1fr 360px; gap: 40px; padding: 36px 24px 100px; }
-      .sidebar { position: sticky; top: 72px; align-self: start; }
-      .sidebar-mobile { display: none !important; }
+      .hero-content { padding: 48px 64px; max-width: 900px; }
+    }
+    .attr-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.22);
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 12px; color: rgba(255,255,255,0.9); font-weight: 500;
+      margin-bottom: 12px; letter-spacing: 0.1px;
+    }
+    .hero-title {
+      font-size: 30px; font-weight: 900; letter-spacing: -0.8px; line-height: 1.1;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+    @media (min-width: 900px) {
+      .hero-title { font-size: 52px; letter-spacing: -1.5px; }
+    }
+
+    /* ─── Page body ──────────────────────────────────────────── */
+    .page-outer {
+      max-width: 1280px; margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    @media (min-width: 900px) {
+      .page-outer { padding: 0 48px 80px; }
+    }
+    .page-grid {
+      display: flex; flex-direction: column; gap: 0;
+      padding-top: 32px;
+    }
+    @media (min-width: 900px) {
+      .page-grid {
+        flex-direction: row; align-items: flex-start;
+        gap: 40px; padding-top: 48px;
+      }
+      .page-main { flex: 1; min-width: 0; }
+      .page-sidebar {
+        width: 360px; flex-shrink: 0;
+        position: sticky; top: 76px;
+      }
+      .sidebar-mobile-only { display: none !important; }
     }
     @media (max-width: 899px) {
-      .sidebar { display: none !important; }
+      .sidebar-desktop-only { display: none !important; }
     }
 
-    /* ── Section ── */
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.2px;
-      text-transform: uppercase; color: #AAA; margin-bottom: 10px; margin-top: 28px;
+    /* ─── Section headers ────────────────────────────────────── */
+    .section-hd {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.4px;
+      text-transform: uppercase; color: #9CA3AF;
+      margin: 0 0 12px;
     }
-    .section-label:first-child { margin-top: 20px; }
+    .section-gap { margin-top: 36px; }
 
-    /* ── Description ── */
+    /* ─── Description ────────────────────────────────────────── */
     .desc {
-      font-size: 15px; color: #5A5A5A; line-height: 1.65; margin: 20px 0 4px;
+      font-size: 16px; line-height: 1.75; color: #4B5563;
+      margin-bottom: 20px;
     }
 
-    /* ── Meta pills ── */
-    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 4px; }
+    /* ─── Meta pills ─────────────────────────────────────────── */
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
     .pill {
-      background: #fff; border: 1px solid #EDEBE8; border-radius: 20px;
-      padding: 6px 14px; font-size: 13px; color: #5A5A5A; font-weight: 500;
-      display: inline-flex; align-items: center; gap: 6px;
+      background: #fff; border: 1px solid #E5E7EB;
+      border-radius: 100px; padding: 7px 16px;
+      font-size: 13px; font-weight: 500; color: #374151;
+      display: inline-flex; align-items: center; gap: 7px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
     }
 
-    /* ── Card ── */
+    /* ─── Cards ──────────────────────────────────────────────── */
     .card {
-      background: #fff; border-radius: 18px; overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 2px 12px rgba(0,0,0,0.04);
-      margin-bottom: 4px;
+      background: #fff; border-radius: 20px;
+      border: 1px solid #EDECEA;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04), 0 8px 32px rgba(0,0,0,0.03);
+      overflow: hidden;
     }
 
-    /* ── Ingredients ── */
+    /* ─── Ingredients ────────────────────────────────────────── */
     .ing-row {
       display: flex; justify-content: space-between; align-items: center;
-      padding: 13px 18px; gap: 12px;
+      padding: 14px 22px; gap: 16px;
     }
-    .ing-name { font-size: 15px; font-weight: 500; color: #1A1A1A; }
-    .ing-qty { font-size: 14px; color: #888; flex-shrink: 0; }
+    .ing-name { font-size: 15px; font-weight: 500; color: #111827; }
+    .ing-qty { font-size: 14px; color: #9CA3AF; font-weight: 400; flex-shrink: 0; }
 
-    /* ── Steps ── */
-    .step-item { background: #fff; }
-    .step-item + .step-item { border-top: 1px solid #F0EDE9; }
+    /* ─── Steps ──────────────────────────────────────────────── */
+    .step-item { position: relative; }
+    .step-item + .step-item { border-top: 1px solid #F3F1EE; }
     .step-row {
-      display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px;
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 22px;
     }
-    .step-badge {
-      min-width: 30px; height: 30px; background: #FF6B00; color: #fff;
+    .step-num {
+      min-width: 32px; height: 32px;
+      background: #FF6B00; color: #fff;
       border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+      font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px;
     }
-    .step-text { font-size: 15px; color: #1A1A1A; line-height: 1.65; flex: 1; }
+    .step-text { font-size: 15px; color: #111827; line-height: 1.75; flex: 1; }
 
-    /* ── Step 1 fade ── */
-    .step-first { position: relative; }
-    .step-text-fade {
-      -webkit-mask-image: linear-gradient(to bottom, black 45%, transparent 90%);
-      mask-image: linear-gradient(to bottom, black 45%, transparent 90%);
-      max-height: 140px; overflow: hidden;
+    /* Step 1: clip + gradient fade */
+    .step-first { overflow: hidden; }
+    .step-first .step-text {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+    }
+    .step-fade-cover {
+      height: 48px; margin-top: -48px; position: relative; z-index: 2;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.97) 100%);
+      pointer-events: none;
     }
 
-    /* ── Blur CTA gate ── */
-    .blur-gate {
-      background: #fff;
-      border-top: 1px solid #F0EDE9;
-      padding: 28px 20px 32px;
+    /* ─── Lock gate ──────────────────────────────────────────── */
+    .lock-section {
+      border-top: 1px solid #F3F1EE;
+      position: relative; overflow: hidden;
+    }
+    .lock-preview {
+      padding: 0; pointer-events: none; user-select: none;
+    }
+    .abstract-step {
+      display: flex; gap: 16px; align-items: center;
+      padding: 18px 22px; border-bottom: 1px solid #F3F1EE;
+    }
+    .abstract-step:last-child { border-bottom: none; }
+    .abstract-num {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: #F3F1EE;
+    }
+    .abstract-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+    .abstract-line {
+      height: 10px; border-radius: 6px; background: #E8E5E1;
+    }
+    .abstract-line.short { height: 10px; }
+
+    /* Glass panel sits over the abstract steps */
+    .lock-panel {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(255,255,255,0.4) 0%,
+        rgba(255,255,255,0.96) 28%,
+        rgba(255,255,255,1) 100%
+      );
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+      padding: 32px 28px 36px;
       text-align: center;
-      border-radius: 0 0 18px 18px;
     }
-    .blur-gate-label {
-      font-size: 13px; font-weight: 600; color: #C54800;
-      background: #FFF3EC; border-radius: 20px; padding: 6px 14px;
-      display: inline-block; margin-bottom: 16px;
+    .lock-icon-wrap {
+      width: 52px; height: 52px; border-radius: 16px;
+      background: linear-gradient(135deg,#FF6B00,#FF4500);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 20px rgba(255,107,0,0.4);
     }
-    .blur-gate h3 { font-size: 17px; font-weight: 800; color: #1A1A1A; margin-bottom: 8px; }
-    .blur-gate p { font-size: 14px; color: #666; line-height: 1.55; margin-bottom: 20px; }
-    .dl-btn {
+    .lock-panel h3 {
+      font-size: 20px; font-weight: 800; letter-spacing: -0.4px; color: #111827;
+      margin-bottom: 8px; line-height: 1.2;
+    }
+    .lock-panel p {
+      font-size: 14px; color: #6B7280; line-height: 1.6;
+      margin-bottom: 24px; max-width: 300px;
+    }
+    .btn-primary {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #FF6B00; color: #fff; border-radius: 28px;
-      padding: 14px 32px; font-size: 15px; font-weight: 700; font-family: inherit;
-      text-decoration: none; margin-bottom: 12px;
-      box-shadow: 0 4px 16px rgba(255,107,0,0.35);
+      background: #FF6B00; color: #fff; border-radius: 100px;
+      padding: 15px 36px; font-size: 15px; font-weight: 700; font-family: inherit;
+      text-decoration: none; letter-spacing: -0.2px;
+      box-shadow: 0 6px 24px rgba(255,107,0,0.4);
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .dl-btn:hover { background: #E65D00; }
-    .open-link {
+    .btn-primary:hover { background: #E55D00; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,0,0.45); }
+    .btn-secondary {
       display: inline-flex; align-items: center; gap: 6px;
       color: #FF6B00; font-size: 14px; font-weight: 600; text-decoration: none;
-      padding: 9px 18px; border-radius: 22px; border: 1.5px solid #FF6B00;
+      padding: 10px 20px; border-radius: 100px; border: 1.5px solid rgba(255,107,0,0.4);
+      transition: background 0.15s, border-color 0.15s;
+      margin-top: 10px;
     }
-    .open-link:hover { background: rgba(255,107,0,0.06); }
+    .btn-secondary:hover { background: rgba(255,107,0,0.06); border-color: #FF6B00; }
 
-    /* ── Sidebar ── */
+    /* ─── Sidebar card ───────────────────────────────────────── */
     .sidebar-card {
-      background: #fff; border: 1px solid #EDEBE8; border-radius: 22px;
-      padding: 28px 24px; text-align: center;
-      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+      background: #fff; border-radius: 24px; border: 1px solid #EDECEA;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+      padding: 32px 28px; text-align: center;
     }
-    .app-icon {
-      width: 72px; height: 72px; border-radius: 20px;
-      background: linear-gradient(135deg, #FF6B00, #FF8C00);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 18px;
-      box-shadow: 0 4px 14px rgba(255,107,0,0.3);
+    .sidebar-app-icon {
+      width: 80px; height: 80px; border-radius: 22px;
+      object-fit: cover; margin: 0 auto 20px; display: block;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
-    .sidebar-card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-    .sidebar-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      background: #FFF3EC; color: #C54800; border-radius: 20px;
-      padding: 5px 12px; font-size: 13px; font-weight: 600;
-      margin-bottom: 14px;
+    .sidebar-card h3 {
+      font-size: 20px; font-weight: 800; letter-spacing: -0.4px;
+      color: #111827; margin-bottom: 6px;
     }
-    .sidebar-card p { font-size: 14px; color: #666; line-height: 1.55; margin-bottom: 22px; }
-    .sidebar-dl-btn {
-      display: block; background: #FF6B00; color: #fff; border-radius: 28px;
-      padding: 14px 24px; font-size: 15px; font-weight: 700; font-family: inherit;
+    .sidebar-card .tagline {
+      font-size: 14px; color: #6B7280; line-height: 1.6; margin-bottom: 28px;
+    }
+    .sidebar-dl {
+      display: block; background: #FF6B00; color: #fff;
+      border-radius: 100px; padding: 15px 24px;
+      font-size: 15px; font-weight: 700; font-family: inherit;
       text-decoration: none; margin-bottom: 10px;
-      box-shadow: 0 4px 14px rgba(255,107,0,0.3);
+      box-shadow: 0 4px 16px rgba(255,107,0,0.35);
+      transition: background 0.15s, transform 0.1s;
     }
-    .sidebar-open-btn {
-      display: block; background: #F5F3F0; color: #444; border-radius: 28px;
-      padding: 12px 24px; font-size: 14px; font-weight: 600; font-family: inherit;
-      text-decoration: none;
+    .sidebar-dl:hover { background: #E55D00; transform: translateY(-1px); }
+    .sidebar-open {
+      display: block; background: #F9F7F4; color: #374151;
+      border-radius: 100px; padding: 13px 24px;
+      font-size: 14px; font-weight: 600; font-family: inherit;
+      text-decoration: none; border: 1px solid #EDECEA;
+      transition: background 0.15s;
     }
+    .sidebar-open:hover { background: #F0EDE8; }
+    .store-badges {
+      display: flex; justify-content: center; gap: 10px; margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .store-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: #111827; color: #fff; border-radius: 10px;
+      padding: 8px 16px; font-size: 11px; font-weight: 600;
+      text-decoration: none; letter-spacing: 0.1px;
+    }
+    .store-badge:hover { background: #1F2937; }
 
-    /* ── Mobile bottom CTA ── */
-    .sidebar-mobile {
-      background: #fff; border: 1px solid #EDEBE8; border-radius: 20px;
-      padding: 22px 20px; text-align: center; margin-top: 28px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    /* ─── Mobile CTA card ────────────────────────────────────── */
+    .mobile-cta {
+      background: #fff; border-radius: 20px; border: 1px solid #EDECEA;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+      padding: 28px 24px; text-align: center; margin-top: 36px;
     }
-    .sidebar-mobile .dl-btn { width: 100%; justify-content: center; margin-bottom: 10px; }
-    .sidebar-mobile .open-link { display: inline-flex; }
+    .mobile-cta h3 { font-size: 18px; font-weight: 800; color: #111827; margin-bottom: 6px; }
+    .mobile-cta p { font-size: 14px; color: #6B7280; margin-bottom: 20px; line-height: 1.55; }
+    .mobile-cta .btn-primary { width: 100%; justify-content: center; }
 
-    /* ── Footer ── */
+    /* ─── Footer ─────────────────────────────────────────────── */
     footer {
-      text-align: center; padding: 28px 20px;
-      font-size: 13px; color: #999;
-      border-top: 1px solid #EDEBE8; background: #fff; margin-top: 48px;
+      text-align: center; padding: 32px 24px;
+      font-size: 13px; color: #9CA3AF; margin-top: 48px;
+      border-top: 1px solid #EDECEA; background: #fff;
     }
     footer a { color: #FF6B00; text-decoration: none; font-weight: 600; }
-
-    /* ── Dark mode ── */
-    @media (prefers-color-scheme: dark) {
-      body { background: #141414; color: #F0EDE9; }
-      .topbar { background: #1C1C1C; border-color: #2C2C2C; }
-      .card { background: #1C1C1C; box-shadow: none; }
-      .step-item { background: #1C1C1C; }
-      .step-item + .step-item { border-color: #2C2C2C; }
-      .blur-gate { background: #1C1C1C; border-color: #2C2C2C; }
-      .blur-gate h3 { color: #F0EDE9; }
-      .blur-gate p { color: #888; }
-      .ing-name { color: #F0EDE9; }
-      .ing-row { border-color: #2C2C2C !important; }
-      .ing-qty { color: #666; }
-      .step-text { color: #F0EDE9; }
-      .desc { color: #999; }
-      .pill { background: #242424; border-color: #333; color: #CCC; }
-      .sidebar-card { background: #1C1C1C; border-color: #2C2C2C; }
-      .sidebar-card h3 { color: #F0EDE9; }
-      .sidebar-card p { color: #888; }
-      .sidebar-open-btn { background: #272727; color: #CCC; }
-      .sidebar-mobile { background: #1C1C1C; border-color: #2C2C2C; }
-      footer { background: #1C1C1C; border-color: #2C2C2C; color: #555; }
-      .section-label { color: #555; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Sticky topbar -->
+  <!-- Topbar -->
   <header class="topbar">
     <a href="https://www.justcooked.app" class="brand">
-      <span class="brand-dot"></span>
-      Just Cooked
+      <img src="/assets/Icon.svg" alt="Just Cooked" class="brand-icon" />
+      <span class="brand-name">Just Cooked</span>
     </a>
-    <a href="${deepLink}" class="open-btn" id="top-open-btn">Open in App</a>
+    <a href="${deepLink}" class="topbar-cta" id="top-open-btn">Open in App</a>
   </header>
 
   <!-- Hero -->
@@ -451,65 +528,84 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         ${attribution}
       </div>
-      <div class="hero-title">${name}</div>
+      <h1 class="hero-title">${name}</h1>
     </div>
   </div>
 
-  <!-- Body -->
-  <div class="page-wrap">
-    <main>
-      ${desc ? `<p class="desc">${desc}</p>` : ''}
-      ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
+  <!-- Page body -->
+  <div class="page-outer">
+    <div class="page-grid">
 
-      ${ingHtml ? `
-      <p class="section-label">Ingredients</p>
-      <div class="card">${ingHtml}</div>` : ''}
+      <!-- Main content -->
+      <main class="page-main">
+        ${desc ? `<p class="desc">${desc}</p>` : ''}
+        ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
 
-      ${stepsHtml ? `
-      <p class="section-label">Instructions</p>
-      <div class="card" style="padding:0;overflow:hidden;">
-        ${stepsHtml}
-        <div class="blur-gate">
-          <div class="blur-gate-label">&#128274; ${totalSteps} steps total</div>
-          <h3>Cook the full recipe in Just Cooked</h3>
-          <p>Step-by-step cook mode, timers, and more &mdash; all in the app.</p>
-          <div>
-            <a href="${storeLink}" class="dl-btn" id="main-dl-btn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download Just Cooked
+        ${ingHtml ? `
+        <p class="section-hd">Ingredients</p>
+        <div class="card">${ingHtml}</div>` : ''}
+
+        ${step1Html ? `
+        <p class="section-hd section-gap">Instructions</p>
+        <div class="card" style="overflow:hidden;">
+          ${step1Html}
+          <div class="lock-section">
+            <div class="lock-preview">${abstractSteps}</div>
+            <div class="lock-panel">
+              <div class="lock-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+              </div>
+              <h3>Cook the full recipe in&nbsp;Just&nbsp;Cooked</h3>
+              <p>Step-by-step cook mode, built-in timers, and thousands of AI-powered recipes.</p>
+              <a href="${storeLink}" class="btn-primary" id="main-dl-btn">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l4 4 4-4M12 8v8"/></svg>
+                Download Just Cooked &mdash; Free
+              </a>
+              <a href="${deepLink}" class="btn-secondary" id="main-open-btn">Already have the app? Open it &rarr;</a>
+            </div>
+          </div>
+        </div>` : ''}
+
+        <!-- Mobile-only CTA -->
+        <div class="mobile-cta sidebar-mobile-only">
+          <h3>Cook this in Just Cooked</h3>
+          <p>Step-by-step cook mode, timers, and thousands more AI recipes.</p>
+          <a href="${storeLink}" class="btn-primary" id="mob-dl-btn">Download Just Cooked &mdash; Free</a>
+          <br />
+          <a href="${deepLink}" class="btn-secondary" id="mob-open-btn" style="margin-top:12px;">Open in App &rarr;</a>
+        </div>
+      </main>
+
+      <!-- Desktop sidebar -->
+      <aside class="page-sidebar sidebar-desktop-only">
+        <div class="sidebar-card">
+          <img src="/assets/Icon.svg" alt="Just Cooked app icon" class="sidebar-app-icon" />
+          <h3>Just Cooked</h3>
+          <p class="tagline">AI-powered recipes tailored to your ingredients, time, and taste.</p>
+          <a href="${storeLink}" class="sidebar-dl" id="side-dl-btn">Download &mdash; Free</a>
+          <a href="${deepLink}" class="sidebar-open" id="side-open-btn">Open in App</a>
+          <div class="store-badges">
+            <a href="https://apps.apple.com/app/just-cooked/id6741609869" class="store-badge" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App Store
+            </a>
+            <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" class="store-badge" target="_blank">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.85c.3.16.64.22.99.16l12.87-7.44-2.81-2.81L3.18 23.85zm-1.68-2.15V2.3L13.23 12 1.5 21.7zm16.5-8.6l2.26 1.31c.76.44.76 1.16 0 1.6l-2.26 1.31-3.03-3.03 3.03-3.19zm-2.39-1.38L3.18.15c-.35-.06-.69 0-.99.16L13.23 12l2.88-2.88z"/></svg>
+              Google Play
             </a>
           </div>
-          <a href="${deepLink}" class="open-link" id="main-open-btn">Open in App &rarr;</a>
         </div>
-      </div>` : ''}
+      </aside>
 
-      <!-- Mobile CTA -->
-      <div class="sidebar-mobile">
-        <div class="sidebar-badge">${totalSteps} steps &middot; Full recipe in app</div>
-        <a href="${storeLink}" class="dl-btn" id="mob-dl-btn">Download Just Cooked</a>
-        <a href="${deepLink}" class="open-link" id="mob-open-btn">Open in App &rarr;</a>
-      </div>
-    </main>
-
-    <!-- Desktop sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-card">
-        <div class="app-icon">
-          <svg width="38" height="38" viewBox="0 0 60 60" fill="none">
-            <circle cx="30" cy="30" r="20" stroke="white" stroke-width="3" opacity="0.9"/>
-            <path d="M30 20v10l6 6" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h3>Cook this recipe</h3>
-        <div class="sidebar-badge">${totalSteps} steps inside the app</div>
-        <p>Get the full recipe, step-by-step cook mode, and discover more with <strong>Just Cooked</strong>.</p>
-        <a href="${storeLink}" class="sidebar-dl-btn" id="side-dl-btn">Download Just Cooked</a>
-        <a href="${deepLink}" class="sidebar-open-btn" id="side-open-btn">Open in App</a>
-      </div>
-    </aside>
+    </div>
   </div>
 
-  <footer>Made with <a href="https://www.justcooked.app">Just Cooked</a> &mdash; Your AI-powered cooking companion</footer>
+  <footer>
+    Made with <a href="https://www.justcooked.app">Just Cooked</a> &mdash; Your AI-powered kitchen companion
+  </footer>
 
   <script>
     (function () {
@@ -529,10 +625,14 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
 
       function tryOpenApp(e) {
         e.preventDefault();
-        var timer = setTimeout(function () { window.location.href = STORE; }, 1500);
-        window.addEventListener('blur', function () { clearTimeout(timer); }, { once: true });
+        var gone = false;
+        var timer = setTimeout(function () {
+          if (!gone) window.location.href = STORE;
+        }, 1600);
+        function cancel() { gone = true; clearTimeout(timer); }
+        window.addEventListener('blur', cancel, { once: true });
         document.addEventListener('visibilitychange', function () {
-          if (document.hidden) clearTimeout(timer);
+          if (document.hidden) cancel();
         }, { once: true });
         window.location.href = '${deepLink}';
       }
