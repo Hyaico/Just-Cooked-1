@@ -148,15 +148,16 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       <div class="step-fade-cover"></div>
     </div>` : '';
 
-  // ── Abstract locked steps (no real text shown) ────────────────────────────
-  const abstractSteps = [0,1,2].map((_, i) => `
-    <div class="abstract-step">
-      <div class="abstract-num"></div>
-      <div class="abstract-lines">
-        <div class="abstract-line" style="width:${85 - i*8}%;opacity:${0.18 - i*0.03};"></div>
-        <div class="abstract-line short" style="width:${55 - i*6}%;opacity:${0.12 - i*0.02};"></div>
+  // ── Locked steps (2+) — real text, blurred behind glass overlay ────────────
+  const lockedStepsHtml = instructions.slice(1).map((step, idx) => {
+    const stepNum = idx + 2;
+    return `<div class="step-item">
+      <div class="step-row">
+        <div class="step-num">${stepNum}</div>
+        <p class="step-text">${escHtml(step.description || '')}</p>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 
   // ── Meta pills ───────────────────────────────────────────────────────────────
   const clockIcon = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>`;
@@ -378,36 +379,29 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       border-top: 1px solid #F3F1EE;
       position: relative; overflow: hidden;
     }
-    .lock-preview {
-      padding: 0; pointer-events: none; user-select: none;
+    /* Actual step content shown blurred beneath glass */
+    .locked-steps {
+      filter: blur(9px);
+      -webkit-filter: blur(9px);
+      pointer-events: none; user-select: none;
+      /* Scale slightly to hide blur edge bleed */
+      transform: scale(1.02);
+      transform-origin: top center;
     }
-    .abstract-step {
-      display: flex; gap: 16px; align-items: center;
-      padding: 18px 22px; border-bottom: 1px solid #F3F1EE;
-    }
-    .abstract-step:last-child { border-bottom: none; }
-    .abstract-num {
-      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-      background: #F3F1EE;
-    }
-    .abstract-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; }
-    .abstract-line {
-      height: 10px; border-radius: 6px; background: #E8E5E1;
-    }
-    .abstract-line.short { height: 10px; }
-
-    /* Glass panel sits over the abstract steps */
+    /* Glass gradient panel sits over the blurred steps */
     .lock-panel {
       position: absolute; inset: 0;
       background: linear-gradient(to bottom,
-        rgba(255,255,255,0.4) 0%,
-        rgba(255,255,255,0.96) 28%,
-        rgba(255,255,255,1) 100%
+        rgba(255,255,255,0)    0%,
+        rgba(255,255,255,0.15) 12%,
+        rgba(255,255,255,0.72) 36%,
+        rgba(255,255,255,0.97) 58%,
+        rgba(255,255,255,1)    100%
       );
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-      padding: 32px 28px 36px;
+      padding: 32px 28px 40px;
       text-align: center;
     }
     .lock-icon-wrap {
@@ -550,16 +544,16 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
         <div class="card" style="overflow:hidden;">
           ${step1Html}
           <div class="lock-section">
-            <div class="lock-preview">${abstractSteps}</div>
+            <div class="locked-steps">${lockedStepsHtml}</div>
             <div class="lock-panel">
               <div class="lock-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
                   <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                 </svg>
               </div>
               <h3>Cook the full recipe in&nbsp;Just&nbsp;Cooked</h3>
-              <p>Step-by-step cook mode, built-in timers, and thousands of AI-powered recipes.</p>
+              <p>Step-by-step cook mode, built-in timers, and thousands of AI&#8209;powered recipes.</p>
               <a href="${storeLink}" class="btn-primary" id="main-dl-btn">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l4 4 4-4M12 8v8"/></svg>
                 Download Just Cooked &mdash; Free
