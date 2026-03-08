@@ -105,6 +105,11 @@ function escHtml(s) {
     .replace(/'/g, '&#039;');
 }
 
+function titleCase(s) {
+  if (!s) return '';
+  return String(s).replace(/\b\w/g, c => c.toUpperCase());
+}
+
 function fmtTime(mins) {
   if (!mins) return '';
   if (mins < 60) return `${mins} min`;
@@ -162,13 +167,18 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     </div>`;
   }).join('');
 
-  // ── Step 1 (partial) ─────────────────────────────────────────────────────────
+  // ── Step 1 (partial, adaptive clamp) ─────────────────────────────────────────
   const step1 = instructions[0];
+  // 1 step only, OR step 1 is long (>180 chars) → show ~half (5 lines)
+  // Multiple steps with a short step 1 → show most of it (7 lines)
+  const hasManySteps = instructions.length > 1;
+  const step1IsHuge = (step1 ? step1.description || '' : '').length > 180;
+  const step1Clamp = (!hasManySteps || step1IsHuge) ? 5 : 7;
   const step1Html = step1 ? `
     <div class="step-item step-first">
       <div class="step-row">
         <div class="step-num">1</div>
-        <p class="step-text">${escHtml(step1.description || '')}</p>
+        <p class="step-text" style="-webkit-line-clamp:${step1Clamp};">${escHtml(step1.description || '')}</p>
       </div>
       <div class="step-fade-cover"></div>
     </div>` : '';
@@ -193,6 +203,28 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     difficulty ? `<span class="pill">${barIcon}Level ${difficulty}/5</span>` : '',
     servings ? `<span class="pill">${userIcon}Serves ${servings}</span>` : '',
   ].filter(Boolean).join('');
+
+  // ── Recipe details (cuisine, diet, allergens, equipment) ──────────────────
+  const cuisineDisplay = (Array.isArray(recipe.appliedCuisines) && recipe.appliedCuisines.length)
+    ? recipe.appliedCuisines.join(', ') : (recipe.cuisineType || '');
+  const dietDisplay = (Array.isArray(recipe.appliedDiets) && recipe.appliedDiets.length)
+    ? recipe.appliedDiets.map(d => titleCase(d)).join(', ')
+    : (recipe.dietType ? titleCase(recipe.dietType) : '');
+  const allergenDisplay = (Array.isArray(recipe.appliedAllergies) && recipe.appliedAllergies.length)
+    ? recipe.appliedAllergies.map(a => titleCase(a)).join(', ')
+    : (Array.isArray(recipe.allergenInfo) && recipe.allergenInfo.length ? recipe.allergenInfo.join(', ') : '');
+  const equipmentDisplay = (Array.isArray(recipe.requiredEquipment) && recipe.requiredEquipment.length)
+    ? recipe.requiredEquipment.map(e => titleCase(e)).join(', ') : '';
+
+  const detailRows = [
+    cuisineDisplay ? `<div class="detail-row"><div class="detail-icon" style="background:rgba(255,107,0,0.1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div><div class="detail-content"><span class="detail-label">Cuisine</span><span class="detail-value">${escHtml(cuisineDisplay)}</span></div></div>` : '',
+    dietDisplay ? `<div class="detail-row"><div class="detail-icon" style="background:rgba(76,175,80,0.1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/></svg></div><div class="detail-content"><span class="detail-label">Diet</span><span class="detail-value">${escHtml(dietDisplay)}</span></div></div>` : '',
+    allergenDisplay ? `<div class="detail-row"><div class="detail-icon" style="background:rgba(244,67,54,0.1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div class="detail-content"><span class="detail-label">Allergens Avoided</span><span class="detail-value">${escHtml(allergenDisplay)}</span></div></div>` : '',
+    equipmentDisplay ? `<div class="detail-row"><div class="detail-icon" style="background:rgba(107,114,128,0.1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div><div class="detail-content"><span class="detail-label">Equipment</span><span class="detail-value">${escHtml(equipmentDisplay)}</span></div></div>` : '',
+  ].filter(Boolean).join('');
+  const detailsHtml = detailRows ? `
+        <p class="section-hd section-gap">Recipe Details</p>
+        <div class="card details-card">${detailRows}</div>` : '';
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -240,23 +272,22 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       display: flex; align-items: center; justify-content: space-between;
     }
     .brand {
-      display: flex; align-items: center; gap: 10px;
-      font-size: 17px; font-weight: 800; color: #111827; letter-spacing: -0.5px;
+      display: flex; align-items: center;
       text-decoration: none;
     }
-    .brand-icon {
-      width: 32px; height: 32px; border-radius: 8px;
-      object-fit: cover; flex-shrink: 0;
+    .brand-wordmark {
+      height: 26px; width: auto; flex-shrink: 0;
     }
-    .brand-name { color: #111827; }
     .topbar-cta {
       background: #FF6B00; color: #fff !important;
-      border-radius: 100px; padding: 9px 22px;
+      border-radius: 100px; padding: 9px 18px;
       font-size: 13px; font-weight: 700; font-family: inherit;
       text-decoration: none; white-space: nowrap;
-      transition: background 0.15s, transform 0.1s;
+      display: inline-flex; align-items: center; gap: 6px;
+      box-shadow: 0 2px 8px rgba(255,107,0,0.32);
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
     }
-    .topbar-cta:hover { background: #E55D00; transform: translateY(-1px); }
+    .topbar-cta:hover { background: #E55D00; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(255,107,0,0.4); }
     .topbar-cta:active { transform: scale(0.97); }
 
     /* ─── Hero ───────────────────────────────────────────────── */
@@ -385,48 +416,51 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     }
     .step-text { font-size: 15px; color: #111827; line-height: 1.75; flex: 1; }
 
-    /* Step 1: clip + gradient fade */
+    /* Step 1: adaptive clamp via inline style, gradient fade */
     .step-first { overflow: hidden; }
     .step-first .step-text {
       display: -webkit-box;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4;
       overflow: hidden;
+      /* clamp value set inline via JS (5 or 7 lines based on content) */
     }
     .step-fade-cover {
-      height: 48px; margin-top: -48px; position: relative; z-index: 2;
-      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.97) 100%);
+      height: 56px; margin-top: -56px; position: relative; z-index: 2;
+      background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.96) 100%);
       pointer-events: none;
     }
 
     /* ─── Lock gate ──────────────────────────────────────────── */
     .lock-section {
-      border-top: 1px solid #F3F1EE;
+      /* No border-top: smooth continuation from step 1 fade */
       position: relative; overflow: hidden;
+      min-height: 260px;
+      max-height: 420px;
     }
+    @media (min-width: 900px) { .lock-section { max-height: 500px; } }
     /* Actual step content shown blurred beneath glass */
     .locked-steps {
       filter: blur(9px);
       -webkit-filter: blur(9px);
       pointer-events: none; user-select: none;
-      /* Scale slightly to hide blur edge bleed */
       transform: scale(1.02);
       transform-origin: top center;
     }
-    /* Glass gradient panel sits over the blurred steps */
+    /* Glass gradient panel sits over the blurred steps — always centered */
     .lock-panel {
       position: absolute; inset: 0;
       background: linear-gradient(to bottom,
         rgba(255,255,255,0)    0%,
-        rgba(255,255,255,0.15) 12%,
-        rgba(255,255,255,0.72) 36%,
-        rgba(255,255,255,0.97) 58%,
+        rgba(255,255,255,0)    6%,
+        rgba(255,255,255,0.25) 22%,
+        rgba(255,255,255,0.72) 44%,
+        rgba(255,255,255,0.97) 62%,
         rgba(255,255,255,1)    100%
       );
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
-      display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-      padding: 32px 28px 40px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 24px 28px;
       text-align: center;
     }
     .lock-icon-wrap {
@@ -509,15 +543,24 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     }
     .store-badge:hover { background: #1F2937; }
 
-    /* ─── Mobile CTA card ────────────────────────────────────── */
-    .mobile-cta {
-      background: #fff; border-radius: 20px; border: 1px solid #EDECEA;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      padding: 28px 24px; text-align: center; margin-top: 36px;
+    /* ─── Recipe Details card ────────────────────────────────── */
+    .details-card { overflow: hidden; }
+    .detail-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 14px 22px;
+      border-bottom: 1px solid #F3F1EE;
     }
-    .mobile-cta h3 { font-size: 18px; font-weight: 800; color: #111827; margin-bottom: 6px; }
-    .mobile-cta p { font-size: 14px; color: #6B7280; margin-bottom: 20px; line-height: 1.55; }
-    .mobile-cta .btn-primary { width: 100%; justify-content: center; }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-icon {
+      width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .detail-content { display: flex; flex-direction: column; gap: 2px; }
+    .detail-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.7px;
+      text-transform: uppercase; color: #9CA3AF;
+    }
+    .detail-value { font-size: 15px; font-weight: 600; color: #111827; }
 
     /* ─── Footer ─────────────────────────────────────────────── */
     footer {
@@ -533,10 +576,12 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   <!-- Topbar -->
   <header class="topbar">
     <a href="https://www.justcooked.app" class="brand">
-      <img src="/assets/Icon.svg" alt="Just Cooked" class="brand-icon" />
-      <span class="brand-name">Just Cooked</span>
+      <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-wordmark" />
     </a>
-    <a href="${deepLink}" class="topbar-cta" id="top-open-btn">Open in App</a>
+    <a href="${deepLink}" class="topbar-cta" id="top-open-btn">
+      Open in App
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    </a>
   </header>
 
   <!-- Hero -->
@@ -560,8 +605,10 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
         ${desc ? `<p class="desc">${desc}</p>` : ''}
         ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
 
+        ${detailsHtml}
+
         ${ingHtml ? `
-        <p class="section-hd">Ingredients</p>
+        <p class="section-hd section-gap">Ingredients</p>
         <div class="card">${ingHtml}</div>` : ''}
 
         ${step1Html ? `
@@ -578,24 +625,16 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
                 </svg>
               </div>
               <h3>Cook the full recipe in&nbsp;Just&nbsp;Cooked</h3>
-              <p>Step-by-step cook mode, built-in timers, and thousands of AI&#8209;powered recipes.</p>
+              <p>Step-by-step cook mode, built-in timers, grocery lists, and a whole lot more.</p>
               <a href="${storeLink}" class="btn-primary" id="main-dl-btn">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12l4 4 4-4M12 8v8"/></svg>
-                Download Just Cooked &mdash; Free
+                Download Just Cooked
               </a>
               <a href="${deepLink}" class="btn-secondary" id="main-open-btn">Already have the app? Open it &rarr;</a>
             </div>
           </div>
         </div>` : ''}
 
-        <!-- Mobile-only CTA -->
-        <div class="mobile-cta sidebar-mobile-only">
-          <h3>Cook this in Just Cooked</h3>
-          <p>Step-by-step cook mode, timers, and thousands more AI recipes.</p>
-          <a href="${storeLink}" class="btn-primary" id="mob-dl-btn">Download Just Cooked &mdash; Free</a>
-          <br />
-          <a href="${deepLink}" class="btn-secondary" id="mob-open-btn" style="margin-top:12px;">Open in App &rarr;</a>
-        </div>
       </main>
 
       <!-- Desktop sidebar -->
@@ -603,8 +642,8 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
         <div class="sidebar-card">
           <img src="/assets/Icon.svg" alt="Just Cooked app icon" class="sidebar-app-icon" />
           <h3>Just Cooked</h3>
-          <p class="tagline">AI-powered recipes tailored to your ingredients, time, and taste.</p>
-          <a href="${storeLink}" class="sidebar-dl" id="side-dl-btn">Download &mdash; Free</a>
+          <p class="tagline">Cook smarter. Step-by-step cook mode, grocery lists, timers, and more.</p>
+          <a href="${storeLink}" class="sidebar-dl" id="side-dl-btn">Download Just Cooked</a>
           <a href="${deepLink}" class="sidebar-open" id="side-open-btn">Open in App</a>
           <div class="store-badges">
             <a href="https://apps.apple.com/app/just-cooked/id6741609869" class="store-badge" target="_blank">
@@ -623,7 +662,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   </div>
 
   <footer>
-    Made with <a href="https://www.justcooked.app">Just Cooked</a> &mdash; Your AI-powered kitchen companion
+    Made with <a href="https://www.justcooked.app">Just Cooked</a> &mdash; Your kitchen companion
   </footer>
 
   <script>
