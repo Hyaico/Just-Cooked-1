@@ -45,6 +45,25 @@ export default async function handler(req, res) {
     const thumbnailUrl = data.thumbnail_url || null;
 
     const ua = req.headers['user-agent'] || '';
+
+    // Track unique view: hash IP + UA so each unique visitor counts once
+    (async () => {
+      try {
+        const crypto = await import('crypto');
+        const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown';
+        const viewerId = 'web_' + crypto.createHash('sha256')
+          .update(`${ip}:${ua.slice(0, 120)}`).digest('hex').slice(0, 24);
+        await fetch(`${SUPABASE_URL}/rest/v1/rpc/track_share_view`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SERVICE_KEY,
+            'Authorization': `Bearer ${SERVICE_KEY}`,
+          },
+          body: JSON.stringify({ p_share_id: shareId, p_viewer_id: viewerId, p_viewer_type: 'web_anon' }),
+        });
+      } catch { /* non-critical */ }
+    })();
     const isIos = /iPhone|iPad|iPod/i.test(ua);
     const isAndroid = /Android/i.test(ua);
     const storeLink = isIos
