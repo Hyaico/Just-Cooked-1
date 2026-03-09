@@ -271,11 +271,9 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     }
     .topbar-inner {
       max-width: 1280px; margin: 0 auto;
-      padding: 16px 16px;
+      padding: 16px;
       display: flex; justify-content: space-between; align-items: center;
     }
-    @media (min-width: 640px) { .topbar-inner { padding: 16px 24px; } }
-    @media (min-width: 1024px) { .topbar-inner { padding: 16px 32px; } }
     .brand {
       display: flex; align-items: center;
       text-decoration: none;
