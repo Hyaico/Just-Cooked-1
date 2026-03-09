@@ -263,25 +263,33 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     /* ─── Topbar ─────────────────────────────────────────────── */
     .topbar {
       position: sticky; top: 0; z-index: 100;
-      height: 60px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.07);
-      padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(255,255,255,0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+      transition: all 0.3s;
     }
+    .topbar-inner {
+      max-width: 1280px; margin: 0 auto;
+      padding: 16px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    @media (min-width: 640px) { .topbar-inner { padding: 16px 24px; } }
+    @media (min-width: 1024px) { .topbar-inner { padding: 16px 32px; } }
     .brand {
       display: flex; align-items: center;
       text-decoration: none;
     }
     .brand-wordmark {
-      height: 26px; width: auto; flex-shrink: 0;
+      height: 60px; width: auto; flex-shrink: 0;
+      transition: transform 0.3s;
     }
+    .brand:hover .brand-wordmark { transform: scale(1.05); }
+    @media (min-width: 768px) { .brand-wordmark { height: 70px; } }
     .topbar-cta {
       background: #FF6B00; color: #fff !important;
-      border-radius: 100px; padding: 9px 18px;
-      font-size: 13px; font-weight: 700; font-family: inherit;
+      border-radius: 100px; padding: 10px 20px;
+      font-size: 14px; font-weight: 700; font-family: inherit;
       text-decoration: none; white-space: nowrap;
       display: inline-flex; align-items: center; gap: 6px;
       box-shadow: 0 2px 8px rgba(255,107,0,0.32);
@@ -575,13 +583,15 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
 
   <!-- Topbar -->
   <header class="topbar">
-    <a href="https://www.justcooked.app" class="brand">
-      <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-wordmark" />
-    </a>
-    <a href="${deepLink}" class="topbar-cta" id="top-open-btn">
-      Open in App
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    </a>
+    <div class="topbar-inner">
+      <a href="https://www.justcooked.app" class="brand">
+        <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-wordmark" />
+      </a>
+      <a href="${deepLink}" class="topbar-cta" id="top-open-btn">
+        Open in App
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>
   </header>
 
   <!-- Hero -->
