@@ -270,7 +270,6 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       transition: all 0.3s;
     }
     .topbar-inner {
-      max-width: 1280px; margin: 0 auto;
       padding: 16px;
       display: flex; justify-content: space-between; align-items: center;
     }
