@@ -249,6 +249,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   <link rel="canonical" href="${canonicalUrl}" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    img { max-width: 100%; height: auto; }
     :root { color-scheme: light; }
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
@@ -270,6 +271,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       transition: all 0.3s;
     }
     .topbar-inner {
+      max-width: 1280px; margin: 0 auto;
       padding: 16px;
       display: flex; justify-content: space-between; align-items: center;
     }
