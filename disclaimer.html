@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disclaimer - Just Cooked™</title>
+    <title>Medical, Allergy, AI & Support Disclaimer - Just Cooked™</title>
     <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
     <link rel="shortcut icon" href="/assets/Icon.svg">
     <link rel="apple-touch-icon" href="/assets/Icon.svg">
@@ -15,294 +15,272 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: { 50: '#FDF1EA', 100: '#FBE3D2', 200: '#F4B79A', 500: '#E94B1F', 600: '#CC3F18', 700: '#7A2410' }
                     }
                 },
             },
-            plugins: [
-                require('@tailwindcss/typography'),
-            ],
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-sans antialiased text-gray-900 bg-gray-50">
+<body class="font-sans antialiased text-[#1A1815]">
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center group">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-[60px] md:h-[70px] transition-transform duration-300 group-hover:scale-105">
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
             </a>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="/" class="nav-link-premium">Home</a>
                 <a href="/faq" class="nav-link-premium">FAQ</a>
                 <a href="/support" class="nav-link-premium">Support</a>
+                <a href="/download" class="nav-cta">Get the app</a>
             </div>
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
+                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
             <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
-                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
-                <a href="/support" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Support</a>
+                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
+                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
+                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
+                <a href="/download" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Download</a>
             </div>
         </div>
     </header>
 
-    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+    <main class="policy-page">
+        <div class="policy-card reveal">
             <!-- Header Section -->
-            <div class="text-center mb-16 animate-entry">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Medical, Allergy & AI Disclaimer</h1>
-                <p class="text-lg text-gray-500">Last updated: 03/12/25</p>
+            <div class="policy-head">
+                <h1>Medical, Allergy, AI & Support Disclaimer</h1>
+                <p class="policy-updated">Last updated: 11 June 2026</p>
             </div>
 
             <!-- Content Card -->
-            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
-                <div class="prose prose-lg max-w-none">
-                    <p>This Medical, Allergy & AI Disclaimer (“<strong>Disclaimer</strong>”) applies to your use of the <strong>Just Cooked™</strong> mobile application and related websites, services and features (together, the “<strong>App</strong>” or “<strong>Service</strong>”), operated by <strong>Hyaico Ltd</strong> (“<strong>Hyaico</strong>”, “<strong>we</strong>”, “<strong>us</strong>”, “<strong>our</strong>”).</p>
-
-                    <p>This Disclaimer forms part of and is incorporated into our <strong>Terms of Use</strong>, and should be read together with our <strong>Privacy Policy</strong> and <strong>Cookie & Tracking Policy</strong> (together, the “<strong>Legal Documents</strong>”). If you do not agree with this Disclaimer, you must not use the App.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>1. No medical, nutritional or professional advice</h2>
-                    <p>The App is a consumer cooking and recipe tool. It is intended for <strong>general information and inspiration only</strong>.</p>
-                    <p>Nothing in the App (including any recipes, suggestions, nutritional information or AI-generated content) is:</p>
-                    <ul>
-                        <li>Medical advice</li>
-                        <li>Nutritional or dietary advice</li>
-                        <li>Professional health, fitness or wellness advice</li>
-                        <li>A substitute for consultation with a doctor, dietitian, allergist or other qualified professional</li>
-                    </ul>
-                    <p>You must not rely on the App to diagnose, treat, cure or prevent any disease, allergy or medical condition.</p>
-                    <p>Always consult a qualified healthcare professional before making significant changes to your diet or if you have any concerns about allergies, intolerances, medical conditions or medication interactions.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>2. Allergies, intolerances and dietary restrictions</h2>
-                    <h3>2.1 Your responsibility</h3>
-                    <p>If you have food allergies, intolerances or other dietary restrictions, <strong>you are solely responsible</strong> for:</p>
-                    <ul>
-                        <li>Checking every ingredient, product label and allergen statement before buying, preparing or consuming food</li>
-                        <li>Avoiding ingredients and products that may trigger an allergic reaction</li>
-                        <li>Considering cross-contamination risks (e.g. shared equipment, surfaces or oil)</li>
-                        <li>Verifying the safety and suitability of any recipe, ingredient or product for your personal circumstances</li>
-                    </ul>
-                    <p>You must <strong>not</strong> rely on the App to:</p>
-                    <ul>
-                        <li>Detect all possible allergens or cross-contamination</li>
-                        <li>Guarantee that a recipe or ingredient is safe for you</li>
-                        <li>Replace professional allergy testing or management</li>
-                    </ul>
-                    <p>If you have any doubts about whether a recipe or ingredient is safe for you, <strong>do not consume it</strong> and consult a medical professional.</p>
-
-                    <h3>2.2 Optional allergy and dietary fields</h3>
-                    <p>The App may allow you to enter information about:</p>
-                    <ul>
-                        <li>Food allergies and intolerances</li>
-                        <li>Dietary preferences and restrictions (e.g. vegetarian, vegan, halal, kosher)</li>
-                    </ul>
-                    <p>We use this information to try to filter and adapt recipes. However:</p>
-                    <ul>
-                        <li>We <strong>cannot guarantee</strong> that all allergens will be correctly identified, removed or substituted</li>
-                        <li>We <strong>cannot guarantee</strong> that AI-generated recipes or ingredient lists will be accurate, complete or up to date</li>
-                        <li>We may not recognise every brand, product variant, ingredient or cross-contamination risk</li>
-                    </ul>
-                    <p>You must treat the App as a <strong>support tool only</strong>, not as a safety system or allergen detection device.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>3. Food safety and preparation</h2>
-                    <p>You are solely responsible for:</p>
-                    <ul>
-                        <li>Ensuring food is stored, handled and prepared safely</li>
-                        <li>Following appropriate hygiene practices</li>
-                        <li>Cooking food thoroughly to safe temperatures</li>
-                        <li>Avoiding cross-contamination (e.g. raw vs cooked items)</li>
-                        <li>Complying with applicable food safety laws and guidance in your country</li>
-                    </ul>
-                    <p>We do not guarantee that any recipe or suggestion in the App:</p>
-                    <ul>
-                        <li>Uses safe cooking times, temperatures or methods</li>
-                        <li>Reflects food safety best practices for all regions</li>
-                        <li>Is suitable for vulnerable individuals (e.g. pregnant people, young children, elderly individuals, immunocompromised individuals)</li>
-                    </ul>
-                    <p>If you are unsure whether any cooking method or ingredient is safe, follow trusted food safety guidance or consult a professional.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>4. AI-generated recipes and suggestions</h2>
-                    <p>The App uses artificial intelligence (“<strong>AI</strong>”) to generate or adapt recipes, meal ideas and related content (“<strong>AI Content</strong>”).</p>
-                    <p>You acknowledge and agree that:</p>
-                    <ol>
-                        <li><strong>AI Content may be inaccurate or incomplete.</strong>
-                            <ul>
-                                <li>AI may generate incorrect ingredient lists, quantities, cooking times, temperatures or steps.</li>
-                                <li>AI may omit important warnings, allergen information or instructions.</li>
-                            </ul>
-                        </li>
-                        <li><strong>AI Content is not tailored or guaranteed to be suitable for your personal health status.</strong>
-                            <ul>
-                                <li>AI does not have access to your medical history, laboratory results or clinical context.</li>
-                                <li>AI is not a healthcare professional and is not a substitute for one.</li>
-                            </ul>
-                        </li>
-                        <li><strong>AI may “hallucinate” or invent details.</strong>
-                            <ul>
-                                <li>AI may produce plausible but incorrect information.</li>
-                                <li>You must not assume AI Content is factually correct or safe without independent verification.</li>
-                            </ul>
-                        </li>
-                        <li><strong>You must verify AI Content before use.</strong>
-                            <ul>
-                                <li>Check ingredients, preparation steps and cooking times.</li>
-                                <li>Adjust for your own equipment, environment and dietary needs.</li>
-                                <li>Do not rely on AI Content where safety or health are critical.</li>
-                            </ul>
-                        </li>
-                    </ol>
-                    <p>We are not responsible for any harm, loss or damage arising from your reliance on AI Content, except where we cannot legally exclude or limit liability.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>5. Ingredient recognition and image analysis</h2>
-                    <p>The App may allow you to upload photos of food, ingredients or packaging for analysis by image recognition systems.</p>
-                    <p>You acknowledge and agree that:</p>
-                    <ul>
-                        <li>Image recognition may <strong>misidentify</strong> ingredients or fail to detect certain foods or labels.</li>
-                        <li>Text on packaging (including allergen or nutrition labels) may not be accurately read or interpreted.</li>
-                        <li>Image quality, lighting, angle, obstructions and other factors can significantly affect results.</li>
-                        <li>We do not guarantee that image analysis will detect allergens, contaminants or harmful substances.</li>
-                    </ul>
-                    <p>Image recognition is a convenience feature only. You must <strong>not</strong> rely on it as a complete or accurate listing of ingredients or allergens.</p>
-                    <p>You must always:</p>
-                    <ul>
-                        <li>Read the actual packaging and ingredient lists yourself;</li>
-                        <li>Check any allergen or “may contain” warnings on the product;</li>
-                        <li>Follow official guidance from manufacturers and regulators.</li>
-                    </ul>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>6. Nutritional information and health goals</h2>
-                    <p>Any nutritional information, calorie counts, macronutrient estimates or health-related insights provided by the App are:</p>
-                    <ul>
-                        <li>Approximations only;</li>
-                        <li>Derived from standardised data sources, assumptions or AI estimates;</li>
-                        <li>Not tailored to your exact physiology, metabolism or medical situation.</li>
-                    </ul>
-                    <p>They are <strong>not</strong>:</p>
-                    <ul>
-                        <li>A substitute for professional dietary advice or medical nutrition therapy;</li>
-                        <li>Guaranteed to be accurate, complete or suitable for specific medical conditions (e.g. diabetes, kidney disease, eating disorders).</li>
-                    </ul>
-                    <p>If you have specific health goals or conditions, consult a qualified doctor or dietitian. Do not make major dietary changes based solely on the App.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>7. No emergency or critical use</h2>
-                    <p>The App is not designed or intended for:</p>
-                    <ul>
-                        <li>Emergency medical situations;</li>
-                        <li>Critical allergy management;</li>
-                        <li>Life-sustaining dietary regimes.</li>
-                    </ul>
-                    <p>If you are experiencing a medical emergency or serious allergic reaction (e.g. anaphylaxis), <strong>do not use the App</strong>. Seek immediate emergency assistance and follow your prescribed emergency plan (such as using an auto-injector if prescribed).</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>8. Limitation of liability (summary)</h2>
-                    <p>Nothing in this Disclaimer:</p>
-                    <ul>
-                        <li>Excludes or limits any liability that cannot be excluded or limited under applicable law (including liability for death or personal injury caused by our negligence, or for fraud).</li>
-                    </ul>
-                    <p>Subject to that:</p>
-                    <ul>
-                        <li>We do <strong>not</strong> accept responsibility for any injury, illness, allergic reaction, adverse health event, loss or damage arising directly or indirectly from:
-                            <ul>
-                                <li>Your reliance on recipes, AI Content, ingredient recognition or nutritional information in the App;</li>
-                                <li>Your failure to check ingredients, packaging, allergen warnings or food safety guidance;
-                                <li>Your failure to seek appropriate medical or dietary advice.</li>
-                            </ul>
-                        </li>
-                        <li>To the maximum extent permitted by law, any liability we do have in connection with the App will be subject to the limitations and caps set out in our <strong>Terms of Use</strong>.</li>
-                    </ul>
-                    <p>You are responsible for your own decisions about what to buy, cook and eat.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>9. Governing law</h2>
-                    <p>This Disclaimer, and any non-contractual obligations arising out of or in connection with it, are governed by the laws of <strong>England and Wales</strong>, subject to any mandatory protections provided by the laws of your country of residence if you are a consumer.</p>
-                    <p>Any disputes in relation to this Disclaimer shall be dealt with as set out in our <strong>Terms of Use</strong>.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>10. Contact us</h2>
-                    <p>If you have any questions about this Disclaimer or about how the App works, you can contact us at:</p>
-                    <blockquote>
-                        <p>Hyaico Ltd<br>
-                        Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
-                    </blockquote>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>11. Changes to this Disclaimer</h2>
-                    <p>We may update this Disclaimer from time to time, for example if:</p>
-                    <ul>
-                        <li>We introduce new features (such as additional AI tools or scanning capabilities);</li>
-                        <li>Legal or regulatory requirements change; or</li>
-                        <li>We need to clarify our position on safety, allergies or AI use.</li>
-                    </ul>
-                    <p>When we make material changes, we will:</p>
-                    <ul>
-                        <li>Update the “Last updated” date at the top; and</li>
-                        <li>Take reasonable steps to draw your attention to the changes (for example, via the App or our website).</li>
-                    </ul>
-                    <p>Your continued use of the App after the updated Disclaimer takes effect will constitute your acceptance of it. If you do not agree, you must stop using the App and delete your account.</p>
-                </div>
+            <div>
+                <div class="policy-body" id="policy-body"></div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-16">
+    <footer class="site-footer">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-                <div class="flex flex-col items-center md:items-start space-y-4">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
-                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
-                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-14">
+                <div class="flex flex-col space-y-4 max-w-xs">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="footer-logo">
+                    <p class="text-[#8B847C] text-sm font-medium leading-relaxed">
+                        Helping you find your way back to food, one small meal at a time.
                     </p>
                 </div>
-                
-                <div class="flex flex-wrap justify-center md:justify-end gap-8">
-                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
-                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
-                    <a href="/support" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Support</a>
+                <div class="flex flex-wrap gap-x-8 gap-y-3">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/faq" class="footer-link">FAQ</a>
+                    <a href="/support" class="footer-link">Support</a>
+                    <a href="/download" class="footer-link">Download</a>
                 </div>
             </div>
-            
-            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-                    <a href="/terms" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Terms</a>
-                    <a href="/privacy" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Privacy</a>
-                    <a href="/cookies" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Cookies</a>
-                    <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Disclaimer</a>
-                    <a href="/eula" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">EULA</a>
-                </div>
-                <p class="text-gray-400 text-xs">
-                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-[#E0D5C2]">
+                <p class="text-[#8B847C] text-xs font-medium order-2 md:order-1">
+                    © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
                 </p>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
+                    <a href="/terms" class="footer-sublink">Terms</a>
+                    <a href="/privacy" class="footer-sublink">Privacy</a>
+                    <a href="/cookies" class="footer-sublink">Cookies</a>
+                    <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
+                    <a href="/eula" class="footer-sublink">EULA</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- ============================================================
+         POLICY SOURCE — paste a new policy here as plain Markdown.
+         Replace everything between the two markdown <script> tags below.
+         "## " = section, "- " or "1. " = list, "[text](url)" = link,
+         "---" = divider, "**bold**". No HTML needed; it renders itself.
+         ============================================================ -->
+    <script type="text/markdown" id="policy-source">
+This Medical, Allergy, AI & Support Disclaimer ("**Disclaimer**") applies to your use of the **Just Cooked™** mobile application and related websites, services and features (together, the "**App**" or "**Service**"), operated by **Hyaico Ltd** ("**Hyaico**", "**we**", "**us**", "**our**").
+
+This Disclaimer forms part of and is incorporated into our **Terms of Use**, and should be read together with our **Privacy Policy** and **Cookie & Tracking Policy**. If you do not agree with this Disclaimer, you must not use the App.
+
+---
+
+## 1. No medical, nutritional or professional advice
+
+The App is a consumer cooking and food-support tool intended for **general information, inspiration and comfort only**.
+
+Nothing in the App (including recipes, suggestions, nutritional information, support tools or AI-generated content) is:
+
+- Medical advice
+- Nutritional or dietary advice
+- Psychological, psychiatric or therapeutic advice or treatment
+- Professional health, fitness or wellness advice
+- A substitute for consultation with a doctor, dietitian, allergist, therapist or other qualified professional
+
+You must not rely on the App to diagnose, treat, cure or prevent any disease, allergy or medical or mental-health condition. Always consult a qualified professional before making significant changes to your diet, or if you have concerns about allergies, intolerances, medical conditions, medication interactions, or your physical or mental health.
+
+---
+
+## 2. Support and wellbeing features
+
+The App includes optional features intended to provide comfort and practical structure in difficult food moments, for example a panic tool with breathing exercises, an ambient meditation player, gentle display settings and signposting to third-party helplines (together, the "**Support Features**").
+
+### 2.1 Not therapy, treatment or diagnosis
+
+The Support Features are general wellbeing tools. They do not provide psychological or psychiatric assessment, screening, therapy, counselling, treatment or diagnosis of any kind.
+
+The App may adjust which features, figures or content are displayed based on answers you choose to give. This is a presentation choice intended to make the App more comfortable to use. **It is not a screening, assessment or diagnosis of any condition, and you should not interpret it as one.**
+
+### 2.2 Not a crisis or emergency service
+
+The App does not monitor you, does not detect crises or emergencies, does not send alerts, and never contacts anyone (including your emergency contacts) automatically or on your behalf.
+
+If you are in crisis, at risk of harming yourself, or in any emergency, **do not rely on the App**. Contact your local emergency services or a qualified crisis service immediately.
+
+### 2.3 Helpline directory
+
+Any helpline details shown in the App are provided for convenience only. The organisations listed are independent of Hyaico: we are not affiliated with them, do not endorse them, and are not responsible for their availability, response times, quality, confidentiality or advice. Telephone numbers, opening hours and services can change without notice, may contain errors, and the directory is not complete or available for every country.
+
+If a listed number does not work, or you need urgent help, contact your local emergency services or look up a current number from an official source.
+
+### 2.4 Emergency contacts
+
+The emergency contacts feature simply stores details of people **you** choose, so the App can display them and start a call **you** decide to make. Calls are placed through your phone's normal dialler; we are not party to, and do not monitor or record, any call. You are responsible for choosing appropriate contacts, ensuring they have agreed to be listed, and keeping their details up to date. We cannot guarantee that any contact will be reachable or able to help.
+
+### 2.5 Breathing and meditation content
+
+Breathing exercises and meditation audio are general relaxation content only and are not medical or therapeutic interventions. Stop using them if you feel unwell, dizzy, short of breath or more distressed, and seek appropriate help. If you have a respiratory, cardiac or other condition affected by breathing exercises, consult a professional before using them.
+
+### 2.6 Eating and mental health
+
+If your relationship with food is affecting your health or daily life, please consider speaking to a doctor or another qualified professional. The App can sit alongside professional support; it is not a substitute for it.
+
+---
+
+## 3. Allergies, intolerances and dietary restrictions
+
+### 3.1 Your responsibility
+
+If you have food allergies, intolerances or other dietary restrictions, **you are solely responsible** for:
+
+- Checking every ingredient, product label and allergen statement before buying, preparing or consuming food
+- Avoiding ingredients and products that may trigger a reaction
+- Considering cross-contamination risks (shared equipment, surfaces, oil)
+- Verifying the safety and suitability of any recipe, ingredient or product for your circumstances
+
+You must **not** rely on the App to detect all possible allergens or cross-contamination, guarantee that a recipe or ingredient is safe for you, or replace professional allergy testing or management. If in doubt, **do not consume it** and consult a medical professional.
+
+### 3.2 Optional allergy and dietary fields
+
+The App may let you enter allergies, intolerances and dietary preferences, which we use to try to filter and adapt recipes. However, we **cannot guarantee** that all allergens will be correctly identified, removed or substituted, that AI-generated recipes or ingredient lists will be accurate, complete or current, or that every brand, product variant or cross-contamination risk will be recognised. Treat the App as a **support tool only**, never as a safety system or allergen detection device.
+
+---
+
+## 4. Food safety and preparation
+
+You are solely responsible for storing, handling and preparing food safely, following hygiene practices, cooking food thoroughly to safe temperatures, avoiding cross-contamination, and complying with applicable food safety guidance in your country.
+
+We do not guarantee that any recipe or suggestion uses safe cooking times, temperatures or methods, reflects best practice for all regions, or is suitable for vulnerable individuals (for example pregnant people, young children, elderly or immunocompromised individuals). If unsure, follow trusted food safety guidance or consult a professional.
+
+---
+
+## 5. AI-generated recipes and suggestions
+
+The App uses artificial intelligence ("**AI**") to generate or adapt recipes, meal ideas and related content ("**AI Content**"). You acknowledge and agree that:
+
+1. **AI Content may be inaccurate or incomplete.** It may contain incorrect ingredients, quantities, times, temperatures or steps, and may omit important warnings or allergen information.
+2. **AI Content is not tailored or guaranteed to be suitable for your health.** AI has no access to your medical history or clinical context and is not a healthcare professional.
+3. **AI may "hallucinate" or invent details.** Plausible-sounding output can be wrong. Never assume AI Content is correct or safe without independent verification.
+4. **You must verify AI Content before use.** Check ingredients, steps and times, adjust for your own equipment and needs, and do not rely on AI Content where safety or health are critical.
+
+We are not responsible for any harm, loss or damage arising from your reliance on AI Content, except where we cannot legally exclude or limit liability.
+
+---
+
+## 6. Ingredient recognition and image analysis
+
+The App may let you upload photos of food, ingredients, receipts or packaging for analysis by image recognition systems. Image recognition may **misidentify** items or fail to detect foods or labels; text (including allergen and nutrition labels) may be read or interpreted incorrectly; and image quality, lighting, angle and obstructions significantly affect results. We do not guarantee that image analysis will detect allergens, contaminants or harmful substances.
+
+Image recognition is a convenience feature only. Always read the actual packaging and ingredient lists yourself, check any allergen or "may contain" warnings, and follow official manufacturer and regulator guidance.
+
+---
+
+## 7. Nutritional information and health goals
+
+Any nutritional information, calorie counts, macronutrient estimates, targets or health-related insights provided by the App are **approximations only**, derived from standardised data sources, assumptions or AI estimates, and are not tailored to your physiology, metabolism or medical situation.
+
+They are **not** a substitute for professional dietary advice or medical nutrition therapy, and are not guaranteed to be accurate, complete or suitable for specific conditions (for example diabetes, kidney disease or eating disorders).
+
+The App lets you hide calorie and protein figures. Whether shown or hidden, any figures remain estimates for general information only. If you have specific health goals or conditions, consult a qualified doctor or dietitian; do not make major dietary changes based solely on the App.
+
+---
+
+## 8. No emergency or critical use
+
+The App is not designed or intended for emergency situations of any kind, including medical emergencies, severe allergic reactions, mental-health crises, critical allergy management or life-sustaining dietary regimes.
+
+If you are experiencing a medical emergency or serious allergic reaction (for example anaphylaxis), or you are in crisis, **do not use the App**. Seek immediate emergency assistance and follow any prescribed emergency plan (such as using an auto-injector if prescribed).
+
+---
+
+## 9. Limitation of liability (summary)
+
+Nothing in this Disclaimer excludes or limits any liability that cannot be excluded or limited under applicable law (including liability for death or personal injury caused by our negligence, or for fraud).
+
+Subject to that, we do **not** accept responsibility for any injury, illness, allergic reaction, adverse physical or mental-health event, loss or damage arising directly or indirectly from:
+
+- Your reliance on recipes, AI Content, ingredient recognition, nutritional information, Support Features or helpline details in the App
+- Your failure to check ingredients, packaging, allergen warnings or food safety guidance
+- Your failure to seek appropriate medical, dietary or mental-health advice
+- The actions, availability or advice of any third-party helpline, organisation or emergency contact
+
+To the maximum extent permitted by law, any liability we do have is subject to the limitations and caps in our **Terms of Use**. You are responsible for your own decisions about what to buy, cook and eat, and about seeking help.
+
+---
+
+## 10. Governing law
+
+This Disclaimer, and any non-contractual obligations arising in connection with it, is governed by the laws of **England and Wales**, subject to any mandatory protections of the laws of your country of residence if you are a consumer. Disputes are dealt with as set out in our **Terms of Use**.
+
+---
+
+## 11. Contact us
+
+> Hyaico Ltd  
+> Email: [support@justcooked.app](mailto:support@justcooked.app)
+
+---
+
+## 12. Changes to this Disclaimer
+
+We may update this Disclaimer from time to time, for example if we introduce new features, legal or regulatory requirements change, or we need to clarify our position on safety, allergies, AI or support content. When we make material changes, we will update the "Last updated" date and take reasonable steps to draw your attention to them. Continued use of the App after the updated Disclaimer takes effect constitutes acceptance; if you do not agree, stop using the App and delete your account.
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+    <script>
+      (function () {
+        var src = document.getElementById('policy-source');
+        var out = document.getElementById('policy-body');
+        if (!src || !out || !window.marked) return;
+        out.innerHTML = marked.parse(src.textContent.trim());
+        out.querySelectorAll('table').forEach(function (t) {
+          var w = document.createElement('div');
+          w.className = 'table-scroll';
+          t.parentNode.insertBefore(w, t);
+          w.appendChild(t);
+        });
+      })();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

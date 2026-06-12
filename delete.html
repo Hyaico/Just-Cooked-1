@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Your Account - Just Cooked™</title>
+    <title>Account & Data Deletion Policy - Just Cooked™</title>
     <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
     <link rel="shortcut icon" href="/assets/Icon.svg">
     <link rel="apple-touch-icon" href="/assets/Icon.svg">
@@ -15,126 +15,197 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: { 50: '#FDF1EA', 100: '#FBE3D2', 200: '#F4B79A', 500: '#E94B1F', 600: '#CC3F18', 700: '#7A2410' }
                     }
                 },
             },
-            plugins: [
-                require('@tailwindcss/typography'),
-            ],
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-sans antialiased text-gray-900 bg-gray-50">
+<body class="font-sans antialiased text-[#1A1815]">
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center group">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-[60px] md:h-[70px] transition-transform duration-300 group-hover:scale-105">
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
             </a>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="/" class="nav-link-premium">Home</a>
                 <a href="/faq" class="nav-link-premium">FAQ</a>
                 <a href="/support" class="nav-link-premium">Support</a>
+                <a href="/download" class="nav-cta">Get the app</a>
             </div>
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
+                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
             <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
-                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
-                <a href="/support" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Support</a>
+                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
+                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
+                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
+                <a href="/download" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Download</a>
             </div>
         </div>
     </header>
 
-    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+    <main class="policy-page">
+        <div class="policy-card reveal">
             <!-- Header Section -->
-            <div class="text-center mb-16 animate-entry">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Delete Your Just Cooked Account</h1>
+            <div class="policy-head">
+                <h1>Account & Data Deletion Policy</h1>
+                <p class="policy-updated">Last updated: 11 June 2026</p>
             </div>
 
             <!-- Content Card -->
-            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
-                <div class="prose prose-lg max-w-none">
-                    <h2>How to Delete Your Account</h2>
-                    <ol>
-                        <li>Open the Just Cooked app</li>
-                        <li>Go to Profile → Settings</li>
-                        <li>Scroll down and tap "Delete Account"</li>
-                        <li>Confirm deletion</li>
-                    </ol>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>What Gets Deleted</h2>
-                    <p>When you delete your account, we permanently remove:</p>
-                    <ul>
-                        <li>Your profile information (name, email)</li>
-                        <li>Your saved recipes</li>
-                        <li>Your pantry items</li>
-                        <li>Your cooking history</li>
-                        <li>Your preferences and settings</li>
-                    </ul>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>Data Retention</h2>
-                    <ul>
-                        <li>Account data is deleted immediately upon request</li>
-                        <li>Anonymized analytics data may be retained for up to 90 days</li>
-                        <li>Backup copies are purged within 30 days</li>
-                    </ul>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>Need Help?</h2>
-                    <p>Contact us at: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
-                </div>
+            <div>
+                <div class="policy-body" id="policy-body"></div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-16">
+    <footer class="site-footer">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-                <div class="flex flex-col items-center md:items-start space-y-4">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
-                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
-                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-14">
+                <div class="flex flex-col space-y-4 max-w-xs">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="footer-logo">
+                    <p class="text-[#8B847C] text-sm font-medium leading-relaxed">
+                        Helping you find your way back to food, one small meal at a time.
                     </p>
                 </div>
-                
-                <div class="flex flex-wrap justify-center md:justify-end gap-8">
-                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
-                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
-                    <a href="/support" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Support</a>
+                <div class="flex flex-wrap gap-x-8 gap-y-3">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/faq" class="footer-link">FAQ</a>
+                    <a href="/support" class="footer-link">Support</a>
+                    <a href="/download" class="footer-link">Download</a>
                 </div>
             </div>
-            
-            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-                    <a href="/terms" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Terms</a>
-                    <a href="/privacy" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Privacy</a>
-                    <a href="/cookies" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Cookies</a>
-                    <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Disclaimer</a>
-                    <a href="/eula" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">EULA</a>
-                </div>
-                <p class="text-gray-400 text-xs">
-                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-[#E0D5C2]">
+                <p class="text-[#8B847C] text-xs font-medium order-2 md:order-1">
+                    © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
                 </p>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
+                    <a href="/terms" class="footer-sublink">Terms</a>
+                    <a href="/privacy" class="footer-sublink">Privacy</a>
+                    <a href="/cookies" class="footer-sublink">Cookies</a>
+                    <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
+                    <a href="/eula" class="footer-sublink">EULA</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- ============================================================
+         POLICY SOURCE — paste a new policy here as plain Markdown.
+         Replace everything between the two markdown <script> tags below.
+         "## " = section, "- " or "1. " = list, "[text](url)" = link,
+         "---" = divider, "**bold**". No HTML needed; it renders itself.
+         ============================================================ -->
+    <script type="text/markdown" id="policy-source">
+This page explains how to delete your **Just Cooked™** account, what we delete, what we are required to keep, and how long it takes. It forms part of our Legal Documents alongside the **Privacy Policy** and **Terms of Use**.
+
+---
+
+## 1. How to delete your account
+
+**In the app:**
+
+1. Open Just Cooked
+2. Go to **Profile → Settings**
+3. Scroll down and tap **Delete Account**
+4. Confirm deletion
+
+**By email:** contact [support@justcooked.app](mailto:support@justcooked.app) from the email address on your account and ask us to delete it. We may need to verify your identity first.
+
+---
+
+## 2. What happens straight away
+
+- You are signed out and your account can no longer be used.
+- Your data stops being used for any personalisation or analytics.
+- The deletion process begins.
+
+---
+
+## 3. What we delete
+
+Within **30 days** of your request, we delete or anonymise the personal data linked to your account, including:
+
+- Your profile (name, email address, username, profile photo)
+- Your onboarding answers, including anything you told us about your relationship with food
+- Allergy and dietary information
+- Body details and any calorie or protein targets
+- Support and wellbeing data, including your gentle mode and display settings and any note you wrote in the Panic tool
+- Emergency contacts, including their names, numbers and photos
+- Your pantry, saved recipes, folders and notes
+- Your cooking history, logged nutrition and cooking photos
+- Recipes you shared via public links (the links stop working)
+- Your app settings and preferences
+- Your analytics profile (we also instruct our analytics provider to delete person-level data linked to your account)
+
+---
+
+## 4. What we keep, and why
+
+Some records must or may lawfully be retained after deletion:
+
+- **Purchase and transaction records**, kept for up to **6 years** to meet UK tax and accounting obligations
+- **Security and audit logs**, anonymised or deleted within **12 months**
+- **Aggregated or anonymised statistics** that can no longer identify you
+- Information we reasonably need to **establish, exercise or defend legal claims** or to **prevent fraud and abuse**, for as long as necessary for that purpose
+
+---
+
+## 5. Backups
+
+Your data is also removed from our encrypted backups as they cycle out. Backup copies are fully purged within **90 days** of deletion. Backups are not used to restore deleted accounts.
+
+---
+
+## 6. Subscriptions are separate
+
+**Deleting your account does not cancel a subscription.** Subscriptions are billed by Apple or Google, not by us, and must be cancelled in your store account:
+
+- **iPhone / iPad:** Settings → your name → Subscriptions → Just Cooked → Cancel
+- **Android:** Google Play → Profile → Payments & subscriptions → Subscriptions → Just Cooked → Cancel
+
+If you delete your account without cancelling, the store will continue to bill you until you cancel there.
+
+---
+
+## 7. Want a copy of your data first?
+
+Email [support@justcooked.app](mailto:support@justcooked.app) **before** deleting your account and we will provide a copy of your personal data, as described in our Privacy Policy. Deletion is permanent and we cannot recover your data afterwards.
+
+---
+
+## 8. Need help?
+
+Contact us at: [support@justcooked.app](mailto:support@justcooked.app)
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+    <script>
+      (function () {
+        var src = document.getElementById('policy-source');
+        var out = document.getElementById('policy-body');
+        if (!src || !out || !window.marked) return;
+        out.innerHTML = marked.parse(src.textContent.trim());
+        out.querySelectorAll('table').forEach(function (t) {
+          var w = document.createElement('div');
+          w.className = 'table-scroll';
+          t.parentNode.insertBefore(w, t);
+          w.appendChild(t);
+        });
+      })();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

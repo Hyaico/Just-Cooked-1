@@ -15,334 +15,247 @@
                 extend: {
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        orange: { 50: '#FDF1EA', 100: '#FBE3D2', 200: '#F4B79A', 500: '#E94B1F', 600: '#CC3F18', 700: '#7A2410' }
                     }
                 },
             },
-            plugins: [
-                require('@tailwindcss/typography'),
-            ],
         }
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-sans antialiased text-gray-900 bg-gray-50">
+<body class="font-sans antialiased text-[#1A1815]">
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center group">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-[60px] md:h-[70px] transition-transform duration-300 group-hover:scale-105">
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
             </a>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="/" class="nav-link-premium">Home</a>
                 <a href="/faq" class="nav-link-premium">FAQ</a>
                 <a href="/support" class="nav-link-premium">Support</a>
+                <a href="/download" class="nav-cta">Get the app</a>
             </div>
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
+                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
             <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
-                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
-                <a href="/support" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Support</a>
+                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
+                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
+                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
+                <a href="/download" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Download</a>
             </div>
         </div>
     </header>
 
-    <main class="min-h-screen pt-32 pb-24 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-4xl mx-auto">
+    <main class="policy-page">
+        <div class="policy-card reveal">
             <!-- Header Section -->
-            <div class="text-center mb-16 animate-entry">
-                <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Cookie & Tracking Policy</h1>
-                <p class="text-lg text-gray-500">Last updated: 22/12/2025</p>
+            <div class="policy-head">
+                <h1>Cookie & Tracking Policy</h1>
+                <p class="policy-updated">Last updated: 11 June 2026</p>
             </div>
 
             <!-- Content Card -->
-            <div class="glass-panel rounded-2xl p-8 md:p-12 animate-entry animate-delay-1">
-                <div class="prose prose-lg max-w-none">
-                    <p>This Cookie & Tracking Policy explains how <strong>Hyaico Ltd</strong> (“<strong>Hyaico</strong>”, “<strong>we</strong>”, “<strong>us</strong>”, “<strong>our</strong>”) uses cookies and similar technologies when you visit our websites or use the <strong>Just Cooked™</strong> mobile application (together, the “<strong>Service</strong>”).</p>
-
-                    <p>It should be read together with our <strong>Privacy Policy</strong>, which explains how we handle personal data more generally.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>1. Who we are</h2>
-                    <p>The Service is provided by:</p>
-                    <blockquote>
-                        <p>Hyaico Ltd<br>
-                        41 Woodcross Fold<br>
-                        Leeds, West Yorkshire<br>
-                        LS27 9JW<br>
-                        United Kingdom<br>
-                        Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
-                    </blockquote>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>2. What are cookies and similar technologies?</h2>
-                    <ul>
-                        <li><strong>Cookies</strong> are small text files stored on your browser or device when you visit a website.</li>
-                        <li><strong>Local storage</strong> and <strong>session storage</strong> are browser-based storage mechanisms similar to cookies.</li>
-                        <li><strong>SDKs</strong>, <strong>device identifiers</strong> and similar technologies are used within mobile apps to perform comparable functions (e.g. remembering you, measuring performance, maintaining security).</li>
-                    </ul>
-                    <p>We refer to all of these together as “<strong>cookies</strong>” or “<strong>tracking technologies</strong>” in this Policy.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>3. Where we use them</h2>
-                    <p>We may use cookies and similar technologies:</p>
-                    <ul>
-                        <li>On our <strong>websites</strong> (including landing pages, marketing pages and legal pages).</li>
-                        <li>Within the <strong>Just Cooked™ mobile app</strong> (iOS and Android), via:
-                            <ul>
-                                <li>Local storage and cache on your device</li>
-                                <li>App SDK identifiers and pseudonymous IDs</li>
-                                <li>App store / subscription identifiers</li>
-                                <li>Third-party SDKs (e.g. authentication, crash reporting, paywall management)</li>
-                            </ul>
-                        </li>
-                    </ul>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>4. Why we use cookies and tracking technologies</h2>
-                    <p>We use cookies and similar technologies for the following purposes:</p>
-                    <ol>
-                        <li><strong>Strictly necessary / essential</strong>
-                            <ul>
-                                <li>To operate the Service and enable core functionality.</li>
-                                <li>Examples:
-                                    <ul>
-                                        <li>Keeping you logged in and managing your session.</li>
-                                        <li>Enforcing security and preventing abuse or fraudulent activity.</li>
-                                        <li>Remembering your basic settings and privacy choices.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><strong>Functionality</strong>
-                            <ul>
-                                <li>To remember your choices and enhance your experience.</li>
-                                <li>Examples:
-                                    <ul>
-                                        <li>Remembering your preferred language or region.</li>
-                                        <li>Remembering some app-level preferences so you don’t have to re-enter them.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><strong>Performance and reliability</strong>
-                            <ul>
-                                <li>To understand how the Service performs and to detect issues (e.g. crashes).</li>
-                                <li>Examples:
-                                    <ul>
-                                        <li>Crash logs and basic performance metrics.</li>
-                                        <li>Anonymous or aggregated statistics (e.g. which features are used most)</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><strong>Analytics and improvement (mobile app)</strong>
-                            <ul>
-                                <li>We use <strong>PostHog</strong> in the mobile app for <strong>product analytics</strong> to understand feature usage, monitor performance, debug issues and improve the Service.</li>
-                                <li>PostHog operates via an SDK. We process in-app analytics under <strong>legitimate interests</strong> for service improvement, debugging and performance monitoring.</li>
-                            </ul>
-                        </li>
-                        <li><strong>Marketing and advertising (not currently used)</strong>
-                            <ul>
-                                <li>We do <strong>not currently use</strong> advertising or marketing cookies on the Just Cooked™ website or in the app.</li>
-                                <li>If this changes in future, we will:
-                                    <ul>
-                                        <li>Update this Policy,</li>
-                                        <li>Provide clear information about what is used and by whom, and</li>
-                                        <li>Obtain consent where required before we set such cookies.</li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ol>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>5. Types of cookies and technologies we use</h2>
-
-                    <h3>5.1 Strictly necessary / essential</h3>
-                    <p>These are required for the Service to function. They may be set by us or by third parties acting on our behalf.</p>
-                    <p>Examples include:</p>
-                    <ul>
-                        <li>Session cookies to keep you signed in.</li>
-                        <li>Security cookies to help detect and prevent malicious activity.</li>
-                        <li>Authentication tokens used by our backend (e.g. Supabase) to verify your identity.</li>
-                        <li>App store / subscription identifiers used to verify your Premium status.</li>
-                    </ul>
-                    <p>You cannot disable these without breaking core functionality.</p>
-
-                    <h3>5.2 Functionality</h3>
-                    <p>These help remember settings and choices to make the Service more convenient.</p>
-                    <p>Examples include:</p>
-                    <ul>
-                        <li>Remembering that you are on a particular step or screen.</li>
-                        <li>Remembering certain in-app UI or preference choices (where technically implemented).</li>
-                    </ul>
-                    <p>If you disable these, the Service may still work but with reduced convenience.</p>
-
-                    <h3>5.3 Performance and reliability</h3>
-                    <p>These help us understand how the Service performs in aggregate and diagnose technical problems.</p>
-                    <p>Examples include:</p>
-                    <ul>
-                        <li>Crash reporting SDKs</li>
-                        <li>Basic performance metrics, such as load times or error rates</li>
-                        <li>Anonymous or aggregated statistics (e.g. which features are used most)</li>
-                    </ul>
-                    <p>We use this information to maintain and improve the Service, not to build personal profiles for advertising.</p>
-
-                    <h3>5.4 Analytics (mobile app)</h3>
-                    <p>We use <strong>PostHog</strong> in the mobile app for product analytics. PostHog operates via an SDK using pseudonymous identifiers to link events within the App. We use it for:</p>
-                    <ul>
-                        <li>Feature usage measurement</li>
-                        <li>Debugging and performance monitoring</li>
-                        <li>UX and service improvement</li>
-                    </ul>
-                    <p>We do <strong>not</strong> use PostHog for advertising, marketing attribution or cross-app tracking. We configure analytics to minimise personal data where reasonably possible (e.g. aggregation, pseudonymisation).</p>
-                    <p>We rely on <strong>legitimate interests</strong> to process in-app analytics.</p>
-
-                    <h3>5.5 Advertising (not currently used)</h3>
-                    <p>We currently do <strong>not</strong> use advertising cookies or SDKs.</p>
-                    <p>If we decide to introduce them in future, we will:</p>
-                    <ul>
-                        <li>Update this Policy,</li>
-                        <li>Provide clear information about what is used and by whom, and</li>
-                        <li>Obtain consent where required before we set such cookies.</li>
-                    </ul>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>6. Cookies and tracking in the Just Cooked™ mobile app</h2>
-                    <p>Within the mobile app, we may use:</p>
-                    <ul>
-                        <li><strong>Local storage / on-device cache</strong> – to store your preferences or data needed for offline use.</li>
-                        <li><strong>SDK identifiers and pseudonymous IDs</strong> – used to measure feature usage, monitor performance and debug issues.</li>
-                        <li><strong>Authentication tokens and encrypted keys</strong> – to keep your account secure and maintain your session.</li>
-                        <li><strong>Subscription and entitlement identifiers</strong> – used by app stores and subscription management services to verify that you have access to Premium features.</li>
-                        <li><strong>SDKs for security, crash reporting and performance</strong> – to help detect issues and maintain reliability.</li>
-                    </ul>
-                    <p>These app technologies are used for core functionality, security and product analytics (and not for advertising).</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>7. Managing your cookie and tracking preferences</h2>
-
-                    <h3>7.1 On the website (browser)</h3>
-                    <p>Most web browsers allow you to:</p>
-                    <ul>
-                        <li>View which cookies are stored.</li>
-                        <li>Delete cookies.</li>
-                        <li>Block cookies for specific sites.</li>
-                        <li>Block third-party cookies.</li>
-                        <li>Clear local storage and similar data.</li>
-                    </ul>
-                    <p>You can usually find these controls under your browser’s “Settings”, “Privacy” or “Security” menus.</p>
-                    <p>Be aware:</p>
-                    <ul>
-                        <li>Blocking or deleting cookies may cause some features of the website to work less reliably or not at all.</li>
-                        <li>Strictly necessary cookies are required for basic operation.</li>
-                    </ul>
-
-                    <h3>7.2 In the mobile app</h3>
-                    <p>Control options include:</p>
-                    <ul>
-                        <li><strong>Operating system settings</strong> – for example:
-                            <ul>
-                                <li>Controlling which apps can use mobile data, background refresh, etc.</li>
-                            </ul>
-                        </li>
-                        <li><strong>App-level settings</strong> (where implemented) – you may be able to adjust certain privacy or telemetry settings within the Just Cooked™ app itself.</li>
-                    </ul>
-                    <p>Disabling certain permissions or identifiers may reduce functionality or prevent some features from working correctly (e.g. login, subscription verification, push notifications).</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>8. Do Not Track and similar signals</h2>
-                    <p>Some browsers and devices allow you to send a “Do Not Track” (DNT) signal. There is currently no consistent industry standard for how to respond to these signals.</p>
-                    <p>At present, we do not specifically respond to DNT signals. We will review this if and when an accepted standard emerges.</p>
-                    <p>You can still use the other controls described in this Policy to manage cookies and tracking technologies.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>9. Relationship with our Privacy Policy</h2>
-                    <p>This Cookie & Tracking Policy is part of, and should be read together with, our <strong>Privacy Policy</strong>.</p>
-                    <ul>
-                        <li>The Privacy Policy explains <strong>what personal data we collect</strong>, <strong>how we use it</strong>, <strong>who we share it with</strong> and <strong>your rights</strong>.</li>
-                        <li>This Policy focuses specifically on <strong>cookies and similar technologies</strong>.</li>
-                    </ul>
-                    <p>If anything in this Policy conflicts with the Privacy Policy, the Privacy Policy prevails for data protection purposes.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>10. Changes to this Policy</h2>
-                    <p>We may update this Cookie & Tracking Policy from time to time, for example if:</p>
-                    <ul>
-                        <li>We introduce new cookies, SDKs or tracking technologies;</li>
-                        <li>We start using analytics or advertising cookies;</li>
-                        <li>Legal or regulatory requirements change.</li>
-                    </ul>
-                    <p>When we make material changes, we will:</p>
-                    <ul>
-                        <li>Update the “Last updated” date at the top of this page; and</li>
-                        <li>Take reasonable steps to inform you, for example via the website or within the app.</li>
-                    </ul>
-                    <p>Your continued use of the Service after any changes take effect will constitute your acceptance of the updated Policy.</p>
-
-                    <hr class="my-8 border-gray-100">
-
-                    <h2>11. Contact</h2>
-                    <p>If you have any questions or concerns about this Cookie & Tracking Policy, please contact us at:</p>
-                    <blockquote>
-                        <p>Email: <a href="mailto:support@justcooked.app" class="text-orange-500 hover:underline">support@justcooked.app</a></p>
-                    </blockquote>
-                </div>
+            <div>
+                <div class="policy-body" id="policy-body"></div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t border-gray-100 py-16">
+    <footer class="site-footer">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0">
-                <div class="flex flex-col items-center md:items-start space-y-4">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
-                    <p class="text-gray-500 text-sm text-center md:text-left max-w-xs">
-                        Cook smarter with AI. Recipes tailored to your ingredients, time, and taste.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-14">
+                <div class="flex flex-col space-y-4 max-w-xs">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="footer-logo">
+                    <p class="text-[#8B847C] text-sm font-medium leading-relaxed">
+                        Helping you find your way back to food, one small meal at a time.
                     </p>
                 </div>
-                
-                <div class="flex flex-wrap justify-center md:justify-end gap-8">
-                    <a href="/" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Home</a>
-                    <a href="/faq" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
-                    <a href="/support" class="text-sm text-gray-500 hover:text-orange-500 transition-colors">Support</a>
+                <div class="flex flex-wrap gap-x-8 gap-y-3">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/faq" class="footer-link">FAQ</a>
+                    <a href="/support" class="footer-link">Support</a>
+                    <a href="/download" class="footer-link">Download</a>
                 </div>
             </div>
-            
-            <div class="mt-12 pt-8 border-t border-gray-50 text-center">
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-                    <a href="/terms" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Terms</a>
-                    <a href="/privacy" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Privacy</a>
-                    <a href="/cookies" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Cookies</a>
-                    <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Disclaimer</a>
-                    <a href="/eula" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">EULA</a>
-                </div>
-                <p class="text-gray-400 text-xs">
-                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-[#E0D5C2]">
+                <p class="text-[#8B847C] text-xs font-medium order-2 md:order-1">
+                    © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
                 </p>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
+                    <a href="/terms" class="footer-sublink">Terms</a>
+                    <a href="/privacy" class="footer-sublink">Privacy</a>
+                    <a href="/cookies" class="footer-sublink">Cookies</a>
+                    <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
+                    <a href="/eula" class="footer-sublink">EULA</a>
+                </div>
             </div>
         </div>
     </footer>
 
+    <!-- ============================================================
+         POLICY SOURCE — paste a new policy here as plain Markdown.
+         Replace everything between the two markdown <script> tags below.
+         "## " = section, "- " or "1. " = list, "[text](url)" = link,
+         "---" = divider, "**bold**". No HTML needed; it renders itself.
+         ============================================================ -->
+    <script type="text/markdown" id="policy-source">
+This Cookie & Tracking Policy explains how **Hyaico Ltd** ("**Hyaico**", "**we**", "**us**", "**our**") uses cookies and similar technologies when you visit our websites or use the **Just Cooked™** mobile application (together, the "**Service**").
+
+It should be read together with our **Privacy Policy**, which explains how we handle personal data more generally.
+
+---
+
+## 1. Who we are
+
+The Service is provided by:
+
+> Hyaico Ltd  
+> 41 Woodcross Fold  
+> Leeds, West Yorkshire  
+> LS27 9JW  
+> United Kingdom  
+> Email: [support@justcooked.app](mailto:support@justcooked.app)
+
+---
+
+## 2. What are cookies and similar technologies?
+
+- **Cookies** are small text files stored on your browser or device when you visit a website.
+- **Local storage** and **session storage** are browser-based storage mechanisms similar to cookies.
+- **SDKs**, **device identifiers** and similar technologies perform comparable functions inside mobile apps (remembering you, measuring usage and performance, maintaining security).
+
+We refer to all of these together as "**cookies**" or "**tracking technologies**" in this Policy.
+
+---
+
+## 3. Where we use them
+
+- On our **websites** (landing pages, marketing pages, legal pages and shared recipe pages).
+- Within the **Just Cooked™ mobile app** (iOS and Android), via local storage and cache, SDK identifiers and pseudonymous IDs, authentication tokens, app store and subscription identifiers, and third-party SDKs (authentication, analytics, paywall management, app updates).
+
+---
+
+## 4. Why we use cookies and tracking technologies
+
+1. **Strictly necessary / essential** – to operate the Service: keeping you logged in, managing your session, enforcing security, preventing abuse, remembering basic settings and privacy choices.
+2. **Functionality** – remembering your choices (language, region, app-level preferences) so you don't re-enter them.
+3. **Performance and reliability** – understanding how the Service performs and detecting issues: error and crash reports, basic performance metrics, aggregated statistics about which features are used most.
+4. **Analytics and improvement** – we use **PostHog** in the mobile app for product analytics (see Section 5.4). We rely on **legitimate interests** for service improvement, debugging and performance monitoring.
+5. **Marketing and advertising (not used)** – we do **not** use advertising or marketing cookies on the Just Cooked™ website or in the app, and we do not track you across other companies' apps or websites. If this ever changes, we will update this Policy, explain what is used and by whom, and obtain consent where required first.
+
+---
+
+## 5. Types of technologies we use
+
+### 5.1 Strictly necessary / essential
+
+Required for the Service to function and cannot be disabled without breaking core functionality:
+
+- Session and authentication tokens used by our backend (Supabase) to verify your identity and keep you signed in
+- Security mechanisms that help detect and prevent malicious activity
+- App store and subscription identifiers used to verify your Premium status (RevenueCat)
+
+### 5.2 Functionality
+
+Remember settings and choices for convenience, for example which step or screen you were on and in-app preference choices. Disabling these reduces convenience but the Service still works.
+
+### 5.3 Performance and reliability
+
+Help us diagnose problems in aggregate:
+
+- Error and crash reporting (delivered through our analytics SDK as error events, which can include technical stack traces)
+- Basic performance metrics such as load times and error rates
+- Aggregated usage statistics
+
+We use this to maintain and improve the Service, not to build profiles for advertising.
+
+### 5.4 Analytics (PostHog, mobile app)
+
+We use **PostHog**, hosted in the **EU**, for product analytics. The SDK:
+
+- Assigns a pseudonymous identifier to your device; when you sign in, that identifier is linked to your account so we can understand usage across sessions and devices
+- Records events describing actions in the App (for example generating a recipe, opening a support tool), in some cases including names of items you create (such as a pantry item or folder name)
+- Automatically captures screens viewed and taps, which can include the label of the element tapped
+- Records technical information (device model, operating system, app version)
+- Fetches feature flags so we can roll features out gradually
+- Captures error events with technical stack traces when something goes wrong
+
+Your analytics profile also includes account-level details described in Section 7.1 of our Privacy Policy.
+
+We do **not** use PostHog for advertising, marketing attribution or cross-app tracking, and we do not send it your health-related information or settings, the content of your notes, photos, voice input, or the personal note in the Panic tool.
+
+### 5.5 Subscription, paywall and update technologies
+
+- **RevenueCat** uses an app-user identifier (your account ID) to verify purchases and entitlements.
+- **Superwall** uses the same identifier to decide which paywall to present and to measure paywall performance.
+- **Expo / EAS Updates** checks for app updates when the App loads, which sends device and app runtime metadata to our update infrastructure.
+
+### 5.6 Advertising (not used)
+
+We do not use advertising cookies or SDKs, and the App does not request the iOS App Tracking Transparency permission because we do not track you across other apps.
+
+---
+
+## 6. Managing your preferences
+
+### 6.1 On the website (browser)
+
+Most browsers let you view, delete and block cookies and clear local storage, usually under "Settings", "Privacy" or "Security". Blocking or deleting cookies may make some features work less reliably. Strictly necessary cookies are required for basic operation.
+
+### 6.2 In the mobile app
+
+You can control device-level settings through your operating system (for example app permissions and background data). Where the App offers privacy or preference settings, you can adjust them in-app. Disabling certain permissions or identifiers may reduce functionality (for example login or subscription verification).
+
+---
+
+## 7. Do Not Track and similar signals
+
+There is currently no consistent industry standard for responding to "Do Not Track" signals, and we do not specifically respond to them at present. We will review this if an accepted standard emerges. You can use the other controls in this Policy to manage tracking technologies.
+
+---
+
+## 8. Relationship with our Privacy Policy
+
+This Policy is part of, and should be read together with, our **Privacy Policy**, which explains what personal data we collect, how we use it, who we share it with and your rights. If anything here conflicts with the Privacy Policy, the Privacy Policy prevails for data protection purposes.
+
+---
+
+## 9. Changes to this Policy
+
+We may update this Policy from time to time, for example if we introduce new SDKs or tracking technologies, or if legal requirements change. When we make material changes we will update the "Last updated" date and take reasonable steps to inform you via the website or the App. Continued use of the Service after changes take effect constitutes acceptance.
+
+---
+
+## 10. Contact
+
+> Email: [support@justcooked.app](mailto:support@justcooked.app)
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+    <script>
+      (function () {
+        var src = document.getElementById('policy-source');
+        var out = document.getElementById('policy-body');
+        if (!src || !out || !window.marked) return;
+        out.innerHTML = marked.parse(src.textContent.trim());
+        out.querySelectorAll('table').forEach(function (t) {
+          var w = document.createElement('div');
+          w.className = 'table-scroll';
+          t.parentNode.insertBefore(w, t);
+          w.appendChild(t);
+        });
+      })();
+    </script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,295 @@
+# Terms of Use
+
+_Last updated: 11 June 2026_
+
+These Terms of Use ("**Terms**") govern your access to and use of the **Just Cooked™** mobile application and related websites, services and features (together, the "**App**" or "**Service**"), operated by **Hyaico Ltd** ("**Hyaico**", "**we**", "**us**", "**our**").
+
+Please read these Terms carefully. By creating an account or using the App, you agree to be bound by these Terms. If you do not agree, do not use the App.
+
+These Terms incorporate by reference our:
+
+- **Privacy Policy**
+- **Cookie & Tracking Policy**
+- **Medical, Allergy, AI & Support Disclaimer** ("Disclaimer")
+- **Account & Data Deletion Policy**
+
+(together, the "**Legal Documents**").
+
+---
+
+## 1. Who we are
+
+> Hyaico Ltd
+> 41 Woodcross Fold
+> Leeds, West Yorkshire
+> LS27 9JW
+> United Kingdom
+> Email: [support@justcooked.app](mailto:support@justcooked.app)
+
+---
+
+## 2. Eligibility
+
+- You must be **at least 16 years old** to use the App. By using the App, you confirm that you are at least 16.
+- The App is intended for **personal, non-commercial use** only.
+
+If you use the App on behalf of another person (for example, helping a family member), you are responsible for ensuring they understand these Terms.
+
+---
+
+## 3. Your account
+
+### 3.1 Registration
+
+To use certain features, you must create an account using an email address and password or a supported third-party sign-in (Apple or Google). You agree to provide accurate, up-to-date information, keep your credentials secure, not share your account, and notify us immediately of any suspected unauthorised use. You are responsible for all activity under your account.
+
+### 3.2 Account deletion
+
+You may delete your account via the in-app **Delete Account** feature or by contacting us at [support@justcooked.app](mailto:support@justcooked.app). Deletion removes or anonymises your profile and most associated data, subject to our **Privacy Policy**, our **Account & Data Deletion Policy** and any legal retention obligations, and permanently removes your access to saved data and history.
+
+**Deleting your account does not cancel any subscription.** Subscriptions must be cancelled separately through your Apple or Google account settings (see Section 5.5).
+
+---
+
+## 4. Description of the Service (not medical advice)
+
+The App is a consumer tool that helps you:
+
+- Generate and view **recipes** (including AI-generated recipes)
+- Log **pantry items**, ingredients and cooking history
+- Receive **suggestions** based on your preferences and inputs
+- Use optional **support tools** designed to make difficult food moments easier (for example a panic tool with breathing exercises, a meditation player, gentle display settings and signposting to third-party helplines)
+
+The App may allow you to enter information about food allergies and intolerances, dietary preferences, your relationship with food, and basic physical or nutrition details (for example height, weight, goals).
+
+> **The App is NOT medical, nutritional, psychological or professional advice.**
+>
+> It is not intended to diagnose, treat, cure or prevent any disease, allergy or condition.
+>
+> **The support tools are comfort features, not medical, therapeutic or crisis services.** The App does not monitor you, does not detect emergencies, and will never contact anyone on your behalf. If you are in crisis or danger, contact your local emergency services.
+>
+> Always use your own judgement, read product labels and, where appropriate, consult qualified professionals.
+
+For more detail, see our **Medical, Allergy, AI & Support Disclaimer**, which is incorporated into these Terms.
+
+---
+
+## 5. Subscriptions, payments and trials
+
+### 5.1 Premium features
+
+Some features are only available on a **paid subscription** ("**Premium**"). Details of Premium plans, including included features, billing period, price and applicable taxes, and any free trial or introductory offer, are shown in the App and/or the relevant app store at the time you subscribe.
+
+We may change what is included in each plan from time to time, but will not remove core features of an existing paid plan without taking reasonable steps to inform you.
+
+### 5.2 Payments and app stores
+
+Subscriptions and in-app purchases are processed by the **Apple App Store** (iOS) and/or **Google Play Store** (Android). By purchasing, you also agree to the app store's own terms. We do not receive or store your full payment card details.
+
+### 5.3 Auto-renewal
+
+Unless otherwise stated, subscriptions automatically **renew** at the end of each billing period at the then-current price displayed in the app store. You authorise the app store to charge the renewal fee until you cancel.
+
+### 5.4 Free trials and introductory offers
+
+We may offer free trials or promotional pricing. The duration and conditions of any offer are shown at sign-up. Unless you cancel before the end of the trial or offer period, your subscription automatically continues at the standard price for the chosen plan.
+
+### 5.5 Cancellation
+
+You can cancel at any time through the **account settings of the relevant app store** (Apple or Google). **Deleting the App or your Just Cooked™ account does not cancel your subscription.**
+
+After cancellation, you retain Premium access until the end of the current paid period and will not be billed further, provided you cancelled in accordance with the app store's instructions.
+
+### 5.6 Refunds
+
+Refunds are generally handled by the relevant app store under its own policies; we cannot override app store refund decisions. Nothing in these Terms affects your statutory rights under applicable consumer law.
+
+### 5.7 Changes to pricing or plans
+
+We may change pricing and subscription structure from time to time. We will inform you of price changes in accordance with app store rules, and changes apply from the next billing period. If you do not agree, cancel before the change takes effect.
+
+---
+
+## 6. Access, fair use and service changes
+
+### 6.1 Access and usage limits
+
+We aim to provide a reliable service but do not guarantee the App will always be available or uninterrupted.
+
+Certain features (for example AI recipe generation) operate on **credits or usage allowances**, which may vary by plan and may be adjusted over time. To protect the performance, security and integrity of the App, we may, at our discretion:
+
+- Impose reasonable limits on the frequency or extent of use of certain features
+- Monitor usage patterns for signs of abuse, fraud or security threats
+- Adjust, withhold or revoke credits or access obtained through error, abuse or breach of these Terms
+- Reduce, suspend or block access to features or accounts where we reasonably believe use is abusive, excessive, inconsistent with normal personal use, or a threat to our infrastructure, security or other users
+
+We will use reasonable efforts to avoid unfair or arbitrary restrictions.
+
+### 6.2 Changes to the Service
+
+We may update, modify or discontinue parts of the App at any time, for example to add or change features, improve performance and security, or comply with law or third-party requirements. Where changes are significant and materially affect you, we will take reasonable steps to notify you. We are not liable for changing, suspending or discontinuing any part of the App, provided we act in accordance with applicable consumer law and your existing subscription period.
+
+---
+
+## 7. Acceptable use
+
+You agree **not** to:
+
+1. Use the App in any way that violates applicable law or regulation.
+2. Use the App for any commercial purpose or for the benefit of any third party, except as expressly permitted by us.
+3. Access, use, copy, reproduce, distribute, publicly display, publicly perform or create derivative works from the App or its content beyond what these Terms or normal App functionality expressly permit.
+4. Reverse engineer, decompile, disassemble or otherwise derive source code or underlying models, except to the extent such restriction is expressly prohibited by law.
+5. Interfere with or disrupt the App or our networks, including by introducing malicious code, attempting unauthorised access, or using automated tools (bots, scrapers, crawlers) in a way that burdens or abuses our systems.
+6. Circumvent or attempt to circumvent any security or usage controls (including credit and rate limits).
+7. Upload, share or transmit content that is illegal, defamatory, obscene, abusive, hateful, threatening or otherwise objectionable, or that infringes the intellectual property or privacy rights of others.
+8. Add another person's information to the App without their permission, or misrepresent your identity or affiliation.
+
+We may investigate suspected violations and cooperate with law enforcement where required by law.
+
+---
+
+## 8. User content
+
+"**User Content**" means content you upload, submit or store in the App, including photos, images and videos, notes and comments, pantry items and labels, recipes you create or adapt, information you store about other people, and other input you provide beyond basic account data.
+
+You retain ownership of your User Content, subject to the licence below.
+
+### 8.1 Licence you grant to us
+
+By submitting User Content, you grant Hyaico a worldwide, non-exclusive, royalty-free licence (with the right to sublicense to our service providers) to use, reproduce, modify, host, store, display and process your User Content **solely** for:
+
+- Operating, providing and improving the App
+- Personalising your experience (saving your pantry, notes, history and settings)
+- Making content you actively choose to share available at a public link (see 8.4)
+- Ensuring security, preventing abuse and debugging issues
+
+We will not sell your User Content or use it to promote third-party products without your separate consent.
+
+### 8.2 Your responsibilities
+
+You are responsible for ensuring you have the right to upload your User Content, that it does not infringe the rights of others or breach these Terms, and that you do not upload inappropriate, illegal or harmful content. We may remove or disable access to any User Content we reasonably believe breaches these Terms or applicable law.
+
+### 8.3 Information about other people
+
+Some features let you store information about other people, for example **emergency contacts** (name, phone number, optional photo). By adding another person's details you confirm that you have their permission to store this information in the App and to contact them using it.
+
+Emergency contact details are used only to display to you and to start calls **you** choose to make. The App never contacts your emergency contacts automatically and does not monitor or record calls. You are responsible for keeping these details accurate and removing them if the person withdraws permission.
+
+### 8.4 Sharing recipes
+
+If you use a share feature, the shared content (for example the recipe, any associated photo, and your display name where shown) becomes accessible to **anyone with the link**, including people without accounts. We may count views of shared links. You can stop sharing by deleting the share in the App, after which the link stops working, although copies cached by third parties or saved by viewers may persist.
+
+---
+
+## 9. AI-generated content and ingredient recognition
+
+The App uses artificial intelligence ("**AI**") and related technologies to generate or adapt recipes and suggestions ("**AI Content**") and to analyse images of food or packaging.
+
+### 9.1 Nature of AI Content
+
+AI Content is generated automatically from model outputs and your inputs. AI may make **errors**, omit information, or produce recipes or suggestions that are incomplete, inaccurate, unsafe or unsuitable for you, including inaccurate nutritional information, cooking times, temperatures, food safety standards or allergen status. We do not guarantee that AI Content is correct, safe, nutritionally appropriate or suitable for any particular person.
+
+### 9.2 Food safety and allergies
+
+You are **solely responsible** for checking all ingredients, products and packaging for allergens and suitability, ensuring food is stored, prepared and cooked safely, and using your own judgement and, where appropriate, professional advice.
+
+You must **not** rely on the App (including AI Content or ingredient recognition) as a substitute for professional medical, dietary or allergy advice, testing or management. See our **Medical, Allergy, AI & Support Disclaimer**.
+
+---
+
+## 10. Support features and helplines
+
+The App's support tools (including the panic tool, breathing and meditation content, gentle display settings and any helpline directory) are provided for comfort and convenience only.
+
+- They are **not** medical, psychological, therapeutic or crisis services, and do not provide assessment, screening, diagnosis or treatment.
+- The App may adjust which features, figures or content are shown based on answers you give. This is a presentation choice, not an assessment or diagnosis of you.
+- Any **helpline details** displayed are operated by independent organisations. We are not affiliated with them, do not endorse them, and are not responsible for their availability, accuracy, confidentiality or advice. Numbers and services can change without notice and may not be correct or available in your region.
+- Calls you place from the App (to helplines or emergency contacts) are made through your phone and are solely between you and the recipient.
+- **The App does not provide emergency services.** If you are in immediate danger or crisis, or a listed number does not work, contact your local emergency services.
+
+---
+
+## 11. Intellectual property
+
+### 11.1 Our IP
+
+The App, including software, code, architecture, design, logos, branding and trademarks (including **Just Cooked™** and Hyaico branding), databases, compilations, interfaces and content we create, is owned by Hyaico and/or our licensors and protected by intellectual property laws.
+
+Subject to your compliance with these Terms, we grant you a **personal, limited, revocable, non-exclusive, non-transferable licence** to use the App on devices you own or control, for personal, non-commercial use only. You obtain no ownership in the App or its content.
+
+### 11.2 AI Content
+
+Subject to applicable law and third-party terms, we (or our licensors) own any rights in the AI systems and underlying models. You may use AI Content generated for you for your own **personal, non-commercial purposes**, such as cooking, saving recipes and sharing with friends and family. You must not use AI Content in a way that suggests professional endorsement or medical/nutritional authority, violates these Terms or applicable law, or infringes third-party rights.
+
+---
+
+## 12. Third-party services
+
+The App may link to or integrate with third-party services (app stores, login providers, hosting platforms, helplines, external websites). We do not control and are not responsible for their content, policies or practices, or for any transactions or interactions between you and them. Your use of third-party services is governed by their own terms and policies.
+
+---
+
+## 13. Privacy
+
+Your use of the App is also governed by our **Privacy Policy** and **Cookie & Tracking Policy**, which describe what personal data we collect, how we use and share it, and your rights. By using the App, you acknowledge that we will process your personal data in accordance with those documents.
+
+---
+
+## 14. Disclaimers
+
+To the fullest extent permitted by law:
+
+- The App is provided on an "**as is**" and "**as available**" basis, without warranties of any kind, express or implied.
+- We do not warrant that the App will be uninterrupted, secure or error-free, or that defects will be corrected.
+- We do not warrant the accuracy, completeness, reliability or suitability of any recipes, nutritional information, cooking instructions, AI Content, ingredient recognition results, support content, or helpline details.
+
+Without limitation, we expressly disclaim warranties of fitness for a particular purpose (including medical, dietary or therapeutic purposes), non-infringement, and reasonable skill and care except to the extent required by law.
+
+Nothing in these Terms excludes or limits warranties, rights or remedies that cannot be excluded or limited under applicable law (including your rights as a consumer). For specific disclaimers on food safety, allergies, AI, nutrition and support features, see the **Medical, Allergy, AI & Support Disclaimer**.
+
+---
+
+## 15. Limitation of liability
+
+Nothing in these Terms excludes or limits our liability for death or personal injury caused by our negligence, fraud or fraudulent misrepresentation, or any other liability that cannot be excluded or limited under applicable law.
+
+Subject to the above:
+
+- We will not be liable for any **indirect, incidental, consequential, special or punitive damages**, including loss of profits, data, goodwill or other intangible losses, arising from or in connection with your use of (or inability to use) the App.
+- To the maximum extent permitted by law, our **total aggregate liability** for all claims arising out of or relating to the App or these Terms shall not exceed the total amount you paid to us (via the app stores) during the **12 months** preceding the event giving rise to the claim, or **£50** if you have paid nothing.
+
+You are responsible for the decisions you make based on your use of the App, including any recipes you choose to cook and consume and any actions you take in response to support content or helpline information.
+
+---
+
+## 16. Indemnity
+
+To the extent permitted by law, you agree to indemnify and hold harmless Hyaico, its directors, employees and contractors from and against any claims, liabilities, damages, losses and expenses (including reasonable legal fees) arising out of or in connection with your breach of these Terms, your misuse of the App, your violation of any law or third-party rights (including adding another person's details without permission), or any content you submit, upload or share via the App.
+
+---
+
+## 17. Termination and suspension
+
+We may suspend or terminate your access to the App (including your account) if you materially or repeatedly breach these Terms or the Legal Documents, we reasonably believe your use poses a security or legal risk, we are required to by law or a competent authority, or we decide to discontinue the App (on reasonable notice where practicable).
+
+Where we reasonably can, we will notify you before suspending or terminating access, but we may act without notice where necessary to protect the App, our users or our legal interests. You may stop using the App and/or delete your account at any time.
+
+Termination does not affect rights and obligations already accrued, or provisions intended to survive (including intellectual property, disclaimers, limitation of liability, indemnity and governing law).
+
+---
+
+## 18. Changes to these Terms
+
+We may update these Terms from time to time, for example to reflect changes to the App or our business, or legal, regulatory or security requirements. When we make material changes, we will update the "Last updated" date and take reasonable steps to notify you (via the App or by email). Continued use after the updated Terms take effect constitutes acceptance. If you do not agree, stop using the App and delete your account.
+
+---
+
+## 19. Governing law and jurisdiction
+
+These Terms, and any dispute or claim arising out of or in connection with them or your use of the App, are governed by the laws of **England and Wales**. If you are a consumer resident in the UK or EU, you may also benefit from mandatory protections of the laws of your country of residence. The courts of **England and Wales** have non-exclusive jurisdiction over disputes.
+
+---
+
+## 20. Contact
+
+> Email: [support@justcooked.app](mailto:support@justcooked.app)
