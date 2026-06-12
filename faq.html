@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - Just Cooked™</title>
+    <meta name="description" content="Answers about how Just Cooked works: Next Meal, the Support hub, what it costs, and your privacy.">
     <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
     <link rel="shortcut icon" href="/assets/Icon.svg">
     <link rel="apple-touch-icon" href="/assets/Icon.svg">
@@ -13,29 +14,13 @@
             content: ["./*.{html,js}"],
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
-                        orange: {
-                            500: '#FF6B00',
-                            600: '#E65D00',
-                        },
-                        surface: {
-                            50: '#F9FAFB',
-                            100: '#F3F4F6',
-                            200: '#E5E7EB',
-                        }
+                        orange: { 50: '#FDF1EA', 100: '#FBE3D2', 200: '#F4B79A', 500: '#E94B1F', 600: '#CC3F18', 700: '#7A2410' },
+                        sage: { 100: '#E4ECDC', 500: '#6B8159', 700: '#4A5C3D' }
                     },
-                    animation: {
-                        'fade-up': 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                    },
-                    keyframes: {
-                        fadeUp: {
-                            '0%': { opacity: 0, transform: 'translateY(10px)' },
-                            '100%': { opacity: 1, transform: 'translateY(0)' },
-                        }
-                    }
+                    animation: { 'fade-up': 'fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' },
+                    keyframes: { fadeUp: { '0%': { opacity: 0, transform: 'translateY(10px)' }, '100%': { opacity: 1, transform: 'translateY(0)' } } }
                 },
             },
         }
@@ -52,47 +37,45 @@
             overflow: hidden;
         }
         .faq-answer.open {
-            max-height: 500px;
+            max-height: 800px;
             opacity: 1;
             margin-top: 1.5rem;
         }
-        .faq-icon {
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .faq-btn[aria-expanded="true"] .faq-icon {
-            transform: rotate(180deg);
-        }
+        .faq-icon { transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .faq-btn[aria-expanded="true"] .faq-icon { transform: rotate(180deg); }
         .glass-panel {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(251, 246, 236, 0.72);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(224, 213, 194, 0.6);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
         }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-900 bg-[#FAFAFA]">
+<body class="font-sans antialiased text-[#1A1815]">
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center group">
-                <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-[60px] md:h-[70px] transition-transform duration-300 group-hover:scale-105">
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
             </a>
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="/" class="nav-link-premium">Home</a>
                 <a href="/faq" class="nav-link-premium active">FAQ</a>
                 <a href="/support" class="nav-link-premium">Support</a>
+                <a href="/download" class="nav-cta">Get the app</a>
             </div>
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
+                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
             <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
+                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
                 <a href="/faq" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">FAQ</a>
-                <a href="/support" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Support</a>
+                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
+                <a href="/download" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Download</a>
             </div>
         </div>
     </header>
@@ -101,160 +84,215 @@
         <div class="max-w-4xl mx-auto">
             <!-- Header Section -->
             <div class="text-center mb-20 animate-fade-up">
-                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+                <span class="eyebrow">Questions</span>
+                <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-[#1A1815]">
                     Frequently Asked Questions
                 </h1>
-                <p class="text-xl text-gray-500 max-w-2xl mx-auto font-medium">
-                    Discover how to maximize your experience with the intelligent kitchen assistant.
+                <p class="text-xl text-[#8B847C] max-w-2xl mx-auto font-medium">
+                    Quick answers about how Just Cooked works.
                 </p>
             </div>
 
             <div class="space-y-12">
-                
-                <!-- Section 1: Essentials -->
+
+                <!-- Group 1: Getting started -->
                 <div class="animate-fade-up" style="animation-delay: 0.1s;">
-                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Getting Started</h2>
+                    <h2 class="text-xl font-bold mb-6 text-[#1A1815] ml-2">Getting started</h2>
                     <div class="space-y-4">
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How do I add ingredients to my pantry?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">What is Just Cooked?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    You can easily add items to your digital pantry manually or by scanning grocery receipts for instant bulk updates.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Just Cooked is a calm food app for the days food feels hard. Instead of a rigid plan, it helps you find one doable meal at a time, built around what you have, what you love, and how much effort you have today.
                                 </div>
                             </div>
                         </div>
-
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How does Photo Cook work?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Who is it for?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Simply snap a photo of the ingredients you have on hand, and the app will instantly identify them and suggest recipes you can cook right now. It's the fastest way to decide what to eat.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Anyone whose relationship with food has some friction, from the everyday "what do I even cook tonight" to the harder days when food feels like too much. You start where you are, and the app meets you there with no judgement.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">How is this different from a recipe app?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Most food apps assume the hard part is finding a recipe. Just Cooked is built around the moment food actually feels hard. It gives you one next step instead of a week of pressure, and a system instead of willpower.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Will it judge me or push me to be perfect?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    No. The whole idea is consistency over perfection. Your next meal matters more than a perfect plan. It is warm and low pressure, and designed never to shame you.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Section 2: Smart Recipe Generation -->
+                <!-- Group 2: How it works -->
                 <div class="animate-fade-up" style="animation-delay: 0.2s;">
-                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Smart Recipe Generation</h2>
+                    <h2 class="text-xl font-bold mb-6 text-[#1A1815] ml-2">How it works</h2>
                     <div class="space-y-4">
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How are recipes generated?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">How do I get my next meal?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Our smart algorithms create unique recipes tailored specifically to you. The app considers your available inventory, selected dietary preferences, allergy profile, preferred cuisines, and available kitchen equipment to generate a perfect meal match every time.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Tap the centre Next Meal button and follow three calm steps. Tell us what you fancy, tweak how it is made if you want, and pick where it comes from, like your pantry, a photo of your ingredients, or just an idea. You see a summary of exactly what will be cooked, then tap Create meal.
                                 </div>
                             </div>
                         </div>
-
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">What is "Strict Pantry Mode"?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Can I cook from a photo of my ingredients?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    When enabled, the system will only suggest recipes using ingredients currently in your digital pantry, making no assumptions about staples like salt or oil. This is ideal for minimizing waste or cooking with limited supplies.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Yes. Choose Snap ingredients, take a photo or pick one from your library, and the app reads what is there. You confirm everything on a quick check screen, where you can remove, fix, or add anything before it cooks.
                                 </div>
                             </div>
                         </div>
-
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Can I save recipes?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Do I have to add my ingredients first?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Absolutely. You can save any generated recipe to your personal Recipe Library. You can also organize them into custom folders such as "Quick Weeknights" or "Dinner Party" for easy access later.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    No. If you would rather not, choose "From an idea", describe what you feel like, and Just Cooked builds a recipe from your request alone, with no pantry list needed. Adding your pantry just lets it cook around what you already have.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Can I add my own recipes?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Yes. Add a cover photo, the story behind it, time, difficulty, servings, ingredients, and steps. Steps can be typed, added as photos, or just a link, so your family and online favourites live alongside the ones the app suggests.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Section 3: Health & Safety -->
+                <!-- Group 3: Support and how you feel about food -->
                 <div class="animate-fade-up" style="animation-delay: 0.3s;">
-                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Health & Dietary</h2>
+                    <h2 class="text-xl font-bold mb-6 text-[#1A1815] ml-2">Support and how you feel about food</h2>
                     <div class="space-y-4">
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">How does allergy protection work?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Is Just Cooked a medical, therapy, or treatment app?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Our system utilizes comprehensive hidden allergen detection. For example, if you are allergic to peanuts, it won't just avoid "peanuts"—it will also exclude peanut oil, satay sauce, and dishes commonly associated with peanut ingredients. You can customize your allergy profile in the app settings.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    No. Just Cooked is not a medical or therapeutic tool, and it is not a substitute for professional care. It is a warm companion for the days food feels hard. If you are struggling, it gently encourages you to reach out and can point you toward verified support lines and professionals.
                                 </div>
                             </div>
                         </div>
-
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">What dietary preferences are supported?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">What is the Support tab?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    We support over 12 dietary patterns, including Mediterranean, Keto, Paleo, Vegan, Vegetarian, Pescatarian, Halal, and Kosher. You can combine multiple preferences to suit your lifestyle.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    A calm toolbox for the hard food moments. Depending on what you shared during setup, it can include a panic and grounding flow with breathing and people to call, a one-tap "I need to eat", Gentle mode to soften the app, takeaway savings, and an optional weekly focus. You choose which tools show.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">What is "I need to eat"?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    For the days when eating feels like too much, it finds a simple meal you can make in about five minutes from what is already in your pantry. No calorie numbers and no decisions. Any amount counts. If your pantry is empty, it gently suggests grabbing something simple instead.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Does it track calories or weight?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Only if you want it to. Calories and protein are off by default and shown per recipe, and Gentle mode can hide numbers, streaks and goals. If your answers suggest food has felt really hard, the number tools are not recommended to you and stay hidden. Just Cooked is not a diet or calorie-counting app.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Section 4: Technical & Data -->
+                <!-- Group 4: Pricing and privacy -->
                 <div class="animate-fade-up" style="animation-delay: 0.4s;">
-                    <h2 class="text-xl font-bold mb-6 text-gray-900 ml-2">Privacy & Data</h2>
+                    <h2 class="text-xl font-bold mb-6 text-[#1A1815] ml-2">Pricing and privacy</h2>
                     <div class="space-y-4">
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Is my data private?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Is it free, and how much does it cost?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Privacy is fundamental to our service. We do not sell your personal data. Your dietary preferences, pantry contents, and usage patterns are used solely to improve your personal experience and the quality of recipe recommendations.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    You can start with a 3-day free trial that gives you full access. After that, Just Cooked is a monthly or yearly subscription. The exact price is shown in the app and on the App Store or Google Play, where it can vary by region. Cooking from recipes you already have, logging a cook, and browsing are always included.
                                 </div>
                             </div>
                         </div>
-
                         <div class="glass-panel rounded-2xl overflow-hidden">
                             <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
-                                <span class="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition-colors">Can I use the app on multiple devices?</span>
-                                <span class="faq-icon ml-4 text-gray-400 group-hover:text-orange-600">
-                                    <i class="fas fa-chevron-down"></i>
-                                </span>
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Do I lose my recipes if my subscription ends?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
                             </button>
                             <div class="faq-content px-8">
-                                <div class="faq-answer pb-8 text-gray-500 leading-relaxed">
-                                    Yes. Simply sign in with your account on any iOS or Android device. Your pantry, saved recipes, preferences, and cooking history sync automatically in real-time.
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    No. If your subscription lapses you keep read-only access to your saved recipes, pantry, profile and cooking history. You will just be asked to resubscribe to use AI features like generating new recipes or scanning.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">Is my cooking history private?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Yes. Your cooking history is a private grid just for you. You can hide individual cooks, restore them later, or delete them. If you choose to share a recipe, only you can see who saved or cooked it. There is no public feed, followers, or comments.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="glass-panel rounded-2xl overflow-hidden">
+                            <button class="faq-btn w-full px-8 py-6 flex justify-between items-center text-left focus:outline-none group" aria-expanded="false">
+                                <span class="text-lg font-semibold text-[#1A1815] group-hover:text-orange-600 transition-colors">How do I cancel or change my plan?</span>
+                                <span class="faq-icon ml-4 text-[#8B847C] group-hover:text-orange-600"><i class="fas fa-chevron-down"></i></span>
+                            </button>
+                            <div class="faq-content px-8">
+                                <div class="faq-answer pb-8 text-[#3A342E] leading-relaxed">
+                                    Your subscription is managed through your device store account, the App Store or Google Play. You can change, cancel, or view your billing history there. You can also use Restore Purchases to bring your subscription to a new device.
                                 </div>
                             </div>
                         </div>
@@ -265,42 +303,41 @@
 
             <!-- Support Contact -->
             <div class="mt-20 text-center animate-fade-up" style="animation-delay: 0.5s;">
-                <p class="text-gray-500 mb-4">Still have questions?</p>
-                <a href="mailto:support@justcooked.app" class="inline-flex items-center px-6 py-3 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition-colors shadow-lg">
-                    <i class="far fa-envelope mr-2"></i> Contact Support
+                <p class="text-[#8B847C] mb-4">Still have questions?</p>
+                <a href="mailto:support@justcooked.app" class="btn-pill">
+                    <i class="far fa-envelope"></i> Contact Support
                 </a>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 pt-20 pb-12">
+    <footer class="site-footer">
         <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-8 md:space-y-0 mb-16">
-                <div class="flex flex-col space-y-4">
-                    <img src="assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-10 w-auto opacity-80 hover:opacity-100 transition-opacity">
-                    <p class="text-gray-500 text-sm max-w-xs font-medium">
-                        The intelligent cooking companion for the modern home.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-14">
+                <div class="flex flex-col space-y-4 max-w-xs">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="footer-logo">
+                    <p class="text-[#8B847C] text-sm font-medium leading-relaxed">
+                        Helping you find your way back to food, one small meal at a time.
                     </p>
                 </div>
-                
-                <div class="flex flex-wrap gap-x-8 gap-y-4">
-                    <a href="/" class="text-sm text-gray-900 font-semibold hover:text-orange-600 transition-colors">Home</a>
-                    <a href="/faq" class="text-sm text-orange-600 font-semibold transition-colors">FAQ</a>
-                    <a href="/support" class="text-sm text-gray-500 hover:text-orange-600 transition-colors">Support</a>
+                <div class="flex flex-wrap gap-x-8 gap-y-3">
+                    <a href="/" class="footer-link">Home</a>
+                    <a href="/faq" class="footer-link">FAQ</a>
+                    <a href="/support" class="footer-link">Support</a>
+                    <a href="/download" class="footer-link">Download</a>
                 </div>
             </div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
-                <p class="text-gray-400 text-xs font-medium">
-                    2025 Hyaico Ltd. All Rights Reserved. Just Cooked is a trademark of Hyaico Ltd.
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-[#E0D5C2]">
+                <p class="text-[#8B847C] text-xs font-medium order-2 md:order-1">
+                    © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
                 </p>
-                <div class="flex flex-wrap gap-x-6 gap-y-2 mt-4 md:mt-0">
-                    <a href="/terms" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">Terms</a>
-                    <a href="/privacy" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">Privacy</a>
-                    <a href="/cookies" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">Cookies</a>
-                    <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">Disclaimer</a>
-                    <a href="/eula" class="text-xs text-gray-400 hover:text-orange-600 transition-colors">EULA</a>
+                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
+                    <a href="/terms" class="footer-sublink">Terms</a>
+                    <a href="/privacy" class="footer-sublink">Privacy</a>
+                    <a href="/cookies" class="footer-sublink">Cookies</a>
+                    <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
+                    <a href="/eula" class="footer-sublink">EULA</a>
                 </div>
             </div>
         </div>
@@ -311,8 +348,6 @@
         document.querySelectorAll('.faq-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                
-                // Close all other FAQs
                 document.querySelectorAll('.faq-btn').forEach(otherBtn => {
                     if (otherBtn !== button) {
                         otherBtn.setAttribute('aria-expanded', 'false');
@@ -320,8 +355,6 @@
                         answer.classList.remove('open');
                     }
                 });
-
-                // Toggle current FAQ
                 button.setAttribute('aria-expanded', !isExpanded);
                 const answer = button.nextElementSibling.querySelector('.faq-answer');
                 if (!isExpanded) {
@@ -335,7 +368,6 @@
         // Mobile menu script
         const btn = document.querySelector("button.mobile-menu-button");
         const menu = document.querySelector(".mobile-menu");
-
         btn.addEventListener("click", () => {
             menu.classList.toggle("hidden");
         });

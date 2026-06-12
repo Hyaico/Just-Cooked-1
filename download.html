@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Download Just Cooked™</title>
-    
+
     <!-- Device Detection & Redirect Script -->
     <script>
         (function() {
@@ -12,7 +12,7 @@
             // iPadOS 13+ uses Macintosh as platform, so check for touch points
             var isIOS = (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             var isAndroid = /android/i.test(userAgent);
-            
+
             var appleUrl = 'https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071';
             var androidUrl = 'https://play.google.com/store/apps/details?id=com.justcooked.app';
 
@@ -29,7 +29,7 @@
     <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
     <link rel="shortcut icon" href="/assets/Icon.svg">
     <link rel="apple-touch-icon" href="/assets/Icon.svg">
-    
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -42,8 +42,12 @@
                     },
                     colors: {
                         orange: {
-                            500: '#FF6B00',
-                            600: '#E65D00',
+                            50: '#FDF1EA',
+                            100: '#FBE3D2',
+                            200: '#F4B79A',
+                            500: '#E94B1F',
+                            600: '#CC3F18',
+                            700: '#7A2410',
                         },
                         surface: {
                             50: '#F9FAFB',
@@ -69,33 +73,34 @@
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/premium.css">
 </head>
-<body class="font-sans antialiased text-gray-900 bg-[#FAFAFA] min-h-screen flex flex-col">
+<body class="font-sans antialiased text-[#1A1815] min-h-screen flex flex-col">
     <!-- Header -->
     <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
         <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
             <a href="/" class="flex items-center group">
-                <!-- Larger Logo -->
-                <img src="/assets/JustCookIcon.svg" alt="Just Cooked™ Logo" class="h-[60px] md:h-[70px] transition-transform duration-300 group-hover:scale-105">
+                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
             </a>
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex space-x-8">
+            <div class="hidden md:flex items-center space-x-8">
                 <a href="/" class="nav-link-premium">Home</a>
                 <a href="/faq" class="nav-link-premium">FAQ</a>
                 <a href="/support" class="nav-link-premium">Support</a>
+                <a href="/download" class="nav-cta">Get the app</a>
             </div>
             <!-- Mobile Navigation Button -->
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-gray-100 transition-colors">
-                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
+                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
         </nav>
         <!-- Mobile Navigation Menu -->
-        <div class="md:hidden mobile-menu hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
             <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Home</a>
-                <a href="/faq" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">FAQ</a>
-                <a href="/support" class="block py-3 text-gray-600 hover:text-orange-500 font-medium">Support</a>
+                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
+                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
+                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
+                <a href="/download" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">Download</a>
             </div>
         </div>
     </header>
@@ -103,28 +108,28 @@
     <!-- Main Content (Desktop Fallback) -->
     <main class="flex-1 flex flex-col items-center justify-center p-4 relative overflow-hidden">
         <!-- Abstract Background -->
-        <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-gradient-to-br from-orange-200/20 to-transparent rounded-full blur-[100px]"></div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+            <div class="hero-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[44rem] h-[44rem]" style="background: radial-gradient(circle, rgba(233,75,31,0.14) 0%, transparent 70%);"></div>
         </div>
 
-        <div class="relative z-10 text-center max-w-3xl w-full mx-auto px-4 py-16 bg-white/60 backdrop-blur-xl border border-white/80 shadow-2xl rounded-[3rem] animate-fade-up opacity-0" style="animation-delay: 0.1s;">
-            
-            <div class="inline-flex items-center justify-center w-24 h-24 mb-8 bg-white rounded-3xl shadow-lg border border-gray-100">
-                <img src="/assets/Icon.svg" alt="App Icon" class="w-16 h-16 object-contain">
+        <div class="relative z-10 text-center max-w-2xl w-full mx-auto px-6 py-16 sm:py-20 bg-[#FBF6EC]/80 backdrop-blur-xl border border-[#E0D5C2] shadow-[0_22px_46px_rgba(26,24,21,0.16)] rounded-[2.5rem] animate-fade-up opacity-0" style="animation-delay: 0.1s;">
+
+            <div class="inline-flex items-center justify-center w-24 h-24 mb-8 bg-[#FBF6EC] rounded-3xl shadow-[0_8px_16px_rgba(26,24,21,0.08)] border border-[#E0D5C2]">
+                <img src="/assets/Icon.svg" alt="Just Cooked app icon" class="w-16 h-16 object-contain">
             </div>
 
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-5 text-[#1A1815]">
                 Get Just Cooked™
             </h1>
-            
-            <p class="text-xl text-gray-500 font-medium mb-12 max-w-xl mx-auto leading-relaxed">
-                Choose your platform below to download the Just Cooked app directly to your mobile device.
+
+            <p class="text-lg text-[#3A342E] font-medium mb-10 max-w-md mx-auto leading-relaxed">
+                You are on a computer right now. Open this page on your phone, or grab the app from your store below.
             </p>
 
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <!-- App Store Button -->
-                <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" class="w-full sm:w-auto group flex items-center justify-center bg-gray-900 text-white px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-orange-500/20">
-                    <i class="fab fa-apple text-3xl mr-3.5"></i>
+                <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener" class="store-badge store-badge--apple w-full sm:w-auto justify-center">
+                    <i class="fab fa-apple text-3xl"></i>
                     <div class="text-left">
                         <div class="text-[10px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
                         <div class="text-lg font-bold leading-none">App Store</div>
@@ -132,37 +137,35 @@
                 </a>
 
                 <!-- Google Play Button -->
-                <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" class="w-full sm:w-auto group flex items-center justify-center bg-white text-gray-900 border-2 border-gray-200 px-8 py-4 rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl hover:border-gray-300">
-                    <i class="fab fa-google-play text-3xl mr-3.5 text-gray-800"></i>
+                <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener" class="store-badge store-badge--google w-full sm:w-auto justify-center">
+                    <i class="fab fa-google-play text-3xl"></i>
                     <div class="text-left">
-                        <div class="text-[10px] font-bold tracking-wider uppercase text-gray-400">GET IT ON</div>
+                        <div class="text-[10px] font-bold tracking-wider uppercase text-[#8B847C]">Get it on</div>
                         <div class="text-lg font-bold leading-none">Google Play</div>
                     </div>
                 </a>
             </div>
-            
-            <div class="mt-12 text-sm text-gray-400 font-medium">
+
+            <div class="mt-10 text-sm text-[#8B847C] font-medium">
                 Available for iOS 15.0+ and Android 8.0+
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-50 border-t border-gray-200 py-8 text-center mt-auto relative z-10">
+    <footer class="site-footer mt-auto relative z-10 text-center" style="padding: 40px 0 32px;">
         <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-            <a href="/" class="text-xs text-gray-500 hover:text-orange-500 transition-colors">Home</a>
-            <a href="/faq" class="text-xs text-gray-500 hover:text-orange-500 transition-colors">FAQ</a>
-            <a href="/support" class="text-xs text-gray-500 hover:text-orange-500 transition-colors">Support</a>
+            <a href="/" class="footer-sublink">Home</a>
+            <a href="/faq" class="footer-sublink">FAQ</a>
+            <a href="/support" class="footer-sublink">Support</a>
+            <a href="/terms" class="footer-sublink">Terms</a>
+            <a href="/privacy" class="footer-sublink">Privacy</a>
+            <a href="/cookies" class="footer-sublink">Cookies</a>
+            <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
+            <a href="/eula" class="footer-sublink">EULA</a>
         </div>
-        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-            <a href="/terms" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Terms</a>
-            <a href="/privacy" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Privacy</a>
-            <a href="/cookies" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Cookies</a>
-            <a href="/disclaimer" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">Disclaimer</a>
-            <a href="/eula" class="text-xs text-gray-400 hover:text-orange-500 transition-colors">EULA</a>
-        </div>
-        <p class="text-gray-400 text-xs font-medium">
-            © 2025 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
+        <p class="text-[#8B847C] text-xs font-medium">
+            © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
         </p>
     </footer>
 

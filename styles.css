@@ -1,7 +1,7 @@
 /* Custom Styles */
 :root {
-    --primary-color: #FF4500;
-    --primary-hover: #E63E00;
+    --primary-color: #E94B1F;
+    --primary-hover: #FF6B35;
 }
 
 /* Body and Layout */
@@ -17,13 +17,13 @@ main {
 
 /* Navigation Links */
 .nav-link {
-    color: #4B5563;
+    color: #3A342E;
     transition: color 0.3s;
     position: relative;
 }
 
 .nav-link:hover {
-    color: #F97316;
+    color: var(--primary-color);
 }
 
 .nav-link::after {
@@ -42,7 +42,7 @@ main {
 }
 
 .nav-link.active {
-    color: #F97316;
+    color: var(--primary-color);
 }
 
 .nav-link.active::after {
@@ -53,7 +53,7 @@ main {
 .cta-button {
     display: inline-block;
     padding: 0.75rem 2rem;
-    background-color: #F97316;
+    background-color: var(--primary-color);
     color: white;
     font-weight: 600;
     border-radius: 0.5rem;
@@ -62,7 +62,7 @@ main {
 }
 
 .cta-button:hover {
-    background-color: #EA580C;
+    background-color: var(--primary-hover);
     transform: scale(1.05);
 }
 
@@ -114,16 +114,16 @@ header.scrolled {
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #F3F4F6;
+    background-color: #EDE5D6;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #F97316;
+    background-color: var(--primary-color);
     border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #EA580C;
+    background-color: var(--primary-hover);
 }
 
 /* App Store Buttons */

@@ -1,3 +1,6 @@
+// Progressive enhancement flag: lets CSS hide .reveal elements only when JS runs
+document.documentElement.classList.add('js');
+
 // Header scroll effect
 const header = document.querySelector('header');
 let lastScroll = 0;
@@ -38,26 +41,20 @@ document.querySelectorAll('.faq-question').forEach(button => {
     });
 });
 
-// Intersection Observer for fade-in animations
-const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-};
+// Scroll reveal: fade + rise elements in as they enter the viewport
+const revealEls = document.querySelectorAll('.reveal');
+if (revealEls.length) {
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px 0px -40px 0px', threshold: 0 });
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-fade-in');
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Observe all sections
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-});
+    revealEls.forEach(el => revealObserver.observe(el));
+}
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

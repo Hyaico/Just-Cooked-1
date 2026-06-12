@@ -1,23 +1,101 @@
 /* Premium UI/UX Styles - Apple/Meta Aesthetic */
 
 :root {
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-    --primary-orange: #FF6B00;
-    --primary-gradient: linear-gradient(135deg, #FF6B00 0%, #FF8534 100%);
-    --text-primary: #111827;
-    --text-secondary: #4B5563;
-    --bg-gradient: linear-gradient(180deg, #FFFFFF 0%, #FFF7ED 100%);
+    /* ── Cream + ink ramp (surfaces + text — the backbone) ── */
+    --cream-base: #F5EFE6;
+    --cream-raised: #FBF6EC;
+    --cream-pressed: #EDE5D6;
+    --cream-shadow: #E0D5C2;
+    --ink: #1A1815;
+    --ink-body: #3A342E;
+    --ink-muted: #8B847C;
+
+    /* ── Brand orange family (single source of truth: #E94B1F) ── */
+    --orange-primary: #E94B1F;
+    --orange-hot: #FF6B35;
+    --orange-warm: #F39568;
+    --orange-soft: #FBE3D2;
+    --orange-ink: #7A2410;
+
+    /* ── Sage family (practical / secondary accent) ── */
+    --sage-primary: #9CB58A;
+    --sage-light: #C8D5B9;
+    --sage-soft: #E4ECDC;
+    --sage-ink: #4A5C3D;
+    --sage-button: #6B8159;
+    --sage-button-hot: #5A7048;
+
+    /* ── JC monogram gradient (logo mark only — distinct from CTA orange) ── */
+    --monogram-gradient: linear-gradient(135deg, #FF6500 0%, #FF1500 100%);
+
+    /* ── Surface / glass tints over texture ── */
+    --cream-edge: rgba(224, 213, 194, 0.6);
+    --glass-fill: rgba(251, 246, 236, 0.72);
+    --glass-edge: rgba(255, 255, 255, 0.6);
+
+    /* ── Ink-tinted shadows (spec 1.6 — warm #1A1815, never pure black) ── */
+    --shadow-card: 0 12px 24px rgba(26, 24, 21, 0.08);
+    --shadow-pill: 0 2px 8px rgba(26, 24, 21, 0.04);
+    --shadow-card-v3: 0 16px 33px rgba(26, 24, 21, 0.13);
+    --shadow-doorway: 0 22px 46px rgba(26, 24, 21, 0.16);
+    --shadow-soft: 0 6px 18px rgba(26, 24, 21, 0.07);
+    --shadow-accent: 0 8px 16px rgba(233, 75, 31, 0.32);
+
+    /* ── Border radius (spec 1.5) ── */
+    --radius-s: 8px;
+    --radius-m: 12px;
+    --radius-l: 16px;
+    --radius-xl: 24px;
+    --radius-pill: 999px;
+
+    /* ── Spacing scale (spec 1.4) ── */
+    --space-xs: 4px;
+    --space-s: 8px;
+    --space-m: 12px;
+    --space-l: 16px;
+    --space-xl: 24px;
+    --space-xxl: 32px;
+    --space-xxxl: 48px;
+
+    /* ── Marble-cream flat fallback (spec 1.7) ── */
+    --marble-fallback: #F5EFE6;
+
+    /* ── Backward-compatible aliases (existing rules below reference these) ── */
+    --glass-border: var(--cream-edge);
+    --glass-bg: var(--glass-fill);
+    --glass-shadow: var(--shadow-card);
+    --primary-orange: var(--orange-primary);
+    --primary-gradient: linear-gradient(135deg, var(--orange-hot) 0%, var(--orange-primary) 100%);
+    --text-primary: var(--ink);
+    --text-secondary: var(--ink-body);
+    --bg-gradient: var(--cream-base);
 }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg-gradient);
+    /* Marble-cream via layered CSS gradients (spec 1.7 palette): top-left white
+       glow + bottom-right #FBE3D2 warm wash + soft warm-tan mottling over a
+       cream -> tan base. Pure CSS so it renders everywhere (no SVG filters);
+       fixed so the countertop stays put and the figure never stretches.
+       #F5EFE6 is the flat fallback that paints first. */
+    background-color: var(--marble-fallback);
+    /* Relative URL so the marble SVG loads whether served or opened as a file.
+       Flat fallback colour only, no gradient layer, so nothing reads as a film
+       over the content while the background is fixed. */
+    background-image: url('assets/marble.svg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--text-primary);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+/* The earlier SVG-filter marble proved unreliable across browsers, so the
+   marble now lives on <body> as pure CSS (above). Any stale .marble-bg <svg>
+   element is hidden. */
+.marble-bg { display: none !important; }
 
 /* Glassmorphism Utilities */
 .glass-panel {
@@ -28,17 +106,50 @@ body {
     box-shadow: var(--glass-shadow);
 }
 
+/* Floating glass "island" nav: the header is just a positioning wrapper, and the
+   <nav> inside becomes a centred, rounded, frosted pill that lifts on scroll. */
 .glass-nav {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    background: transparent;
+    border-bottom: none;
+    padding-top: 14px;
+    transition: padding 0.35s ease;
+}
+.glass-nav > nav {
+    max-width: 1320px;
+    width: calc(100% - 28px);
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 80px;
+    padding: 10px 16px 10px 24px;
+    border-radius: 20px;
+    background: rgba(251, 246, 236, 0.62);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 10px 30px rgba(26, 24, 21, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+    transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.glass-nav.scrolled { padding-top: 8px; }
+.glass-nav.scrolled > nav {
+    background: rgba(251, 246, 236, 0.85);
+    box-shadow: 0 14px 36px rgba(26, 24, 21, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    border-color: rgba(233, 75, 31, 0.16);
+}
+/* Mobile menu becomes a matching floating panel under the pill. */
+.mobile-menu {
+    max-width: 1320px;
+    width: calc(100% - 28px);
+    margin: 8px auto 0;
+    border-radius: 18px;
+    border: 1px solid rgba(224, 213, 194, 0.7) !important;
+    box-shadow: 0 14px 34px rgba(26, 24, 21, 0.12);
+    overflow: hidden;
 }
 
 /* Typography Overrides for Premium Feel */
 h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.02em;
-    color: #111827;
+    color: var(--ink);
 }
 
 .prose h1 {
@@ -147,7 +258,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Navigation Link Styles */
 .nav-link-premium {
     position: relative;
-    color: #4B5563;
+    color: var(--ink-body);
     transition: color 0.2s;
 }
 
@@ -178,3 +289,393 @@ h1, h2, h3, h4, h5, h6 {
     transform: scaleX(1);
     transform-origin: left;
 }
+
+/* ── Brand wordmark logo (JustCookIcon.svg) ── */
+.brand-logo {
+    height: 30px;
+    width: auto;
+    display: block;
+    transition: transform 0.3s;
+}
+.group:hover .brand-logo { transform: scale(1.05); }
+@media (min-width: 768px) {
+    .brand-logo { height: 37px; }
+}
+.footer-logo { height: 30px; width: auto; display: block; }
+
+/* ── Primary CTA: orange fill pill (spec 1.8) ── */
+.btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 56px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 999px;
+    background: var(--orange-primary);
+    color: var(--cream-raised);
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 17px;
+    letter-spacing: -0.1px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(233, 75, 31, 0.32);
+    transition: background 0.15s, transform 0.12s ease, box-shadow 0.15s;
+}
+.btn-pill:hover { background: var(--orange-hot); }
+.btn-pill:active { transform: scale(0.96); }
+.btn-pill:disabled, .btn-pill.is-loading { opacity: 0.4; pointer-events: none; }
+/* Sage variant for practical / secondary actions */
+.btn-pill-sage {
+    background: var(--sage-button);
+    color: var(--cream-raised);
+    box-shadow: 0 6px 18px rgba(26, 24, 21, 0.07);
+}
+.btn-pill-sage:hover { background: var(--sage-button-hot); }
+
+/* ── Mobile menu: comfortable 44px+ tap targets ── */
+.mobile-menu-button { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.mobile-menu a { min-height: 44px; display: flex; align-items: center; }
+
+/* ── Policy pages: ONE styled container owns all typography + spacing.
+   The policy body is plain semantic HTML with no classes or inline styles;
+   everything below is driven by descendant selectors so new policy copy can
+   be pasted in as-is. ── */
+.policy-page {
+    min-height: 100vh;
+    padding: 120px 16px 96px;
+}
+.policy-card {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--cream-edge);
+    border-radius: 24px;
+    box-shadow: var(--shadow-card-v3);
+    padding: clamp(20px, 4.5vw, 48px);
+}
+.policy-head { margin-bottom: 28px; }
+.policy-head h1 {
+    font-size: clamp(28px, 6vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    line-height: 1.12;
+    color: var(--ink);
+    margin: 0 0 8px;
+}
+.policy-updated { color: var(--ink-muted); font-size: 14px; margin: 0; }
+
+/* Body typography (plain, class-free HTML inside) */
+.policy-body { color: var(--ink-body); font-size: 16px; line-height: 1.75; }
+.policy-body h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; color: var(--ink); margin: 40px 0 12px; }
+.policy-body h3 { font-size: 17px; font-weight: 700; color: var(--ink); margin: 28px 0 10px; }
+.policy-body h4 { font-size: 15px; font-weight: 700; color: var(--ink); margin: 22px 0 8px; }
+.policy-body p { margin: 0 0 16px; }
+.policy-body ol { margin: 0 0 16px; padding-left: 1.4rem; list-style: decimal; }
+.policy-body ul { margin: 0 0 16px; padding-left: 1.5rem; list-style: none; }
+.policy-body li { margin-bottom: 8px; }
+.policy-body ul > li { position: relative; }
+.policy-body ul > li::before {
+    content: "•";
+    position: absolute;
+    left: -1.15rem;
+    color: var(--orange-primary);
+    font-weight: 700;
+}
+.policy-body a { color: var(--orange-primary); text-decoration: underline; text-underline-offset: 2px; }
+.policy-body a:hover { color: var(--orange-hot); }
+.policy-body strong { color: var(--ink); font-weight: 700; }
+.policy-body hr { border: 0; border-top: 1px solid var(--cream-shadow); margin: 32px 0; }
+.policy-body blockquote {
+    border-left: 4px solid var(--orange-primary);
+    background: rgba(233, 75, 31, 0.05);
+    padding: 14px 16px;
+    margin: 20px 0;
+    border-radius: 0 12px 12px 0;
+    font-style: italic;
+}
+.policy-body blockquote p:last-child { margin-bottom: 0; }
+
+/* Legal-bases table (privacy §5.1): the classless wrapping <div> scrolls
+   horizontally on small screens so the table never breaks the layout. */
+.policy-body div:has(> table), .policy-body .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 0 16px; }
+.policy-body table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 14px; }
+.policy-body thead { background: var(--cream-pressed); }
+.policy-body th, .policy-body td { border: 1px solid var(--cream-shadow); padding: 10px 12px; text-align: left; vertical-align: top; }
+.policy-body th { font-weight: 700; color: var(--ink); }
+
+/* ============================================================
+   REBRAND v2 — sleek components, motion, unified chrome
+   Builds on the tokens above. Everything here is brand-consistent
+   (cream / orange #E94B1F / sage), no legacy oranges.
+   ============================================================ */
+
+html { scroll-behavior: smooth; }
+/* The fixed marble is heavy to repaint on phones — let it scroll there. */
+@media (max-width: 768px) { body { background-attachment: scroll; } }
+img { max-width: 100%; }
+
+/* ── Scroll reveal (progressive enhancement) ──
+   Hidden only when JS is present (html.js, set by script.js). Without JS,
+   content is fully visible, so nothing depends on the observer firing. */
+.js .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+.js .reveal.is-visible { opacity: 1; transform: none; }
+.reveal.r-d1 { transition-delay: 0.08s; }
+.reveal.r-d2 { transition-delay: 0.16s; }
+.reveal.r-d3 { transition-delay: 0.24s; }
+.reveal.r-d4 { transition-delay: 0.32s; }
+.reveal.r-d5 { transition-delay: 0.40s; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .js .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+    [class*="animate-"] { animation: none !important; opacity: 1 !important; }
+    .float-soft { animation: none !important; }
+}
+
+/* ── Eyebrow / section labels (spec "label" role) ── */
+.eyebrow {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+    text-transform: uppercase;
+    color: var(--orange-primary);
+    margin-bottom: 16px;
+}
+.eyebrow-muted { color: var(--ink-muted); }
+
+/* ── Section headings + lede ── */
+.section-heading {
+    font-size: clamp(28px, 5vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.08;
+    color: var(--ink);
+}
+.section-lede {
+    font-size: clamp(17px, 2.2vw, 20px);
+    line-height: 1.62;
+    color: var(--ink-body);
+}
+
+/* ── Soft cream card (general surface over the countertop) ── */
+.soft-card {
+    background: var(--glass-fill);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--cream-edge);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s;
+}
+.soft-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-v3);
+    border-color: rgba(233, 75, 31, 0.28);
+}
+
+/* ── Icon chips ── */
+.icon-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 56px; height: 56px; border-radius: 18px; flex-shrink: 0;
+    font-size: 22px;
+    background: linear-gradient(135deg, #FBF6EC 0%, #F1E9D9 100%);
+    border: 1px solid var(--cream-edge);
+    color: var(--orange-primary);
+    box-shadow: var(--shadow-pill);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.group:hover .icon-chip, .soft-card:hover .icon-chip { transform: scale(1.06); }
+.icon-chip--orange { background: var(--orange-soft); color: var(--orange-ink); border-color: rgba(233, 75, 31, 0.18); }
+.icon-chip--sage   { background: var(--sage-soft);  color: var(--sage-button); border-color: rgba(107, 129, 89, 0.22); }
+.icon-chip--sky    { background: #C2DCE8;           color: #3A5567; border-color: rgba(58, 85, 103, 0.18); }
+.icon-chip--rose   { background: #F8E4E4;           color: #7A3F3F; border-color: rgba(122, 63, 63, 0.18); }
+
+/* ── Numbered step marker ── */
+.step-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 46px; border-radius: 999px;
+    background: var(--orange-primary); color: var(--cream-raised);
+    font-weight: 800; font-size: 19px; flex-shrink: 0;
+    box-shadow: var(--shadow-accent);
+}
+
+/* ── Small tag chips ── */
+.tag-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+    background: var(--orange-soft); color: var(--orange-ink);
+    border: 1px solid rgba(233, 75, 31, 0.14);
+}
+.tag-chip--sage { background: var(--sage-soft); color: var(--sage-ink); border-color: rgba(107, 129, 89, 0.2); }
+
+/* ── Hero ambient glows ── */
+.hero-glow { position: absolute; border-radius: 999px; filter: blur(90px); pointer-events: none; z-index: 0; }
+.float-soft { animation: float-soft 9s ease-in-out infinite; }
+@keyframes float-soft { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-22px); } }
+
+/* ── Support beat (dark soapstone — the only dark surface, per brand) ── */
+/* Long, smooth, OPAQUE cream -> mauve -> plum -> navy -> plum -> cream gradient.
+   Opaque so no marble veins show through (that was the "film"), and long so the
+   shift is very gradual. The starfield (::before) sits only in the dark core. */
+.support-beat {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(to bottom,
+            #F2E9D8 0,
+            #C9B0BC 70px,
+            #5B3F6E 150px,
+            #1C1638 220px,
+            #0B1326 45%,
+            #0B1326 calc(100% - 220px),
+            #5B3F6E calc(100% - 150px),
+            #C9B0BC calc(100% - 70px),
+            #F2E9D8 100%);
+}
+.support-beat::before {
+    content: "";
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background: url('assets/starfield.svg') center center / cover no-repeat;
+    opacity: 0.95;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 240px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 240px, #000 calc(100% - 240px), transparent 100%);
+}
+.support-beat > * { position: relative; z-index: 1; }
+.support-beat .eyebrow { color: #FFB07A; }
+.support-card {
+    background: rgba(245, 239, 230, 0.06);
+    border: 1px solid rgba(245, 239, 230, 0.14);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s, border-color 0.4s;
+}
+.support-card:hover {
+    transform: translateY(-4px);
+    background: rgba(245, 239, 230, 0.10);
+    border-color: rgba(245, 239, 230, 0.22);
+}
+.support-chip {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px; border-radius: 16px; font-size: 20px; flex-shrink: 0;
+    border: 1px solid rgba(245, 239, 230, 0.16);
+}
+.support-chip--sky    { background: rgba(168, 197, 217, 0.16); color: #C2DCE8; }
+.support-chip--rose   { background: rgba(240, 212, 212, 0.14); color: #F0D4D4; }
+.support-chip--orange { background: rgba(255, 107, 53, 0.16);  color: #FFB07A; }
+.support-chip--sage   { background: rgba(155, 181, 138, 0.18); color: #C2D5A6; }
+
+/* ── Final CTA band ── */
+/* Transparent so the page marble shows through; just a soft warm glow at the top. */
+.cta-band {
+    background: radial-gradient(70% 80% at 50% 0%, rgba(251, 227, 210, 0.5) 0%, rgba(251, 227, 210, 0) 60%);
+    border-top: 1px solid rgba(224, 213, 194, 0.6);
+}
+
+/* ── Unified site footer ── */
+.site-footer {
+    position: relative;
+    background: rgba(251, 246, 236, 0.72);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(20px) saturate(140%);
+    border-top: 1px solid var(--cream-shadow);
+    padding: 72px 0 48px;
+}
+.site-footer::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(233, 75, 31, 0.35), transparent);
+}
+.footer-link { font-size: 14px; font-weight: 600; color: var(--ink); transition: color 0.2s; }
+.footer-link:hover { color: var(--orange-primary); }
+.footer-sublink { font-size: 12px; color: var(--ink-muted); transition: color 0.2s; }
+.footer-sublink:hover { color: var(--orange-primary); }
+
+/* ── Compact nav CTA (desktop header) ── */
+.nav-cta {
+    display: inline-flex; align-items: center; justify-content: center;
+    height: 40px; padding: 0 18px; border-radius: 999px;
+    background: var(--orange-primary); color: var(--cream-raised);
+    font-weight: 600; font-size: 14px; letter-spacing: -0.1px; text-decoration: none;
+    box-shadow: 0 6px 14px rgba(233, 75, 31, 0.28);
+    transition: background 0.15s, transform 0.12s;
+}
+.nav-cta:hover { background: var(--orange-hot); color: var(--cream-raised); }
+.nav-cta:active { transform: scale(0.96); }
+
+/* ── Secondary outline pill ── */
+.btn-pill-outline {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    height: 56px; padding: 0 24px; border-radius: 999px;
+    background: transparent; color: var(--orange-ink);
+    border: 1.5px solid rgba(233, 75, 31, 0.4);
+    font-family: inherit; font-weight: 600; font-size: 17px; text-decoration: none; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.12s;
+}
+.btn-pill-outline:hover { background: var(--orange-soft); border-color: var(--orange-primary); }
+.btn-pill-outline:active { transform: scale(0.96); }
+
+/* ── Store badges (Apple / Google) — consistent platform-neutral chrome ── */
+.store-badge {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 22px; border-radius: 16px;
+    text-decoration: none; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+}
+.store-badge--apple { background: var(--ink); color: #fff; box-shadow: var(--shadow-card); }
+.store-badge--google { background: var(--cream-raised); color: var(--ink); border: 1px solid var(--cream-shadow); box-shadow: var(--shadow-pill); }
+.store-badge:hover { transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow-card-v3); }
+.store-badge:active { transform: translateY(0) scale(0.99); }
+
+/* ── Support hub: "more on the way" ghost card ── */
+.support-card--ghost {
+    background: transparent;
+    border: 1px dashed rgba(245, 239, 230, 0.22);
+    box-shadow: none;
+}
+.support-card--ghost:hover {
+    background: rgba(245, 239, 230, 0.05);
+    border-color: rgba(245, 239, 230, 0.3);
+    transform: none;
+}
+
+/* ── Check bullet (showcase feature points) ── */
+.check-li { display: flex; align-items: flex-start; gap: 12px; }
+.check-ic {
+    flex-shrink: 0; width: 28px; height: 28px; border-radius: 999px;
+    background: var(--sage-soft); color: var(--sage-button);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; margin-top: 2px;
+}
+
+/* ── Floating accent chips (hero image) ── */
+.float-chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px; border-radius: 16px;
+    background: rgba(251, 246, 236, 0.92);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid var(--cream-edge);
+    box-shadow: var(--shadow-card);
+}
+.float-chip span.dot {
+    width: 28px; height: 28px; border-radius: 999px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center; font-size: 12px;
+}
+
+/* Policy pages: the legal card is tall, so never gate it behind the scroll
+   reveal. A too-tall element can fail the IntersectionObserver threshold and
+   stay hidden, which made the policy text "disappear". This keeps it visible
+   regardless. Higher specificity (.js .policy-card.reveal) wins over .js .reveal. */
+.js .policy-card.reveal { opacity: 1 !important; transform: none !important; }
