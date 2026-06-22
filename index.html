@@ -75,64 +75,65 @@
             </div>
 
             <div class="container mx-auto px-4 relative z-10">
-                <div class="grid lg:grid-cols-2 items-center gap-12 lg:gap-8 max-w-7xl mx-auto">
-                    <!-- Text -->
-                    <div class="text-center lg:text-left">
-                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E0D5C2] bg-[#FBF6EC]/70 backdrop-blur-md shadow-sm mb-7 animate-fade-up opacity-0" style="animation-delay: 0.1s;">
+                <div class="hero-layout max-w-7xl mx-auto">
+                    <!-- Intro: eyebrow + headline + lede -->
+                    <div class="hero-intro text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#E0D5C2] bg-[#FBF6EC]/70 backdrop-blur-md shadow-sm mb-6 animate-fade-up opacity-0" style="animation-delay: 0.1s;">
                             <span class="w-2 h-2 rounded-full bg-orange-500"></span>
                             <span class="text-xs font-semibold tracking-wide text-orange-700">For when food feels hard.</span>
                         </div>
 
-                        <h1 class="font-extrabold tracking-tight mb-6 animate-fade-up opacity-0 leading-[1.04]" style="animation-delay: 0.2s; font-size: clamp(2.4rem, 7vw, 4.25rem);">
+                        <h1 class="font-extrabold tracking-tight mb-5 animate-fade-up opacity-0 leading-[1.04]" style="animation-delay: 0.2s; font-size: clamp(2.2rem, 6.6vw, 4.25rem);">
                             When food feels hard,<br>
                             <span class="text-orange-500">we make the next meal easier.</span>
                         </h1>
 
-                        <p class="text-lg md:text-xl text-[#3A342E] font-medium mb-8 max-w-xl mx-auto lg:mx-0 animate-fade-up opacity-0 leading-relaxed" style="animation-delay: 0.3s;">
+                        <p class="text-base sm:text-lg md:text-xl text-[#3A342E] font-medium mb-0 max-w-xl mx-auto lg:mx-0 animate-fade-up opacity-0 leading-relaxed" style="animation-delay: 0.3s;">
                             Food feels hard for a lot of people. Just Cooked helps you find your way back, one small meal at a time.
                         </p>
-
-                        <div class="flex flex-col items-center lg:items-start gap-5 animate-fade-up opacity-0" style="animation-delay: 0.4s;">
-                            <a href="/download" class="btn-pill w-full sm:w-auto">
-                                Start where you are.
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                            </a>
-                            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
-                                <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener" class="store-badge store-badge--apple w-full sm:w-auto justify-center">
-                                    <i class="fab fa-apple text-3xl"></i>
-                                    <div class="text-left">
-                                        <div class="text-[10px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
-                                        <div class="text-lg font-bold leading-none">App Store</div>
-                                    </div>
-                                </a>
-                                <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener" class="store-badge store-badge--google w-full sm:w-auto justify-center">
-                                    <i class="fab fa-google-play text-3xl"></i>
-                                    <div class="text-left">
-                                        <div class="text-[10px] font-bold tracking-wider uppercase text-[#8B847C]">Get it on</div>
-                                        <div class="text-lg font-bold leading-none">Google Play</div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="flex items-center gap-x-5 gap-y-2 flex-wrap justify-center lg:justify-start text-[#8B847C] text-sm font-medium pt-1">
-                                <span class="inline-flex items-center gap-1.5"><i class="fas fa-circle-check text-[#6B8159]"></i> No judgement</span>
-                                <span class="inline-flex items-center gap-1.5"><i class="fas fa-circle-check text-[#6B8159]"></i> Any amount counts</span>
-                            </div>
-                        </div>
                     </div>
 
-                    <!-- Image -->
-                    <div class="relative flex justify-center lg:justify-end animate-fade-up opacity-0" style="animation-delay: 0.35s;">
+                    <!-- Phone: home screen -->
+                    <div class="hero-visual relative flex justify-center mt-7 lg:mt-0 lg:justify-end animate-fade-up opacity-0" style="animation-delay: 0.35s;">
                         <div class="relative">
-                            <div class="absolute -inset-6 bg-gradient-to-br from-orange-200/35 via-transparent to-[#9CB58A]/25 rounded-[3rem] blur-3xl"></div>
-                            <img src="assets/MainHero.png" alt="The Just Cooked app on a phone" class="relative w-[15rem] sm:w-[17rem] lg:w-[20rem] h-auto rounded-[2.2rem] shadow-[0_30px_60px_rgba(26,24,21,0.22)]">
+                            <div class="phone-glow" style="background: radial-gradient(60% 55% at 50% 40%, rgba(233,75,31,0.22), rgba(156,181,138,0.16) 55%, transparent 78%);"></div>
+                            <img src="assets/MainHero.png" alt="The Just Cooked home screen on a phone, showing a gentle daily tracker and recent cooking activity" class="phone-shot phone-shot--light phone-shot--hero relative w-[12.5rem] sm:w-[15rem] lg:w-[19rem]">
                             <div class="float-chip absolute -left-4 top-12 hidden sm:flex">
                                 <span class="dot" style="background:#E4ECDC; color:#4A5C3D;"><i class="fas fa-heart"></i></span>
                                 <span class="text-xs font-semibold text-[#3A342E]">No judgement</span>
                             </div>
                             <div class="float-chip absolute -right-3 bottom-16 hidden sm:flex">
-                                <span class="dot" style="background:#FBE3D2; color:#E94B1F;"><i class="fas fa-camera"></i></span>
-                                <span class="text-xs font-semibold text-[#3A342E]">Cook from a photo</span>
+                                <span class="dot" style="background:#FBE3D2; color:#E94B1F;"><i class="fas fa-seedling"></i></span>
+                                <span class="text-xs font-semibold text-[#3A342E]">Small steps count</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- Actions: CTA + store badges + trust (kept directly under the phone on mobile) -->
+                    <div class="hero-actions flex flex-col items-center lg:items-start gap-5 animate-fade-up opacity-0" style="animation-delay: 0.4s;">
+                        <a href="/download" class="btn-pill w-full sm:w-auto">
+                            Start where you are.
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+                        </a>
+                        <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                            <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener" class="store-badge store-badge--apple w-full sm:w-auto justify-center">
+                                <i class="fab fa-apple text-3xl"></i>
+                                <div class="text-left">
+                                    <div class="text-[10px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
+                                    <div class="text-lg font-bold leading-none">App Store</div>
+                                </div>
+                            </a>
+                            <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener" class="store-badge store-badge--google w-full sm:w-auto justify-center">
+                                <i class="fab fa-google-play text-3xl"></i>
+                                <div class="text-left">
+                                    <div class="text-[10px] font-bold tracking-wider uppercase text-[#8B847C]">Get it on</div>
+                                    <div class="text-lg font-bold leading-none">Google Play</div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="flex items-center gap-x-5 gap-y-2 flex-wrap justify-center lg:justify-start text-[#8B847C] text-sm font-medium pt-1">
+                            <span class="inline-flex items-center gap-1.5"><i class="fas fa-circle-check text-[#6B8159]"></i> No judgement</span>
+                            <span class="inline-flex items-center gap-1.5"><i class="fas fa-circle-check text-[#6B8159]"></i> Any amount counts</span>
                         </div>
                     </div>
                 </div>
@@ -204,6 +205,27 @@
                     </div>
                 </div>
 
+                <!-- The flow, shown: build your next meal, then it's ready to cook -->
+                <div class="relative max-w-md sm:max-w-lg mx-auto mt-4 mb-12 reveal r-d2">
+                    <div class="phone-glow" style="background: radial-gradient(55% 50% at 50% 42%, rgba(233,75,31,0.20), rgba(156,181,138,0.14) 55%, transparent 78%);"></div>
+                    <div class="phone-duo relative">
+                        <figure class="phone-figure">
+                            <img src="assets/NextMeal.png" alt="The Next Meal screen: a flagship card that builds your next meal in three guided steps" class="phone-shot phone-shot--light">
+                            <figcaption>
+                                <span class="phone-caption-step" style="background:var(--orange-soft); color:var(--orange-ink);"><i class="fas fa-wand-magic-sparkles"></i> Three steps</span>
+                                <span class="block text-[#3A342E]">Build your next meal</span>
+                            </figcaption>
+                        </figure>
+                        <figure class="phone-figure">
+                            <img src="assets/RecipeResult.png" alt="A finished recipe in Just Cooked, with time, difficulty and a Cook this recipe button" class="phone-shot phone-shot--light">
+                            <figcaption>
+                                <span class="phone-caption-step" style="background:var(--sage-soft); color:var(--sage-ink);"><i class="fas fa-bowl-food"></i> Ready to cook</span>
+                                <span class="block text-[#3A342E]">A recipe, plated up</span>
+                            </figcaption>
+                        </figure>
+                    </div>
+                </div>
+
                 <p class="text-center text-[#8B847C] font-medium reveal max-w-xl mx-auto">
                     You see exactly what we will make before anything happens. Then it is one tap, and we take the deciding off your plate.
                 </p>
@@ -214,12 +236,19 @@
         <section class="py-20 md:py-28 relative">
             <div class="container mx-auto px-4 max-w-6xl">
                 <div class="grid lg:grid-cols-2 items-center gap-12 lg:gap-20">
-                    <!-- Phones -->
-                    <div class="relative reveal">
-                        <div class="absolute -inset-6 bg-gradient-to-tr from-[#9CB58A]/25 via-transparent to-orange-100/45 rounded-[3rem] blur-3xl"></div>
-                        <div class="relative flex justify-center items-start gap-4 sm:gap-6">
-                            <img src="assets/PhotoCook.png" alt="Cooking with what you already have" class="w-1/2 max-w-[12rem] h-auto rounded-[1.75rem] shadow-[0_22px_46px_rgba(26,24,21,0.18)] -rotate-3">
-                            <img src="assets/PhotoResult.png" alt="A meal made instead of a takeaway" class="w-1/2 max-w-[12rem] h-auto rounded-[1.75rem] shadow-[0_22px_46px_rgba(26,24,21,0.18)] rotate-3 mt-10">
+                    <!-- Phone: the takeaway savings tally -->
+                    <div class="relative reveal flex justify-center lg:justify-start">
+                        <div class="relative w-[14.5rem] sm:w-[16rem] lg:w-[17.5rem]">
+                            <div class="phone-glow" style="background: radial-gradient(58% 52% at 50% 42%, rgba(156,181,138,0.28), rgba(233,75,31,0.14) 55%, transparent 80%);"></div>
+                            <img src="assets/TakeawaySupportFeature.png" alt="The Just Cooked savings screen, tallying the money saved by cooking instead of ordering takeaway" class="phone-shot phone-shot--dark relative">
+                            <div class="float-chip absolute -right-4 top-10 hidden sm:flex">
+                                <span class="dot" style="background:#E4ECDC; color:#4A5C3D;"><i class="fas fa-piggy-bank"></i></span>
+                                <span class="text-xs font-semibold text-[#3A342E]">Saved by cooking</span>
+                            </div>
+                            <div class="float-chip absolute -left-4 bottom-14 hidden sm:flex">
+                                <span class="dot" style="background:#FBE3D2; color:#E94B1F;"><i class="fas fa-arrow-trend-up"></i></span>
+                                <span class="text-xs font-semibold text-[#3A342E]">It adds up</span>
+                            </div>
                         </div>
                     </div>
                     <!-- Copy -->
@@ -261,6 +290,27 @@
                     <p class="reveal r-d2 text-lg leading-relaxed" style="color:rgba(245,239,230,0.78);">
                         It is the one space in Just Cooked made just for the harder days. Seven gentle tools so far, picked for you based on what you share during setup, and your hub keeps growing.
                     </p>
+                </div>
+
+                <!-- The Support screens themselves (dark shots blend into this beat) -->
+                <div class="relative max-w-md sm:max-w-lg mx-auto mb-16 reveal r-d2">
+                    <div class="phone-glow" style="background: radial-gradient(55% 50% at 50% 45%, rgba(255,176,122,0.20), rgba(155,181,138,0.12) 55%, transparent 78%);"></div>
+                    <div class="phone-duo relative">
+                        <figure class="phone-figure">
+                            <img src="assets/SupportHero.png" alt="The Support home screen, with a panic button for the hardest moments and a takeaway savings summary" class="phone-shot phone-shot--dark">
+                            <figcaption style="color:rgba(245,239,230,0.82);">
+                                <span class="phone-caption-step" style="background:rgba(255,107,53,0.18); color:#FFB07A;"><i class="fas fa-hand-holding-heart"></i> Your toolbox</span>
+                                <span class="block">Support, when you need it</span>
+                            </figcaption>
+                        </figure>
+                        <figure class="phone-figure">
+                            <img src="assets/SupportFeaturesToggle.png" alt="The Support settings screen, where you switch on only the tools that help you" class="phone-shot phone-shot--dark">
+                            <figcaption style="color:rgba(245,239,230,0.82);">
+                                <span class="phone-caption-step" style="background:rgba(155,181,138,0.20); color:#C2D5A6;"><i class="fas fa-sliders"></i> Yours to set</span>
+                                <span class="block">Switch on only what helps</span>
+                            </figcaption>
+                        </figure>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
