@@ -73,7 +73,7 @@ export default async function handler(req, res) {
     const isIos = /iPhone|iPad|iPod/i.test(ua);
     const isAndroid = /Android/i.test(ua);
     const storeLink = isIos
-      ? 'https://apps.apple.com/app/just-cooked/id6741609869'
+      ? 'https://apps.apple.com/app/just-cooked/id6754169071'
       : isAndroid
       ? 'https://play.google.com/store/apps/details?id=com.justcooked.app'
       : 'https://www.justcooked.app/download';
@@ -351,7 +351,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   ${ogImage}
   <meta name="twitter:title" content="${name}" />
   <meta name="twitter:description" content="${desc || 'Shared on Just Cooked'}" />
-  <meta name="apple-itunes-app" content="app-id=6741609869, app-argument=${deepLink}" />
+  <meta name="apple-itunes-app" content="app-id=6754169071, app-argument=${deepLink}" />
   <link rel="canonical" href="${canonicalUrl}" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -597,7 +597,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       var isIos = /iPhone|iPad|iPod/i.test(ua);
       var isAndroid = /Android/i.test(ua);
       var STORE = isIos
-        ? 'https://apps.apple.com/app/just-cooked/id6741609869'
+        ? 'https://apps.apple.com/app/just-cooked/id6754169071'
         : isAndroid
         ? 'https://play.google.com/store/apps/details?id=com.justcooked.app'
         : 'https://www.justcooked.app/download';
