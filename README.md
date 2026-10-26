@@ -1,94 +1,63 @@
-# Just Cooked Website
+# Just Cooked website
 
-This is the official website for Just Cooked, an AI-powered cooking assistant app.
+The marketing site for Just Cooked, plus the public recipe-share page the app links to.
+Live at https://www.justcooked.app (Vercel, `vercel.json` handles clean URLs and the
+`/recipe/:shareId` rewrite).
 
-## Features
+> This branch (`redesign/proof-of-concept`) is a full visual redesign. The legal copy,
+> the recipe-share content and the app itself are unchanged.
 
-- Modern, responsive design
-- Smooth animations and transitions
-- Mobile-friendly layout
-- Optimized performance
-- SEO-friendly structure
+## Stack
 
-## Tech Stack
+No build step. Plain HTML, modern CSS and ES modules, with three libraries from CDNs:
 
-- HTML5
-- CSS3 (with Tailwind CSS)
-- JavaScript (Vanilla)
-- GitHub Pages for hosting
+| Library | Used for |
+|---|---|
+| [three.js](https://threejs.org) 0.170 | The 3D phone and clay shapes on the home page (`js/scene.js`) |
+| [GSAP](https://gsap.com) 3.12 + ScrollTrigger | Scroll-driven reveals, the pinned tools strip, word reveal |
+| [Lenis](https://lenis.darkroom.engineering) 1.1 | Smooth wheel scrolling on desktop (touch stays native) |
 
-## Setup Instructions
+Everything degrades: without JavaScript or WebGL the pages show static screenshots and
+plain content. `prefers-reduced-motion` turns the motion off.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/just-cook-website.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd just-cook-website
-   ```
-
-3. Create an `assets` folder and add the following images:
-   - `logo.png` - Just Cooked logo
-   - `app-mockup.png` - App interface mockup
-
-4. The website is ready to be deployed to GitHub Pages.
-
-## Development
-
-### Local Development
-
-1. Install a local server (e.g., Live Server in VS Code)
-2. Open the project in your preferred code editor
-3. Start the local server
-4. Make changes and see them reflected in real-time
-
-### File Structure
+## Files
 
 ```
-just-cook-website/
-├── index.html          # Main HTML file
-├── styles.css          # Custom styles
-├── script.js           # JavaScript functionality
-├── assets/            # Images and other assets
-│   ├── logo.png
-│   └── app-mockup.png
-└── README.md          # This file
+index.html            Home (hero, story, bento, savings, Support hub, CTA)
+faq.html support.html download.html 404.html
+terms.html privacy.html cookies.html disclaimer.html eula.html delete.html
+css/site.css          Design system: tokens from the V1.2c rebrand spec, components, pages
+js/site.js            Nav, smooth scroll, reveals, Next Meal story, FAQ/TOC helpers
+js/scene.js           Three.js scene (lazy-loaded by site.js on the home page only)
+api/recipe/[shareId].js   Vercel function that renders a shared recipe
+assets/screens/       Screen-only crops used as 3D phone textures
+assets/shots/         Framed phone shots (560w / 980w WebP) used as fallbacks
+assets/*.png          Raw app screenshots (source for the two folders above)
+scripts/build-assets.py   Regenerates assets/screens, assets/shots and the download QR
 ```
 
-## Deployment
+## How the 3D phone works
 
-The website is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+`js/scene.js` draws one phone on a fixed, transparent canvas. Any element with
+`data-phone-slot` is a landing spot: the phone sizes itself to the slot, follows it as it
+scrolls, and shows the screen named by `data-screen` (a key from `assets/screens`).
+`data-rot="ry,rx"` sets the resting angle. The `<img>` inside each slot is the fallback
+and is hidden once WebGL is running. The Next Meal section swaps `data-screen` on the
+slot as each step becomes active.
 
-### Manual Deployment
+## Editing a policy
 
-1. Push your changes to the repository
-2. Go to repository Settings > Pages
-3. Select the main branch as the source
-4. Save the changes
+Each legal page keeps its text as Markdown inside
+`<script type="text/markdown" id="policy-source">`. Replace that block and the page
+renders it, builds the table of contents and the section count on its own.
 
-## Maintenance
+## Updating app screenshots
 
-### Adding New Content
+Drop the new 1320x2868 screenshots into `assets/` with the same names, then run
+`python scripts/build-assets.py .` (needs `pip install pillow segno`).
 
-1. Edit the appropriate section in `index.html`
-2. Add any new styles to `styles.css`
-3. Add any new functionality to `script.js`
-4. Test thoroughly on different devices and browsers
+## Local preview
 
-### Updating Dependencies
-
-- Tailwind CSS is loaded via CDN, so it's always up to date
-- Font (Inter) is loaded via Google Fonts CDN
-
-## Contributing
-
-1. Create a new branch for your feature
-2. Make your changes
-3. Test thoroughly
-4. Submit a pull request
-
-## License
-
-This project is proprietary and confidential. All rights reserved. 
+Any static server works for the HTML pages, for example `npx serve .` or
+`python -m http.server`. Clean URLs (`/faq`) and the recipe route need Vercel:
+`vercel dev` with `SUPABASE_SERVICE_ROLE_KEY` set.

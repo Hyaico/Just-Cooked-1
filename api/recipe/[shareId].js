@@ -360,12 +360,20 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: #E7DDCB;
+      background: #F5EFE6;
       color: #1A1815;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
+    /* ── Marble counter behind the page (fixed, painted once) ── */
+    .bg { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(90% 70% at 20% 10%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(60% 50% at 82% 94%, rgba(251,227,210,0.45) 0%, rgba(251,227,210,0) 70%),
+        url('/assets/marble.svg') center / cover no-repeat,
+        linear-gradient(135deg, #FCF7EE 0%, #F2EBDA 55%, #E6DBC2 100%); }
 
     /* ── Notebook page (centred, lined) ── */
     .notebook {
@@ -378,7 +386,8 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
         repeating-linear-gradient(to bottom, transparent 0 24.9px, rgba(194,164,123,0.26) 24.9px 26px),
         linear-gradient(180deg, #FCF8F0 0%, #F1E7D3 100%);
       box-shadow: 0 0 50px rgba(26,24,21,0.10);
-      overflow: hidden;
+      overflow: clip;
+      border-inline: 1px solid rgba(224,213,194,0.6);
     }
     .notebook::before {
       content: ""; position: absolute; top: 0; bottom: 0; left: 13%;
@@ -386,27 +395,28 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     }
     .nb-inner { position: relative; z-index: 1; padding: 0 16px 130px; }
 
-    /* ── Topbar ── */
-    .topbar {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(252,248,240,0.82);
-      backdrop-filter: blur(18px) saturate(140%);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      border-bottom: 1px solid rgba(224,213,194,0.7);
-    }
+    /* ── Topbar: floating glass pill (matches the site nav) ── */
+    .topbar { position: sticky; top: 0; z-index: 100; padding: 10px 10px 0; pointer-events: none; }
     .topbar-inner {
-      max-width: 600px; margin: 0 auto; padding: 12px 16px;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      pointer-events: auto; max-width: 600px; margin: 0 auto; height: 56px;
+      padding: 0 8px 0 16px; border-radius: 18px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      background: rgba(251,246,236,0.72);
+      -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%);
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 10px 30px rgba(26,24,21,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
     }
     .brand { display: inline-flex; align-items: center; text-decoration: none; flex-shrink: 1; min-width: 0; }
-    .brand img { height: 30px; width: auto; display: block; }
+    .brand img { height: 24px; width: auto; display: block; }
     .topbar-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
     .icon-btn {
-      width: 44px; height: 44px; border-radius: 14px;
+      width: 42px; height: 42px; border-radius: 13px;
       background: rgba(255,253,248,0.9); border: 1px solid rgba(224,213,194,0.9);
       color: #7A2410; display: inline-flex; align-items: center; justify-content: center;
       cursor: pointer; box-shadow: 0 2px 6px rgba(26,24,21,0.06); position: relative;
+      transition: transform .15s, background .2s;
     }
+    .icon-btn:hover { background: #FBE3D2; }
     .icon-btn:active { transform: scale(0.95); }
     .copied-tip {
       position: absolute; top: 50px; right: 0; white-space: nowrap;
@@ -415,11 +425,13 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     }
     .copied-tip.show { opacity: 1; }
     .topbar-cta {
-      height: 44px; padding: 0 18px; border-radius: 999px;
+      height: 42px; padding: 0 16px; border-radius: 999px;
       background: #E94B1F; color: #FBF6EC; font-size: 14px; font-weight: 600;
       text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
       box-shadow: 0 6px 14px rgba(233,75,31,0.32); white-space: nowrap;
+      transition: background .2s, transform .15s;
     }
+    .topbar-cta:hover { background: #FF6B35; }
     .topbar-cta:active { transform: scale(0.97); }
 
     .stack { padding-top: 16px; }
@@ -546,11 +558,29 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     .detail-label { color: #5E7A47; font-size: 9.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
     .detail-value { color: #1A1815; font-size: 15px; font-weight: 700; }
 
-    footer { text-align: center; padding: 28px 24px; font-size: 13px; color: #8B847C; }
-    footer a { color: #E94B1F; text-decoration: none; font-weight: 600; }
+    /* ── Footer (site chrome, kept inside the notebook width) ── */
+    .foot { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 8px 20px 40px; text-align: center; border-top: 1px solid rgba(224,213,194,0.8); }
+    .foot::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(233,75,31,0.4), transparent); }
+    .foot-tag { margin-top: 30px; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.05; color: #1A1815; }
+    .foot-tag em { font-style: normal; color: #E94B1F; }
+    .foot-sub { margin-top: 8px; color: #8B847C; font-size: 13px; }
+    .foot-sub a { color: #E94B1F; text-decoration: none; font-weight: 600; }
+    .foot-stores { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+    .foot-store { display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 8px 16px 8px 14px; border-radius: 14px; text-decoration: none; line-height: 1.05; transition: transform .3s; }
+    .foot-store:hover { transform: translateY(-2px); }
+    .foot-store svg { width: 22px; height: 22px; flex: none; }
+    .foot-store small { display: block; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; opacity: .75; }
+    .foot-store strong { display: block; font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+    .foot-store.apple { background: #1A1815; color: #fff; box-shadow: 0 12px 24px rgba(26,24,21,0.08); }
+    .foot-store.google { background: #FBF6EC; color: #1A1815; border: 1px solid #E0D5C2; }
+    .foot-links { margin-top: 22px; display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 16px; font-size: 12px; font-weight: 600; }
+    .foot-links a { color: #8B847C; text-decoration: none; }
+    .foot-links a:hover { color: #E94B1F; }
+    .foot-legal { margin-top: 14px; font-size: 11px; color: #8B847C; }
   </style>
 </head>
 <body>
+  <div class="bg" aria-hidden="true"></div>
   <div class="notebook">
 
     <header class="topbar">
@@ -588,7 +618,16 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
       </div>
     </div>
 
-    <footer>Made with <a href="https://www.justcooked.app">Just Cooked</a>, your kitchen companion</footer>
+    <footer class="foot">
+      <p class="foot-tag">Not perfect. <em>Just cooked.</em></p>
+      <p class="foot-sub">Made with <a href="https://www.justcooked.app">Just Cooked</a>, your kitchen companion.</p>
+      <div class="foot-stores">
+        <a class="foot-store apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a>
+        <a class="foot-store google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a>
+      </div>
+      <div class="foot-links"><a href="https://www.justcooked.app/">Home</a><a href="https://www.justcooked.app/faq">FAQ</a><a href="https://www.justcooked.app/support">Support</a><a href="https://www.justcooked.app/terms">Terms</a><a href="https://www.justcooked.app/privacy">Privacy</a></div>
+      <p class="foot-legal">&copy; 2026 Hyaico Ltd. Just Cooked&trade; is a trademark of Hyaico Ltd.</p>
+    </footer>
   </div>
 
   <script>
@@ -667,17 +706,20 @@ function renderNotFound() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recipe Not Found &middot; Just Cooked</title>
   <style>
-    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#1A1815;}
-    h1{font-size:22px;font-weight:800;margin-bottom:8px;letter-spacing:-0.4px;}
-    p{color:#8B847C;margin-bottom:24px;font-size:15px;}
-    a{background:#E94B1F;color:#FBF6EC;border-radius:999px;padding:14px 28px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 8px 16px rgba(233,75,31,0.32);}
+    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 url('/assets/marble.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#1A1815;margin:0;}
+    .box{background:rgba(251,246,236,0.85);border:1px solid rgba(224,213,194,0.6);border-radius:28px;padding:40px 28px;max-width:420px;box-shadow:0 16px 33px rgba(26,24,21,0.13);}
+    .box img{height:26px;width:auto;margin:0 auto 22px;display:block;}
+    h1{font-size:26px;font-weight:800;margin:0 0 8px;letter-spacing:-0.6px;}
+    p{color:#8B847C;margin:0 0 24px;font-size:15px;line-height:1.5;}
+    a.btn{display:inline-block;background:#E94B1F;color:#FBF6EC;border-radius:999px;padding:15px 28px;text-decoration:none;font-weight:700;font-size:15px;box-shadow:0 8px 16px rgba(233,75,31,0.32);}
   </style>
 </head>
 <body>
-  <div>
+  <div class="box">
+    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" />
     <h1>Recipe not found</h1>
     <p>This link may have expired or been removed.</p>
-    <a href="https://www.justcooked.app">Visit Just Cooked</a>
+    <a class="btn" href="https://www.justcooked.app">Visit Just Cooked</a>
   </div>
 </body>
 </html>`;
@@ -691,8 +733,8 @@ function renderError(msg) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Error &middot; Just Cooked</title>
   <style>
-    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#3A342E;}
-    p{color:#8B847C;font-size:15px;}
+    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 url('/assets/marble.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#3A342E;margin:0;}
+    p{color:#8B847C;font-size:15px;background:rgba(251,246,236,0.85);border:1px solid rgba(224,213,194,0.6);border-radius:20px;padding:24px 28px;}
   </style>
 </head>
 <body><p>${msg}</p></body>
