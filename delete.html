@@ -2,114 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account & Data Deletion Policy - Just Cooked™</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Account &amp; Data Deletion Policy - Just Cooked™</title>
+    <meta name="description" content="How to delete your Just Cooked account, and what happens to your data.">
+    <meta name="theme-color" content="#F5EFE6">
+    <link rel="canonical" href="https://www.justcooked.app/delete">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Just Cooked">
+    <meta property="og:title" content="Account &amp; Data Deletion Policy - Just Cooked™">
+    <meta property="og:description" content="How to delete your Just Cooked account, and what happens to your data.">
+    <meta property="og:url" content="https://www.justcooked.app/delete">
+    <meta property="og:image" content="https://www.justcooked.app/assets/og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
-    <link rel="shortcut icon" href="/assets/Icon.svg">
     <link rel="apple-touch-icon" href="/assets/Icon.svg">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            content: ["./*.{html,js}"],
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        orange: { 50: '#FDF1EA', 100: '#FBE3D2', 200: '#F4B79A', 500: '#E94B1F', 600: '#CC3F18', 700: '#7A2410' }
-                    }
-                },
-            },
-        }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site.css">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script type="module" src="/js/site.js"></script>
+    <script type="speculationrules">
+    {"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/download"}},{"not":{"href_matches":"/recipe/*"}}]},"eagerness":"moderate"}]}
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="premium.css">
 </head>
-<body class="font-sans antialiased text-[#1A1815]">
-    <!-- Header -->
-    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="flex items-center group">
-                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
-            </a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="/" class="nav-link-premium">Home</a>
-                <a href="/faq" class="nav-link-premium">FAQ</a>
-                <a href="/support" class="nav-link-premium">Support</a>
-                <a href="/download" class="nav-cta">Get the app</a>
+<body>
+    <div class="bg" aria-hidden="true"><div class="bg__marble"></div><div class="bg__glow bg__glow--a"></div><div class="bg__glow bg__glow--b"></div><div class="bg__grain"></div></div>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="nav" data-nav>
+        <nav class="nav__bar" aria-label="Primary">
+            <a href="/" class="nav__brand" aria-label="Just Cooked home"><img src="/assets/JustCookIcon.svg" alt="Just Cooked" width="927" height="135"></a>
+            <ul class="nav__links" role="list"><li><a href="/">Home</a></li><li><a href="/faq">FAQ</a></li><li><a href="/support">Support</a></li></ul>
+            <div class="nav__actions">
+                <a href="/download" class="btn btn--sm nav__cta">Get the app</a>
+                <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
             </div>
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
-                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
         </nav>
-        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
-            <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
-                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
-                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
-                <a href="/download" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Download</a>
-            </div>
-        </div>
     </header>
-
-    <main class="policy-page">
-        <div class="policy-card reveal">
-            <!-- Header Section -->
-            <div class="policy-head">
-                <h1>Account & Data Deletion Policy</h1>
-                <p class="policy-updated">Last updated: 11 June 2026</p>
-            </div>
-
-            <!-- Content Card -->
-            <div>
-                <div class="policy-body" id="policy-body"></div>
-            </div>
+    <div class="menu" id="menu">
+        <div class="menu__links"><a href="/">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/faq">FAQ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/support">Support <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/download">Get the app <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="menu__foot">
+            <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
+            <div class="menu__legal"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/disclaimer">Disclaimer</a><a href="/eula">EULA</a><a href="/delete">Account deletion</a></div>
         </div>
+    </div>
+    <main id="main">
+        <section class="page-hero" style="padding-bottom:24px">
+            <div class="container">
+                <p class="eyebrow eyebrow--muted">Legal</p>
+                <h1>Account &amp; Data Deletion Policy</h1>
+                <p class="paper__meta"><span>Last updated: 11 June 2026</span><span data-section-count></span></p>
+                <div class="legal-links"><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/cookies">Cookie & Tracking Policy</a><a href="/disclaimer">Medical, Allergy, AI & Support Disclaimer</a><a href="/eula">End User Licence Agreement</a><a href="/delete" aria-current="page">Account & Data Deletion Policy</a></div>
+            </div>
+        </section>
+        <section class="section-tight" style="padding-bottom:40px">
+            <div class="container policy">
+                <aside class="toc-desktop" aria-label="On this page">
+                    <p class="toc__title">On this page</p>
+                    <nav class="toc" data-toc></nav>
+                </aside>
+                <div>
+                    <details class="toc-mobile">
+                        <summary>On this page <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
+                        <nav class="toc" data-toc></nav>
+                    </details>
+                    <article class="paper mt-3">
+                        <div class="policy-body" id="policy-body"></div>
+                    </article>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-14">
-                <div class="flex flex-col space-y-4 max-w-xs">
-                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="footer-logo">
-                    <p class="text-[#8B847C] text-sm font-medium leading-relaxed">
-                        Helping you find your way back to food, one small meal at a time.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-x-8 gap-y-3">
-                    <a href="/" class="footer-link">Home</a>
-                    <a href="/faq" class="footer-link">FAQ</a>
-                    <a href="/support" class="footer-link">Support</a>
-                    <a href="/download" class="footer-link">Download</a>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-[#E0D5C2]">
-                <p class="text-[#8B847C] text-xs font-medium order-2 md:order-1">
-                    © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
-                </p>
-                <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 order-1 md:order-2">
-                    <a href="/terms" class="footer-sublink">Terms</a>
-                    <a href="/privacy" class="footer-sublink">Privacy</a>
-                    <a href="/cookies" class="footer-sublink">Cookies</a>
-                    <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
-                    <a href="/eula" class="footer-sublink">EULA</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
     <!-- ============================================================
-         POLICY SOURCE — paste a new policy here as plain Markdown.
+         POLICY SOURCE: paste a new policy here as plain Markdown.
          Replace everything between the two markdown <script> tags below.
          "## " = section, "- " or "1. " = list, "[text](url)" = link,
          "---" = divider, "**bold**". No HTML needed; it renders itself.
          ============================================================ -->
-    <script type="text/markdown" id="policy-source">
+<script type="text/markdown" id="policy-source">
 This page explains how to delete your **Just Cooked™** account, what we delete, what we are required to keep, and how long it takes. It forms part of our Legal Documents alongside the **Privacy Policy** and **Terms of Use**.
 
 ---
@@ -206,6 +180,36 @@ Contact us at: [support@justcooked.app](mailto:support@justcooked.app)
         });
       })();
     </script>
-    <script src="script.js"></script>
+    <footer class="footer footer--compact">
+        <div class="container">
+            <div class="footer__top">
+                <p class="footer__tag" data-reveal>Not perfect. <em>Just cooked.</em></p>
+                <div data-reveal><div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div></div>
+            </div>
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" width="927" height="135">
+                    <p>Helping you find your way back to food, one small meal at a time.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>Explore</h4>
+                    <ul role="list"><li><a href="/">Home</a></li><li><a href="/faq">FAQ</a></li><li><a href="/support">Support</a></li><li><a href="/download">Download</a></li></ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Legal</h4>
+                    <ul role="list"><li><a href="/terms">Terms of Use</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie &amp; Tracking Policy</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/eula">EULA</a></li><li><a href="/delete">Account deletion</a></li></ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Contact</h4>
+                    <ul role="list"><li><a href="mailto:support@justcooked.app">support@justcooked.app</a></li><li><a href="tel:+443301333988">+44 330 133 3988</a></li></ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 Hyaico Ltd. All Rights Reserved. Just Cooked&trade; is a trademark of Hyaico Ltd.</p>
+                <p>Made with care in the UK.</p>
+            </div>
+        </div>
+        <div class="footer__big" aria-hidden="true">Just Cooked</div>
+    </footer>
 </body>
 </html>

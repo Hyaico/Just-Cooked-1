@@ -2,173 +2,113 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <title>Download Just Cooked™</title>
-
-    <!-- Device Detection & Redirect Script -->
+    <meta name="description" content="Get Just Cooked on the App Store or Google Play.">
+    <meta name="theme-color" content="#F5EFE6">
+    <link rel="canonical" href="https://www.justcooked.app/download">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Just Cooked">
+    <meta property="og:title" content="Download Just Cooked™">
+    <meta property="og:description" content="Get Just Cooked on the App Store or Google Play.">
+    <meta property="og:url" content="https://www.justcooked.app/download">
+    <meta property="og:image" content="https://www.justcooked.app/assets/og.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
+    <link rel="apple-touch-icon" href="/assets/Icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/site.css">
+    <!-- Device detection: phones go straight to their store; computers see this page. -->
     <script>
         (function() {
             var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            // iPadOS 13+ uses Macintosh as platform, so check for touch points
             var isIOS = (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             var isAndroid = /android/i.test(userAgent);
-
-            var appleUrl = 'https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071';
-            var androidUrl = 'https://play.google.com/store/apps/details?id=com.justcooked.app';
-
-            // Immediately redirect mobile users
-            if (isIOS) {
-                window.location.replace(appleUrl);
-            } else if (isAndroid) {
-                window.location.replace(androidUrl);
-            }
-            // If neither, the script finishes and the desktop page loads normally
+            if (isIOS) { window.location.replace('https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071'); }
+            else if (isAndroid) { window.location.replace('https://play.google.com/store/apps/details?id=com.justcooked.app'); }
         })();
     </script>
-
-    <link rel="icon" type="image/svg+xml" href="/assets/Icon.svg">
-    <link rel="shortcut icon" href="/assets/Icon.svg">
-    <link rel="apple-touch-icon" href="/assets/Icon.svg">
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            content: ["./*.{html,js}"],
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        orange: {
-                            50: '#FDF1EA',
-                            100: '#FBE3D2',
-                            200: '#F4B79A',
-                            500: '#E94B1F',
-                            600: '#CC3F18',
-                            700: '#7A2410',
-                        },
-                        surface: {
-                            50: '#F9FAFB',
-                            100: '#F3F4F6',
-                            200: '#E5E7EB',
-                        }
-                    },
-                    animation: {
-                        'fade-up': 'fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                    },
-                    keyframes: {
-                        fadeUp: {
-                            '0%': { opacity: 0, transform: 'translateY(20px)' },
-                            '100%': { opacity: 1, transform: 'translateY(0)' },
-                        }
-                    }
-                },
-            },
-        }
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script type="module" src="/js/site.js"></script>
+    <script type="speculationrules">
+    {"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/download"}},{"not":{"href_matches":"/recipe/*"}}]},"eagerness":"moderate"}]}
     </script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/styles.css">
-    <link rel="stylesheet" href="/premium.css">
 </head>
-<body class="font-sans antialiased text-[#1A1815] min-h-screen flex flex-col">
-    <!-- Header -->
-    <header class="fixed w-full z-50 transition-all duration-300 glass-nav">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="/" class="flex items-center group">
-                <img src="/assets/JustCookIcon.svg" alt="Just Cooked" class="brand-logo">
-            </a>
-            <!-- Desktop Navigation -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="/" class="nav-link-premium">Home</a>
-                <a href="/faq" class="nav-link-premium">FAQ</a>
-                <a href="/support" class="nav-link-premium">Support</a>
-                <a href="/download" class="nav-cta">Get the app</a>
+<body>
+    <div class="bg" aria-hidden="true"><div class="bg__marble"></div><div class="bg__glow bg__glow--a"></div><div class="bg__glow bg__glow--b"></div><div class="bg__grain"></div></div>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="progress" aria-hidden="true"></div>
+    <header class="nav" data-nav>
+        <nav class="nav__bar" aria-label="Primary">
+            <a href="/" class="nav__brand" aria-label="Just Cooked home"><img src="/assets/JustCookIcon.svg" alt="Just Cooked" width="927" height="135"></a>
+            <ul class="nav__links" role="list"><li><a href="/">Home</a></li><li><a href="/faq">FAQ</a></li><li><a href="/support">Support</a></li></ul>
+            <div class="nav__actions">
+                <a href="/download" class="btn btn--sm nav__cta">Get the app</a>
+                <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu"><span></span><span></span></button>
             </div>
-            <!-- Mobile Navigation Button -->
-            <button class="md:hidden mobile-menu-button p-2 rounded-lg hover:bg-[#EDE5D6] transition-colors" aria-label="Open menu">
-                <svg class="w-6 h-6 text-[#3A342E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
         </nav>
-        <!-- Mobile Navigation Menu -->
-        <div class="md:hidden mobile-menu hidden border-t border-[#E0D5C2] bg-[#FBF6EC]/95 backdrop-blur-lg">
-            <div class="px-4 py-2 space-y-1">
-                <a href="/" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Home</a>
-                <a href="/faq" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">FAQ</a>
-                <a href="/support" class="block py-3 text-[#3A342E] hover:text-orange-500 font-medium px-2">Support</a>
-                <a href="/download" class="block py-3 text-orange-500 font-medium bg-orange-50/50 rounded-lg px-2">Download</a>
-            </div>
-        </div>
     </header>
-
-    <!-- Main Content (Desktop Fallback) -->
-    <main class="flex-1 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-        <!-- Abstract Background -->
-        <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
-            <div class="hero-glow top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[44rem] h-[44rem]" style="background: radial-gradient(circle, rgba(233,75,31,0.14) 0%, transparent 70%);"></div>
+    <div class="menu" id="menu">
+        <div class="menu__links"><a href="/">Home <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/faq">FAQ <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/support">Support <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="/download" aria-current="page">Get the app <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+        <div class="menu__foot">
+            <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
+            <div class="menu__legal"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/disclaimer">Disclaimer</a><a href="/eula">EULA</a><a href="/delete">Account deletion</a></div>
         </div>
-
-        <div class="relative z-10 text-center max-w-2xl w-full mx-auto px-6 py-16 sm:py-20 bg-[#FBF6EC]/80 backdrop-blur-xl border border-[#E0D5C2] shadow-[0_22px_46px_rgba(26,24,21,0.16)] rounded-[2.5rem] animate-fade-up opacity-0" style="animation-delay: 0.1s;">
-
-            <div class="inline-flex items-center justify-center w-24 h-24 mb-8 bg-[#FBF6EC] rounded-3xl shadow-[0_8px_16px_rgba(26,24,21,0.08)] border border-[#E0D5C2]">
-                <img src="/assets/Icon.svg" alt="Just Cooked app icon" class="w-16 h-16 object-contain">
-            </div>
-
-            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-5 text-[#1A1815]">
-                Get Just Cooked™
-            </h1>
-
-            <p class="text-lg text-[#3A342E] font-medium mb-10 max-w-md mx-auto leading-relaxed">
-                You are on a computer right now. Open this page on your phone, or grab the app from your store below.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <!-- App Store Button -->
-                <a href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener" class="store-badge store-badge--apple w-full sm:w-auto justify-center">
-                    <i class="fab fa-apple text-3xl"></i>
-                    <div class="text-left">
-                        <div class="text-[10px] font-medium tracking-wider uppercase opacity-80">Download on the</div>
-                        <div class="text-lg font-bold leading-none">App Store</div>
+    </div>
+    <main id="main">
+        <section class="download">
+            <div class="container container--narrow">
+                <div class="card card--solid download__card" data-reveal>
+                    <div>
+                        <div class="download__icon"><img src="/assets/Icon.svg" alt="" width="84" height="84"></div>
+                        <p class="eyebrow">Get the app</p>
+                        <h1 class="h2">Get Just Cooked&trade;</h1>
+                        <p class="lede mt-3">You are on a computer right now. Open this page on your phone, or grab the app from your store below.</p>
+                        <div class="mt-4"><div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div></div>
+                        <p class="download__meta">Available for iOS 15.0+ and Android 8.0+</p>
                     </div>
-                </a>
-
-                <!-- Google Play Button -->
-                <a href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener" class="store-badge store-badge--google w-full sm:w-auto justify-center">
-                    <i class="fab fa-google-play text-3xl"></i>
-                    <div class="text-left">
-                        <div class="text-[10px] font-bold tracking-wider uppercase text-[#8B847C]">Get it on</div>
-                        <div class="text-lg font-bold leading-none">Google Play</div>
+                    <div class="qr">
+                        <img src="/assets/qr-download.svg" alt="QR code that opens the Just Cooked download page" width="168" height="168">
+                        <small>Point your phone&rsquo;s camera here</small>
                     </div>
-                </a>
+                </div>
             </div>
-
-            <div class="mt-10 text-sm text-[#8B847C] font-medium">
-                Available for iOS 15.0+ and Android 8.0+
-            </div>
-        </div>
+        </section>
     </main>
-
-    <!-- Footer -->
-    <footer class="site-footer mt-auto relative z-10 text-center" style="padding: 40px 0 32px;">
-        <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-4">
-            <a href="/" class="footer-sublink">Home</a>
-            <a href="/faq" class="footer-sublink">FAQ</a>
-            <a href="/support" class="footer-sublink">Support</a>
-            <a href="/terms" class="footer-sublink">Terms</a>
-            <a href="/privacy" class="footer-sublink">Privacy</a>
-            <a href="/cookies" class="footer-sublink">Cookies</a>
-            <a href="/disclaimer" class="footer-sublink">Disclaimer</a>
-            <a href="/eula" class="footer-sublink">EULA</a>
+    <footer class="footer footer--compact">
+        <div class="container">
+            <div class="footer__top">
+                <p class="footer__tag" data-reveal>Not perfect. <em>Just cooked.</em></p>
+                <div data-reveal><div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div></div>
+            </div>
+            <div class="footer__grid">
+                <div class="footer__brand">
+                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" width="927" height="135">
+                    <p>Helping you find your way back to food, one small meal at a time.</p>
+                </div>
+                <div class="footer__col">
+                    <h4>Explore</h4>
+                    <ul role="list"><li><a href="/">Home</a></li><li><a href="/faq">FAQ</a></li><li><a href="/support">Support</a></li><li><a href="/download">Download</a></li></ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Legal</h4>
+                    <ul role="list"><li><a href="/terms">Terms of Use</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie &amp; Tracking Policy</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/eula">EULA</a></li><li><a href="/delete">Account deletion</a></li></ul>
+                </div>
+                <div class="footer__col">
+                    <h4>Contact</h4>
+                    <ul role="list"><li><a href="mailto:support@justcooked.app">support@justcooked.app</a></li><li><a href="tel:+443301333988">+44 330 133 3988</a></li></ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2026 Hyaico Ltd. All Rights Reserved. Just Cooked&trade; is a trademark of Hyaico Ltd.</p>
+                <p>Made with care in the UK.</p>
+            </div>
         </div>
-        <p class="text-[#8B847C] text-xs font-medium">
-            © 2026 Hyaico Ltd. All Rights Reserved. Just Cooked™ is a trademark of Hyaico Ltd.
-        </p>
+        <div class="footer__big" aria-hidden="true">Just Cooked</div>
     </footer>
-
-    <script src="/script.js"></script>
 </body>
 </html>
