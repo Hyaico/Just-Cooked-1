@@ -58,6 +58,11 @@ Drop the new 1320x2868 screenshots into `assets/` with the same names, then run
 
 ## Local preview
 
-Any static server works for the HTML pages, for example `npx serve .` or
-`python -m http.server`. Clean URLs (`/faq`) and the recipe route need Vercel:
-`vercel dev` with `SUPABASE_SERVICE_ROLE_KEY` set.
+```
+node scripts/preview.mjs
+```
+
+Then open http://localhost:4173. The script also prints an address for your phone on the
+same Wi-Fi, and serves a sample recipe at `/recipe/demo`. It mirrors what Vercel does in
+production (clean URLs and the recipe route) with no dependencies. To run the recipe route
+against live data use `vercel dev` with `SUPABASE_SERVICE_ROLE_KEY` set.
