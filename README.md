@@ -44,15 +44,17 @@ scripts/build-assets.py   Regenerates assets/screens, assets/shots and the downl
 The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
 page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
 place: hero, three steps around the centred phone, then the wish: the phone fades and a
-speech bubble says "I wish there was support made for me." Scrolling on sends a shooting
-star across the stage from left to right on its own clock (the `flight` timeline in
-`initPlay`, started by a ScrollTrigger rather than scrubbed, so a quick scroll never rushes
-it); the night sky is painted in behind the star by a soft mask on `.play__night` whose
-edge (`--sweep`) rides the star's head, the bubble lifts away as the star reaches it, and
-once the star has crossed the hub's words land in the night ("Introducing the Support hub",
-"Support, for everything food touches.", "Support made for you."). Then the phone returns
-with the Support screen and each of its two screens gets its own message (`.hub--a`,
-`.hub--b`). For the finale the cream page comes back as a day sheet (`.play__sheet`) with
+speech bubble types out "I wish there was support made for me." letter by letter (the
+`typing` timeline, real time). Scrolling on sends a shooting star across the stage from
+off the left edge to off the right on its own clock (the `flight` timeline, started by a
+ScrollTrigger rather than scrubbed, so a quick scroll never rushes it); the night sky is
+painted in behind the star by a soft mask on `.play__night` whose edge (`--sweep`) rides
+the star's head, the bubble lifts away as the star reaches it, and once the star has
+crossed the hub's words land in the night ("Introducing the Support hub", "Support, for
+everything food touches.", "Support made for you."). Then the phone returns with the
+Support screen and each of its two screens gets its own message (`.hub--a`, `.hub--b`).
+Snapping between scenes is deliberately slow (0.9 to 1.7 s, with a 1.1 s scrub) so each
+scene's entrance has room to play out. For the finale the cream page comes back as a day sheet (`.play__sheet`) with
 one curved edge over the night: the phone sits on the line between the two worlds and the
 words sit on the cream. While the night is on screen the nav bar turns to night glass
 (`.nav.is-night`, with the `theme-color` meta to match). Each scene is a `.scene` block;
@@ -70,9 +72,10 @@ stage-fraction points, `path`).
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which
-screen to show, resting angle, how visible the props are). The phone turns by how far the
-mouse or finger is from the phone itself (half a viewport away is a full turn), follows the
-gyroscope on Android, and can be dragged to spin. The food and kitchen models only react
+screen to show, resting angle, how visible the props are). The phone turns to face the
+mouse or finger: from its resting pose it eases to the same full turn on either side,
+reached at the screen's edge on that side, so a phone that rests angled one way still turns
+just as far the other way. It follows the gyroscope on Android and can be dragged to spin. The food and kitchen models only react
 when the mouse is over them; their positions are
 declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`), anchored to the phone, the text block or the stage.
 

@@ -109,6 +109,31 @@ function splitWords(root) {
   return words;
 }
 
+/* ---------------------------------------------------------------- letter splitting (words stay whole for wrapping; each letter gets its own span) */
+function splitChars(root) {
+  const chars = [];
+  const walk = (node) => {
+    [...node.childNodes].forEach((child) => {
+      if (child.nodeType === 3) {
+        const parts = child.textContent.split(/(\s+)/);
+        const frag = document.createDocumentFragment();
+        parts.forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
+          const word = document.createElement('span');
+          word.className = 'wd';
+          [...part].forEach((c) => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; word.appendChild(s); chars.push(s); });
+          frag.appendChild(word);
+        });
+        child.replaceWith(frag);
+      } else if (child.nodeType === 1) walk(child);
+    });
+  };
+  walk(root);
+  root.classList.add('is-split');
+  return chars;
+}
+
 /* ---------------------------------------------------------------- reveals (interior pages) */
 function initReveals() {
   const els = document.querySelectorAll('[data-reveal], [data-reveal-stagger], [data-split]:not([data-hero])');
@@ -175,7 +200,7 @@ function initPlay() {
   const wish = q('.wish');
   const wishBox = q('.wish__box');
   const wishText = q('.wish__text');
-  const wishWords = wishText ? splitWords(wishText) : [];
+  const wishChars = wishText ? splitChars(wishText) : []; // typed in one letter at a time, in real time
   const dlBlock = q('[data-scene="download"] .scene__block');
   const dlFoot = q('[data-scene="download"] .play__foot');
   const idx = (key) => Math.max(0, SCREENS.indexOf(key));
@@ -218,13 +243,14 @@ function initPlay() {
     gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
     if (wish) gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16, transformOrigin: '18% 100%' });
     if (wishBox) gsap.set(wishBox, { autoAlpha: 1, scale: 1, y: 0, transformOrigin: '50% 60%' });
+    if (wishChars.length) gsap.set(wishChars, { opacity: 0 });
     gsap.set([hubA, hubB, hubAside].filter(Boolean), { autoAlpha: 0, y: 20 });
     gsap.set(goals, { autoAlpha: 0, y: 14, scale: 0.96 });
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
     // the star's arc across the stage (start, control, end as stage fractions): in from the left, a gentle dip, out to the right
     const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
-    Object.assign(starState, { active: 0, t: 0, alpha: 1, path: desktop ? [[-0.08, 0.3], [0.5, 0.56], [1.08, 0.42]] : [[-0.1, 0.3], [0.5, 0.52], [1.1, 0.44]] });
+    Object.assign(starState, { active: 0, t: 0, alpha: 1, path: desktop ? [[-0.2, 0.3], [0.5, 0.56], [1.32, 0.4]] : [[-0.32, 0.3], [0.5, 0.52], [1.42, 0.44]] }); // well past both edges, so it arrives from and leaves off screen
     if (window.__jcStar) window.__jcStar.relayout();
     if (starCanvas) gsap.set(starCanvas, { autoAlpha: 0 });
     if (sheet) gsap.set(sheet, { autoAlpha: 0, xPercent: desktop ? 100 : 0, yPercent: desktop ? 0 : 100 });
@@ -236,8 +262,9 @@ function initPlay() {
     const tl = gsap.timeline({
       defaults: { ease: 'power2.inOut' },
       scrollTrigger: {
-        trigger: play, start: 'top top', end: 'bottom bottom', scrub: 0.8,
-        snap: location.search.includes('nosnap') ? false : { snapTo: 'labelsDirectional', duration: { min: 0.25, max: 0.7 }, delay: 0.08, ease: 'power1.inOut' },
+        // an unhurried scrub and slow snaps, so every scene's entrance has room to play out
+        trigger: play, start: 'top top', end: 'bottom bottom', scrub: 1.1,
+        snap: location.search.includes('nosnap') ? false : { snapTo: 'labelsDirectional', duration: { min: 0.9, max: 1.7 }, delay: 0.12, ease: 'power2.inOut' },
       },
     });
 
@@ -270,7 +297,7 @@ function initPlay() {
     tl.to(dusk, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(fade, { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, ts - 0.1);
     if (wish) tl.to(wish, { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' }, ts + 0.4);
-    if (wishWords.length) tl.from(wishWords, { yPercent: 110, opacity: 0, duration: 0.5, stagger: 0.05, ease: 'power3.out', immediateRender: false }, ts + 0.75);
+    const tType = ts + 0.6; // scrolling past here types the wish out, letter by letter, in real time (see below)
     tl.addLabel('wish', ts + 1.9);
     tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 2.0);
     // ── the star: scrolling on from the wish sends a shooting star across the stage on its own clock (the flight
@@ -327,24 +354,28 @@ function initPlay() {
     };
     if (starCanvas) flight.set(starCanvas, { autoAlpha: 1 }, 0);
     flight.set(starState, { active: 1 }, 0);
-    flight.fromTo(starState, { t: 0 }, { t: 1, duration: 3.2, ease: 'sine.inOut', onUpdate: () => sweepTo(starState.t) }, 0);
-    if (wishBox) flight.to(wishBox, { autoAlpha: 0, scale: 0.92, y: -22, duration: 0.55, ease: 'power2.in' }, 1.15); // the bubble lifts away as the star reaches it
-    if (glow) flight.to(glow, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, 1.3);
-    flight.to(stars, { opacity: 1, duration: 1.5, ease: 'sine.inOut' }, 2.0);
-    flight.call(() => { if (tl.time() < ts + 4.5) gsap.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out', overwrite: 'auto' }); }, null, 2.6);
-    flight.call(() => night.style.setProperty('--sweep', '150%'), null, 3.25);
-    flight.set(starState, { active: 0 }, 4.0);
-    if (starCanvas) flight.set(starCanvas, { autoAlpha: 0 }, 4.0);
+    flight.fromTo(starState, { t: 0 }, { t: 1, duration: 3.8, ease: 'sine.inOut', immediateRender: false, onUpdate: () => sweepTo(starState.t) }, 0);
+    if (wishBox) flight.to(wishBox, { autoAlpha: 0, scale: 0.92, y: -22, duration: 0.55, ease: 'power2.in' }, 1.45); // the bubble lifts away as the star reaches it
+    if (glow) flight.to(glow, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, 1.5);
+    flight.to(stars, { opacity: 1, duration: 1.5, ease: 'sine.inOut' }, 2.2);
+    flight.call(() => { if (tl.time() < ts + 4.5) gsap.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out', overwrite: 'auto' }); }, null, 3.0);
+    flight.call(() => night.style.setProperty('--sweep', '150%'), null, 3.85);
+    flight.set(starState, { active: 0 }, 4.6);
+    if (starCanvas) flight.set(starCanvas, { autoAlpha: 0 }, 4.6);
     const resetFlight = () => {
       flight.pause(0);
       night.style.setProperty('--sweep', '-20%');
       if (tl.time() < ts + 4.5) gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
     };
-    const flightAt = () => { const s = tl.scrollTrigger; return s.start + (s.end - s.start) * (tStar / tl.duration()); };
-    const flightTrigger = ScrollTrigger.create({ start: flightAt, end: () => flightAt() + 2, onEnter: () => flight.play(0), onLeaveBack: resetFlight });
+    const scrollAt = (time) => { const s = tl.scrollTrigger; return s.start + (s.end - s.start) * (time / tl.duration()); };
+    const flightTrigger = ScrollTrigger.create({ start: () => scrollAt(tStar), end: () => scrollAt(tStar) + 2, onEnter: () => flight.play(0), onLeaveBack: resetFlight });
+    // the typewriter: the wish is typed out letter by letter in real time once the bubble is up
+    const typing = gsap.timeline({ paused: true });
+    if (wishChars.length) typing.to(wishChars, { opacity: 1, duration: 0.01, stagger: 0.055, ease: 'none' }, 0.1);
+    const typingTrigger = ScrollTrigger.create({ start: () => scrollAt(tType), end: () => scrollAt(tType) + 2, onEnter: () => typing.play(0), onLeaveBack: () => typing.pause(0) });
 
     const go = (label) => window.scrollTo({ top: tl.scrollTrigger.labelToScroll(label), behavior: 'smooth' });
-    window.__jcPlay = { tl, go, flight }; // for the screenshot tooling
+    window.__jcPlay = { tl, go, flight, typing }; // for the screenshot tooling
     const buttons = [...play.querySelectorAll('[data-play-go]')];
     const handlers = buttons.map((b) => { const h = () => go(b.dataset.playGo); b.addEventListener('click', h); return [b, h]; });
 
@@ -352,6 +383,8 @@ function initPlay() {
       handlers.forEach(([b, h]) => b.removeEventListener('click', h));
       flightTrigger.kill();
       flight.kill();
+      typingTrigger.kill();
+      typing.kill();
       tl.scrollTrigger && tl.scrollTrigger.kill();
       tl.kill();
       setNight(false);

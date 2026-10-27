@@ -546,12 +546,13 @@
 
   /* the wish: a soft speech bubble in the middle of the stage, the thing someone says before the star */
   .scene--wish { justify-content: center; padding: 0 16px; }
-  .wish { max-width: min(88vw, 540px); }
-  .wish__box { position: relative; padding: 24px 30px 26px; border-radius: 30px; background: #FFFDF9; color: var(--ink); text-align: center;
-    box-shadow: 0 24px 60px rgba(60, 40, 120, 0.18), 0 2px 6px rgba(60, 40, 120, 0.08), inset 0 1px 0 #FFFFFF; }
-  .wish__tail { position: absolute; left: 46px; bottom: -22px; width: 40px; height: 28px; color: #FFFDF9; }
-  .wish__text { font-size: clamp(1.3rem, 1rem + 1.5vw, 2rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.22; text-wrap: balance; }
+  .wish { width: min(92vw, 760px); }
+  .wish__box { position: relative; padding: 28px 30px 30px; border-radius: 34px; background: #FFFDF9; color: var(--ink); text-align: center;
+    box-shadow: 0 28px 70px rgba(60, 40, 120, 0.2), 0 2px 6px rgba(60, 40, 120, 0.08), inset 0 1px 0 #FFFFFF; }
+  .wish__tail { position: absolute; left: 50px; bottom: -24px; width: 44px; height: 31px; color: #FFFDF9; }
+  .wish__text { font-size: clamp(1.55rem, 1.05rem + 2.4vw, 2.9rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; text-wrap: balance; }
   .wish__text em { color: #5A4EC8; }
+  .wish__text .ch { display: inline; }
 
   /* support title: the words land in the middle of the night once the star has crossed */
   .scene--title { justify-content: center; padding: 0 16px; }
@@ -635,8 +636,8 @@
     .scene--title { justify-content: center; }
     .scene--title .scene__block { width: min(80vw, 900px); text-align: center; }
     .scene--wish { justify-content: center; }
-    .wish__box { padding: 30px 40px 32px; border-radius: 36px; }
-    .wish__tail { left: 60px; }
+    .wish__box { padding: 40px 56px 44px; border-radius: 44px; }
+    .wish__tail { left: 72px; }
     .scene--title p { margin-inline: auto; }
     .scene--hub .scene__block { width: 30vw; max-width: 520px; }
     .scene--hub .hub > p:not(.eyebrow) { margin-inline: 0; }

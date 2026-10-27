@@ -446,11 +446,14 @@ export async function start(canvas, opts = {}) {
     const e = easeOut(intro);
 
     const r = slot.getBoundingClientRect();
-    // the tilt follows how far the pointer is from the phone itself (half a viewport away = full turn), so it
-    // turns the same amount either way wherever the phone rests
+    // the phone turns to face the pointer: how far the pointer is from the phone, measured against the room left
+    // between the phone and the screen's edge on that side, so the full turn is reached at either edge wherever
+    // the phone rests
     const useGyro = !touch.active && !fine && gyro.on;
-    const relX = pointer.has ? clamp((pointer.cx - (r.left + r.width / 2)) / (vw * 0.5), -1, 1) : 0;
-    const relY = pointer.has ? clamp((pointer.cy - (r.top + r.height / 2)) / (vh * 0.5), -1, 1) : 0;
+    const pcx = r.left + r.width / 2, pcy = r.top + r.height / 2;
+    const dxp = pointer.cx - pcx, dyp = pointer.cy - pcy;
+    const relX = pointer.has ? clamp(dxp / Math.max(dxp >= 0 ? vw - pcx : pcx, 40), -1, 1) : 0;
+    const relY = pointer.has ? clamp(dyp / Math.max(dyp >= 0 ? vh - pcy : pcy, 40), -1, 1) : 0;
     pointer.x = lerp(pointer.x, useGyro ? gyro.x * 0.7 : relX, kf(0.16));
     pointer.y = lerp(pointer.y, useGyro ? gyro.y * 0.7 : relY, kf(0.16));
     if (!drag.active) { drag.ry = lerp(drag.ry, 0, kf(0.07)); drag.rx = lerp(drag.rx, 0, kf(0.07)); }
@@ -462,8 +465,12 @@ export async function start(canvas, opts = {}) {
 
     const baseRy = play ? play.ry : slotRot[0] || 0;
     const baseRx = play ? play.rx : slotRot[1] || 0;
-    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.36 + drag.ry) * e, kf(0.18));
-    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.22 + drag.rx) * e, kf(0.18));
+    // from its resting pose the phone eases toward the same full turn on either side, so a phone that rests
+    // angled one way still turns just as far the other way
+    const faceY = pointer.x >= 0 ? lerp(baseRy, 0.55, pointer.x) : lerp(baseRy, -0.55, -pointer.x);
+    const faceX = pointer.y >= 0 ? lerp(baseRx, -0.24, pointer.y) : lerp(baseRx, 0.24, -pointer.y);
+    state.ry = lerp(state.ry, (faceY + drag.ry) * e, kf(0.18));
+    state.rx = lerp(state.rx, (faceX + drag.rx) * e, kf(0.18));
     state.rz = lerp(state.rz, Math.sin(t * 0.6) * 0.012 * e, kf(0.1));
 
     const onScreen = Math.abs(py) < visH / 2 + (state.s * PHONE.h) / 2 + 0.3;
