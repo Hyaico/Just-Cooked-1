@@ -1,12 +1,12 @@
-/* Just Cooked — the reach (v9).
-   Two real 3D hands for the Support passage. Each hand starts as a small skeleton
-   (forearm, palm, thumb, four fingers) wrapped in tapered capsules; the capsules are
-   blended into one smooth surface with marching cubes, the surface is skinned to the
-   bones, and from then on it is an ordinary skinned mesh: one hand reaches up from
-   below, the other comes in from the side and closes around its wrist. They
-   materialise out of (and dissolve back into) stardust through a noise threshold in
-   the fragment shader, and a few hundred stars ride on the surface. Lit warm, rendered
-   on its own transparent canvas, only while the passage is on screen. */
+/* Just Cooked — the reach (v10).
+   Two real 3D hands for the Support passage. A hand is modelled as a smooth surface:
+   a tapered, gently domed palm, a thumb pad and a heel pad, fingers swept along smooth
+   curves, a slim wrist and a forearm, all melted together and turned into a mesh with
+   marching cubes at load, then smoothed and skinned to a small skeleton. From then on it
+   is an ordinary skinned mesh: one hand rises from below reaching for help, the other
+   comes across and closes around it, and the first closes back. They condense out of
+   (and fray back into) stardust through a noise threshold in the fragment shader, with
+   a few hundred stars riding on the skin. Lit warm, on its own transparent canvas. */
 
 import * as THREE from 'three';
 import { edgeTable, triTable } from 'three/addons/objects/MarchingCubes.js';
@@ -18,118 +18,176 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const lerp = (a, b, t) => a + (b - a) * t;
 const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 
-/* ---------------------------------------------------------------- the rig
-   One right hand: wrist at the origin, fingers along +x, thumb toward +y, palm facing +z.
-   Units are palm widths. A bone is a tapered capsule that starts at `at` in its parent's frame
-   (or at the parent's tip), turns by rot = [z, y, x] degrees, and runs `len` along its own +x
-   with radii r0 -> r1; `flat` squashes it in z. Finger joints also take a pose rotation
-   [z, y] (negative y curls toward the palm), scaled by the finger's `k`. */
+/* ---------------------------------------------------------------- the hand
+   A left hand in its own frame: wrist at the origin, fingers along +x, thumb toward +y, palm facing +z.
+   Units are palm widths. Finger joints take pose angles (degrees about the finger's own y axis,
+   negative curls toward the palm), scaled by the finger's `w`. */
 const FINGERS = [
-  { n: 'i', y: 0.2, ma: 8, ml: 0.9, mr: [0.18, 0.15], ph: [0.34, 0.25, 0.2], r: [0.13, 0.115, 0.104, 0.084], splay: 4, k: 0.9 },
-  { n: 'm', y: 0.06, ma: 1, ml: 0.96, mr: [0.19, 0.16], ph: [0.38, 0.28, 0.22], r: [0.135, 0.12, 0.107, 0.087], splay: -1, k: 1 },
-  { n: 'r', y: -0.08, ma: -5, ml: 0.9, mr: [0.18, 0.15], ph: [0.35, 0.27, 0.21], r: [0.128, 0.115, 0.102, 0.082], splay: -4, k: 1.05 },
-  { n: 'p', y: -0.22, ma: -11, ml: 0.78, mr: [0.16, 0.13], ph: [0.28, 0.2, 0.16], r: [0.112, 0.1, 0.089, 0.073], splay: -8, k: 1.1 },
+  { k: [1.01, 0.325], dir: 12, ph: [0.36, 0.26, 0.21], r: [0.105, 0.07], w: 0.9 },
+  { k: [1.08, 0.077], dir: 1, ph: [0.4, 0.3, 0.23], r: [0.11, 0.074], w: 1.0 },
+  { k: [1.02, -0.158], dir: -9, ph: [0.37, 0.28, 0.22], r: [0.105, 0.07], w: 1.05 },
+  { k: [0.886, -0.369], dir: -19, ph: [0.3, 0.21, 0.17], r: [0.092, 0.062], w: 1.1 },
 ];
-function buildRig() {
-  const bones = [];
-  const add = (b) => { b.i = bones.length; bones.push(b); return b; };
-  add({ n: 'forearm', p: -1, at: [0.02, 0, 0], rot: [180, 0, 0], len: 2.1, r0: 0.28, r1: 0.34, flat: 0.76 });
-  add({ n: 'wrist', p: -1, at: [-0.06, 0, 0], rot: [0, 0, 0], len: 0.3, r0: 0.28, r1: 0.32, flat: 0.64 });
-  add({ n: 'thenar', p: -1, at: [0.12, 0.24, 0.03], rot: [46, 0, 0], len: 0.36, r0: 0.21, r1: 0.18, flat: 0.8 });
-  add({ n: 'hypothenar', p: -1, at: [0.1, -0.3, 0], rot: [-6, 0, 0], len: 0.55, r0: 0.16, r1: 0.14, flat: 0.75 });
+const THUMB = { base: [0.14, 0.27, 0.05], dirZ: 50, dirY: -12, bend: [-14, -12], ph: [0.48, 0.3, 0.26], r: [0.14, 0.085] };
+const POSES = {
+  open: { f: [-8, -12, -6], t: [-4, -4, -6, -4] },            // reaching, relaxed: knuckle, middle, tip; thumb: [z, y] at the base, then two bends
+  hold: { f: [-12, -18, -10], t: [-8, 6, -8, -6] },           // the reaching hand closes a little, fingers still showing
+  grip: { f: [-38, -64, -40], t: [16, 10, -8, -6] },          // the helping hand closes round the reaching palm's far edge, thumb spread flat across it
+};
+/* the staging, in palm widths and degrees: tweakable from the dev page.
+   The reaching hand (a left hand, palm toward us) rises from the lower right; the helping hand (a right
+   hand, palm toward it) comes down from the upper right across it, its knuckles at the far edge of the
+   reaching palm, and closes round it. Both arms sweep in from the right. */
+const TUNE = {
+  aAngle: 118,     // the reaching hand's finger direction (degrees, counter-clockwise from +x)
+  bAngle: 208,     // the helping hand's finger direction: across the reaching palm
+  bAlong: -0.04,   // the helping palm centre, from the reaching palm centre: along the reaching fingers...
+  bAcross: 0.1,    // ...and along the helping fingers (so its knuckles clear the far edge)
+  bZ: 0.27,        // ...and toward us
+  bRoll: -8,       // the helping hand rolls about its fingers: negative shows a little more of its thumb side
+  sizeK: 0.19,     // palm width as a share of the viewport height (phones are capped by their width instead)
+  holdK: 1,        // scale of the reaching hand's closing
+  gripK: 1,        // scale of the helping hand's grip
+};
+const GRAD_LO = -2.05, GRAD_SPAN = 4.1; // where along the hand a point sits: 0 at the arm's end, 1 at the fingertips
+
+/* bones: 0 = everything that does not bend (palm, wrist, forearm, pads); then 3 per finger, 3 for the thumb */
+function buildSkeleton(pose) {
+  const root = new THREE.Bone();
+  const bones = [root];
+  const chains = [];
   FINGERS.forEach((f) => {
-    const m = add({ n: f.n + '0', p: -1, at: [0.12, f.y, 0], rot: [f.ma, 0, 0], len: f.ml, r0: f.mr[0], r1: f.mr[1], flat: 0.7 });
-    let parent = m;
+    let parent = root;
+    const chain = [];
     f.ph.forEach((len, j) => {
-      parent = add({ n: f.n + (j + 1), p: parent.i, rot: [j === 0 ? f.splay : 0, 0, 0], len, r0: f.r[j], r1: f.r[j + 1], flat: 0.94, joint: ['knuckle', 'pip', 'dip'][j], k: f.k });
+      const b = new THREE.Bone();
+      if (j === 0) { b.position.set(f.k[0], f.k[1], 0); b.rotation.set(0, pose.f[0] * f.w * DEG, f.dir * DEG, 'ZYX'); }
+      else { b.position.set(f.ph[j - 1], 0, 0); b.rotation.set(0, pose.f[j] * f.w * DEG, 0, 'ZYX'); }
+      parent.add(b); bones.push(b); chain.push(b); parent = b;
+    });
+    chains.push({ def: f, bones: chain });
+  });
+  const tc = [];
+  let parent = root;
+  THUMB.ph.forEach((len, j) => {
+    const b = new THREE.Bone();
+    if (j === 0) { b.position.set(THUMB.base[0], THUMB.base[1], THUMB.base[2]); b.rotation.set(0, (THUMB.dirY + pose.t[1]) * DEG, (THUMB.dirZ + pose.t[0]) * DEG, 'ZYX'); }
+    else { b.position.set(THUMB.ph[j - 1], 0, 0); b.rotation.set(0, pose.t[j + 1] * DEG, THUMB.bend[j - 1] * DEG, 'ZYX'); }
+    parent.add(b); bones.push(b); tc.push(b); parent = b;
+  });
+  chains.push({ def: { ph: THUMB.ph, r: THUMB.r }, bones: tc, thumb: true });
+  root.updateMatrixWorld(true);
+  return { root, bones, chains };
+}
+function posePose(sk, pose, k) {
+  sk.chains.forEach((c) => {
+    c.bones.forEach((b, j) => {
+      if (c.thumb) {
+        if (j === 0) b.rotation.set(0, (THUMB.dirY + pose.t[1] * k) * DEG, (THUMB.dirZ + pose.t[0] * k) * DEG, 'ZYX');
+        else b.rotation.set(0, pose.t[j + 1] * k * DEG, THUMB.bend[j - 1] * DEG, 'ZYX');
+      } else {
+        const f = c.def;
+        if (j === 0) b.rotation.set(0, pose.f[0] * f.w * k * DEG, f.dir * DEG, 'ZYX');
+        else b.rotation.set(0, pose.f[j] * f.w * k * DEG, 0, 'ZYX');
+      }
     });
   });
-  const t1 = add({ n: 't1', p: -1, at: [0.1, 0.3, 0.06], rot: [52, -14, 0], len: 0.48, r0: 0.17, r1: 0.145, flat: 0.9, joint: 'tmc', k: 1 });
-  const t2 = add({ n: 't2', p: t1.i, rot: [-16, -4, 0], len: 0.32, r0: 0.135, r1: 0.115, flat: 0.94, joint: 'tpip', k: 1 });
-  add({ n: 't3', p: t2.i, rot: [-12, 0, 0], len: 0.28, r0: 0.115, r1: 0.09, flat: 0.94, joint: 'tdip', k: 1 });
-  return bones;
 }
-const POSES = {
-  open: { knuckle: [0, -8], pip: [0, -12], dip: [0, -6], tmc: [-4, -4], tpip: [-6, 0], tdip: [-4, 0] },        // reaching, relaxed
-  hold: { knuckle: [0, -14], pip: [0, -20], dip: [0, -10], tmc: [-10, -6], tpip: [-10, 0], tdip: [-8, 0] },    // the held hand closes a little
-  grip: { knuckle: [0, -58], pip: [0, -72], dip: [0, -44], tmc: [-26, -40], tpip: [-22, -10], tdip: [-16, 0] }, // the helping hand wraps round the wrist
-};
-/* the staging, in palm widths: tweakable from the dev page */
-const TUNE = {
-  aAngle: 80,      // the reaching hand's finger direction (degrees, counter-clockwise from +x)
-  bAngle: 172,     // the helping hand's finger direction: across the reaching hand's forearm
-  grabBelow: 0.5,  // how far below the reaching wrist the grip sits
-  bShift: 0.42,    // the helping palm sits this far back from the forearm's axis, so its knuckles reach the far edge
-  bZ: 0.46,        // the helping palm floats this far in front of the forearm's axis
-  bUp: 0.0,        // slide the helping hand along the forearm
-  sizeK: 0.19,     // palm width as a share of the viewport height (phones are capped by their width instead)
-};
 
-/* ---------------------------------------------------------------- the surface: capsules -> one smooth skin */
+/* ---------------------------------------------------------------- the surface */
 function smin(a, b, k) { const h = Math.max(k - Math.abs(a - b), 0) / k; return Math.min(a, b) - h * h * k * 0.25; }
+const segDist = (px, py, pz, ax, ay, az, bx, by, bz) => {
+  const dx = bx - ax, dy = by - ay, dz = bz - az;
+  const l2 = dx * dx + dy * dy + dz * dz || 1e-9;
+  const t = clamp(((px - ax) * dx + (py - ay) * dy + (pz - az) * dz) / l2, 0, 1);
+  return Math.hypot(px - ax - dx * t, py - ay - dy * t, pz - az - dz * t);
+};
 
-/* world (hand-frame) matrices for every bone in the rest pose */
-function restMatrices(rig) {
-  const out = rig.map(() => new THREE.Matrix4());
-  const e = new THREE.Euler();
-  for (let i = 0; i < rig.length; i++) {
-    const b = rig[i], m = out[i];
-    m.makeRotationFromEuler(e.set(b.rot[2] * DEG, b.rot[1] * DEG, b.rot[0] * DEG, 'ZYX'));
-    if (b.p < 0) m.setPosition(b.at[0], b.at[1], b.at[2]);
-    else { m.setPosition(rig[b.p].len, 0, 0); m.premultiply(out[b.p]); }
-  }
-  return out;
-}
-
-/* signed distance from a hand-frame point to one capsule (rest pose) */
-function capsuleDist(b, inv, x, y, z) {
-  const e = inv.elements;
-  const qx = e[0] * x + e[4] * y + e[8] * z + e[12];
-  const qy = e[1] * x + e[5] * y + e[9] * z + e[13];
-  const qz = (e[2] * x + e[6] * y + e[10] * z + e[14]) / b.flat;
-  const t = clamp(qx, 0, b.len);
-  return Math.hypot(qx - t, qy, qz) - lerp(b.r0, b.r1, t / b.len);
+/* the pieces of the hand as signed-distance functions over hand space, each with the box it can reach */
+function buildPrims(sk) {
+  const prims = [];
+  const v = new THREE.Vector3();
+  // the palm: a rounded slab, narrower at the wrist, a little thicker along its middle
+  prims.push({ k: 0.1, box: [-0.1, 1.2, -0.62, 0.62, -0.3, 0.3], f: (x, y, z) => {
+    const t = clamp((x - 0.05) / 0.95, 0, 1);
+    const hy = 0.4 * (0.8 + 0.2 * t);
+    const dome = 1 + 0.3 * (1 - clamp((y / hy) * (y / hy), 0, 1));
+    const qx = Math.abs(x - 0.56) - 0.47, qy = Math.abs(y) - hy, qz = Math.abs(z / dome) - 0.035;
+    const mx = Math.max(qx, 0), my = Math.max(qy, 0), mz = Math.max(qz, 0);
+    return Math.hypot(mx, my, mz) + Math.min(Math.max(qx, qy, qz), 0) - 0.085;
+  } });
+  // pads: the thumb's muscle and the heel of the hand
+  const ell = (cx, cy, cz, rx, ry, rz, k) => prims.push({ k, box: [cx - rx - 0.2, cx + rx + 0.2, cy - ry - 0.2, cy + ry + 0.2, cz - rz - 0.2, cz + rz + 0.2], f: (x, y, z) => {
+    const nx = (x - cx) / rx, ny = (y - cy) / ry, nz = (z - cz) / rz;
+    return (Math.hypot(nx, ny, nz) - 1) * Math.min(rx, ry, rz);
+  } });
+  ell(0.32, 0.26, 0.02, 0.28, 0.19, 0.14, 0.12);
+  ell(0.4, -0.33, 0.0, 0.36, 0.17, 0.125, 0.1);
+  // the wrist and the forearm
+  const cap = (ax, ay, az, bx, by, bz, r0, r1, flat, k) => {
+    const R = Math.max(r0, r1) + 0.2;
+    prims.push({ k, box: [Math.min(ax, bx) - R, Math.max(ax, bx) + R, Math.min(ay, by) - R, Math.max(ay, by) + R, Math.min(az, bz) - R, Math.max(az, bz) + R], f: (x, y, z) => {
+      const dx = bx - ax, dy = by - ay, dz = bz - az, l2 = dx * dx + dy * dy + dz * dz || 1e-9;
+      const t = clamp(((x - ax) * dx + (y - ay) * dy + (z - az) * dz) / l2, 0, 1);
+      return Math.hypot(x - ax - dx * t, y - ay - dy * t, (z - az - dz * t) / flat) - lerp(r0, r1, t);
+    } });
+  };
+  cap(0.0, 0, 0, -0.42, 0, 0, 0.27, 0.27, 0.62, 0.12);
+  cap(-0.3, 0, 0, -2.05, 0, 0, 0.27, 0.34, 0.76, 0.1);
+  // fingers and thumb: each a smooth curve through its joints (the posed chain), swept with a tapering radius
+  sk.chains.forEach((c) => {
+    const joints = [];
+    c.bones.forEach((b, j) => { joints.push(v.set(0, 0, 0).applyMatrix4(b.matrixWorld).clone()); if (j === c.bones.length - 1) joints.push(v.set(c.def.ph[j], 0, 0).applyMatrix4(b.matrixWorld).clone()); });
+    // a little of the metacarpal behind the knuckle so the finger roots into the palm
+    const back = joints[0].clone().sub(joints[1]).normalize().multiplyScalar(0.22).add(joints[0]);
+    let pts = [back, joints[0], joints[1], joints[2], joints[3]];
+    for (let it = 0; it < 3; it++) { // corner cutting keeps the ends and rounds the joints
+      const out = [pts[0]];
+      for (let i = 0; i < pts.length - 1; i++) {
+        out.push(pts[i].clone().lerp(pts[i + 1], 0.25), pts[i].clone().lerp(pts[i + 1], 0.75));
+      }
+      out.push(pts[pts.length - 1]);
+      pts = out;
+    }
+    let total = 0;
+    const cum = [0];
+    for (let i = 1; i < pts.length; i++) { total += pts[i].distanceTo(pts[i - 1]); cum.push(total); }
+    const r0 = c.def.r[0], r1 = c.def.r[1], flat = c.thumb ? 0.95 : 0.92, k = c.thumb ? 0.1 : 0.07;
+    const start = 0.22 / total; // the rooted part keeps the base radius
+    for (let i = 0; i < pts.length - 1; i++) {
+      const a = pts[i], b = pts[i + 1];
+      const ta = Math.max(0, (cum[i] / total - start) / (1 - start)), tb = Math.max(0, (cum[i + 1] / total - start) / (1 - start));
+      const ra = lerp(r0, r1, Math.pow(ta, 0.85)), rb = lerp(r0, r1, Math.pow(tb, 0.85));
+      cap(a.x, a.y, a.z, b.x, b.y, b.z, ra, rb, flat, k);
+    }
+  });
+  return prims;
 }
 
 const CORNER = [[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0], [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]];
 const EDGE = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
-const GRAD_LO = -2.1, GRAD_SPAN = 4.2; // where along the hand a point sits: 0 at the arm's end, 1 at the fingertips
 
-function buildSurface(rig, grid, bounds) {
+function buildSurface(sk, grid, bounds) {
+  const prims = buildPrims(sk);
   const [nx, ny, nz] = grid;
-  const rest = restMatrices(rig);
-  const inv = rest.map((m) => m.clone().invert());
   const lo = bounds.min, hi = bounds.max;
   const dx = (hi[0] - lo[0]) / (nx - 1), dy = (hi[1] - lo[1]) / (ny - 1), dz = (hi[2] - lo[2]) / (nz - 1);
-  const K = 0.07; // how softly the capsules melt into each other
   const sdf = new Float32Array(nx * ny * nz).fill(10);
-  const corner = new THREE.Vector3();
-  rig.forEach((b, bi) => {
-    // only the cells this capsule can reach
-    const R = Math.max(b.r0, b.r1) + K + 0.06;
-    let mnx = 1e9, mny = 1e9, mnz = 1e9, mxx = -1e9, mxy = -1e9, mxz = -1e9;
-    for (let c = 0; c < 8; c++) {
-      corner.set(c & 1 ? b.len + R : -R, c & 2 ? R : -R, c & 4 ? R : -R).applyMatrix4(rest[bi]);
-      mnx = Math.min(mnx, corner.x); mxx = Math.max(mxx, corner.x);
-      mny = Math.min(mny, corner.y); mxy = Math.max(mxy, corner.y);
-      mnz = Math.min(mnz, corner.z); mxz = Math.max(mxz, corner.z);
-    }
-    const i0 = clamp(Math.floor((mnx - lo[0]) / dx), 1, nx - 2), i1 = clamp(Math.ceil((mxx - lo[0]) / dx), 1, nx - 2);
-    const j0 = clamp(Math.floor((mny - lo[1]) / dy), 1, ny - 2), j1 = clamp(Math.ceil((mxy - lo[1]) / dy), 1, ny - 2);
-    const k0 = clamp(Math.floor((mnz - lo[2]) / dz), 1, nz - 2), k1 = clamp(Math.ceil((mxz - lo[2]) / dz), 1, nz - 2);
+  prims.forEach((p) => {
+    const [x0, x1, y0, y1, z0, z1] = p.box;
+    const i0 = clamp(Math.floor((x0 - lo[0]) / dx), 1, nx - 2), i1 = clamp(Math.ceil((x1 - lo[0]) / dx), 1, nx - 2);
+    const j0 = clamp(Math.floor((y0 - lo[1]) / dy), 1, ny - 2), j1 = clamp(Math.ceil((y1 - lo[1]) / dy), 1, ny - 2);
+    const k0 = clamp(Math.floor((z0 - lo[2]) / dz), 1, nz - 2), k1 = clamp(Math.ceil((z1 - lo[2]) / dz), 1, nz - 2);
     for (let k = k0; k <= k1; k++) {
       const z = lo[2] + k * dz;
       for (let j = j0; j <= j1; j++) {
         const y = lo[1] + j * dy;
         let q = k * nx * ny + j * nx + i0;
-        for (let i = i0; i <= i1; i++, q++) {
-          const d = capsuleDist(b, inv[bi], lo[0] + i * dx, y, z);
-          sdf[q] = smin(sdf[q], d, K);
-        }
+        for (let i = i0; i <= i1; i++, q++) sdf[q] = smin(sdf[q], p.f(lo[0] + i * dx, y, z), p.k);
       }
     }
   });
-  // marching cubes over the grid: a vertex wherever an edge crosses the surface, normals from the gradient
+  // marching cubes: a vertex wherever an edge crosses the surface, normals from the gradient
   const at = (i, j, k) => sdf[k * nx * ny + j * nx + i];
   const grad = (i, j, k, out) => {
     out[0] = (at(Math.min(i + 1, nx - 1), j, k) - at(Math.max(i - 1, 0), j, k)) / dx;
@@ -137,12 +195,12 @@ function buildSurface(rig, grid, bounds) {
     out[2] = (at(i, j, Math.min(k + 1, nz - 1)) - at(i, j, Math.max(k - 1, 0))) / dz;
   };
   const positions = [], normals = [];
-  const val = new Float32Array(8), vx = new Float32Array(12 * 3), vn = new Float32Array(12 * 3);
+  const val = new Float32Array(8), vx = new Float32Array(36), vn = new Float32Array(36);
   const ga = [0, 0, 0], gb = [0, 0, 0];
   for (let k = 0; k < nz - 1; k++) for (let j = 0; j < ny - 1; j++) for (let i = 0; i < nx - 1; i++) {
     let cube = 0;
     for (let c = 0; c < 8; c++) {
-      val[c] = -at(i + CORNER[c][0], j + CORNER[c][1], k + CORNER[c][2]); // inside is positive
+      val[c] = -at(i + CORNER[c][0], j + CORNER[c][1], k + CORNER[c][2]);
       if (val[c] < 0) cube |= 1 << c;
     }
     const bits = edgeTable[cube];
@@ -162,8 +220,8 @@ function buildSurface(rig, grid, bounds) {
       vn[e * 3] = gx / gl; vn[e * 3 + 1] = gy / gl; vn[e * 3 + 2] = gz / gl;
     }
     for (let o = cube * 16; triTable[o] !== -1; o += 3) {
-      for (let v = 0; v < 3; v++) {
-        const e = triTable[o + v];
+      for (let q = 0; q < 3; q++) {
+        const e = triTable[o + q];
         positions.push(vx[e * 3], vx[e * 3 + 1], vx[e * 3 + 2]);
         normals.push(vn[e * 3], vn[e * 3 + 1], vn[e * 3 + 2]);
       }
@@ -173,28 +231,64 @@ function buildSurface(rig, grid, bounds) {
   geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
   geo.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
   geo = mergeVertices(geo, 1e-4);
-  // skinning: each vertex follows its two nearest capsules; colour runs from the arm to the fingertips
-  const pos = geo.attributes.position, n = pos.count;
-  const skinIndex = new Uint16Array(n * 4), skinWeight = new Float32Array(n * 4), color = new Float32Array(n * 3);
-  const cArm = new THREE.Color(0x5244cf), cPalm = new THREE.Color(0x7a63e8), cTip = new THREE.Color(0xd2a4f2), cTmp = new THREE.Color();
-  for (let v = 0; v < n; v++) {
-    const x = pos.getX(v), y = pos.getY(v), z = pos.getZ(v);
-    let i1 = 0, d1 = 1e9, i2 = 0, d2 = 1e9;
-    for (let bi = 0; bi < rig.length; bi++) {
-      const d = capsuleDist(rig[bi], inv[bi], x, y, z);
-      if (d < d1) { i2 = i1; d2 = d1; i1 = bi; d1 = d; } else if (d < d2) { i2 = bi; d2 = d; }
+  // two passes of gentle smoothing take the grid's ripple out of the skin
+  const pos = geo.attributes.position, n = pos.count, idx = geo.index.array;
+  const nb = new Array(n).fill(null).map(() => []);
+  for (let t = 0; t < idx.length; t += 3) {
+    const a = idx[t], b = idx[t + 1], c = idx[t + 2];
+    nb[a].push(b, c); nb[b].push(a, c); nb[c].push(a, b);
+  }
+  const src = pos.array, tmp = new Float32Array(src.length);
+  for (let pass = 0; pass < 2; pass++) {
+    for (let v = 0; v < n; v++) {
+      const list = nb[v];
+      if (!list.length) { tmp[v * 3] = src[v * 3]; tmp[v * 3 + 1] = src[v * 3 + 1]; tmp[v * 3 + 2] = src[v * 3 + 2]; continue; }
+      let sx = 0, sy = 0, sz = 0;
+      for (let m = 0; m < list.length; m++) { const w = list[m] * 3; sx += src[w]; sy += src[w + 1]; sz += src[w + 2]; }
+      const inv = 1 / list.length;
+      tmp[v * 3] = lerp(src[v * 3], sx * inv, 0.5); tmp[v * 3 + 1] = lerp(src[v * 3 + 1], sy * inv, 0.5); tmp[v * 3 + 2] = lerp(src[v * 3 + 2], sz * inv, 0.5);
     }
-    const w2 = Math.exp(-(d2 - d1) / 0.045), s = 1 + w2;
-    skinIndex[v * 4] = i1; skinIndex[v * 4 + 1] = i2;
-    skinWeight[v * 4] = 1 / s; skinWeight[v * 4 + 1] = w2 / s;
+    src.set(tmp);
+  }
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+  // skinning: each vertex follows the two nearest bones; the unbending parts all belong to the root
+  const v = new THREE.Vector3();
+  const chords = [{ bone: 0, f: (x, y, z) => Math.min(...prims.slice(0, 5).map((p) => p.f(x, y, z))) }];
+  sk.chains.forEach((c) => c.bones.forEach((b, j) => {
+    const a = v.set(0, 0, 0).applyMatrix4(b.matrixWorld).clone(), e = v.set(c.def.ph[j], 0, 0).applyMatrix4(b.matrixWorld).clone();
+    const r = lerp(c.def.r[0], c.def.r[1], (j + 0.5) / 3);
+    chords.push({ bone: sk.bones.indexOf(b), f: (x, y, z) => segDist(x, y, z, a.x, a.y, a.z, e.x, e.y, e.z) - r });
+  }));
+  const skinIndex = new Uint16Array(n * 4), skinWeight = new Float32Array(n * 4), color = new Float32Array(n * 3);
+  const cArm = new THREE.Color(0x5346cf), cPalm = new THREE.Color(0x7b62e6), cTip = new THREE.Color(0xd6a8f0), cTmp = new THREE.Color();
+  for (let i = 0; i < n; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+    let b1 = 0, d1 = 1e9, b2 = 0, d2 = 1e9;
+    for (let c = 0; c < chords.length; c++) {
+      const d = chords[c].f(x, y, z);
+      if (d < d1) { b2 = b1; d2 = d1; b1 = chords[c].bone; d1 = d; } else if (d < d2) { b2 = chords[c].bone; d2 = d; }
+    }
+    const w2 = Math.exp(-(d2 - d1) / 0.04), s = 1 + w2;
+    skinIndex[i * 4] = b1; skinIndex[i * 4 + 1] = b2;
+    skinWeight[i * 4] = 1 / s; skinWeight[i * 4 + 1] = w2 / s;
     const g = clamp((x - GRAD_LO) / GRAD_SPAN, 0, 1);
-    cTmp.copy(cArm).lerp(cPalm, smooth(0.3, 0.6, g)).lerp(cTip, smooth(0.66, 1.0, g));
-    color[v * 3] = cTmp.r; color[v * 3 + 1] = cTmp.g; color[v * 3 + 2] = cTmp.b;
+    cTmp.copy(cArm).lerp(cPalm, smooth(0.3, 0.6, g)).lerp(cTip, smooth(0.68, 1.0, g));
+    color[i * 3] = cTmp.r; color[i * 3 + 1] = cTmp.g; color[i * 3 + 2] = cTmp.b;
   }
   geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(skinIndex, 4));
   geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(skinWeight, 4));
   geo.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
   return geo;
+}
+/* the same hand as a right hand: mirrored across the thumb axis, faces turned the other way round */
+function mirrored(geo) {
+  const g = geo.clone();
+  const p = g.attributes.position, nrm = g.attributes.normal;
+  for (let i = 0; i < p.count; i++) { p.setY(i, -p.getY(i)); nrm.setY(i, -nrm.getY(i)); }
+  const idx = g.index.array;
+  for (let t = 0; t < idx.length; t += 3) { const b = idx[t + 1]; idx[t + 1] = idx[t + 2]; idx[t + 2] = b; }
+  return g;
 }
 
 /* ---------------------------------------------------------------- materials */
@@ -207,9 +301,9 @@ const NOISE = [
 
 function makeSkinMaterial(u) {
   const mat = new THREE.MeshPhysicalMaterial({
-    vertexColors: true, roughness: 0.5, metalness: 0, envMapIntensity: 0.7,
-    sheen: 1.0, sheenRoughness: 0.4, sheenColor: new THREE.Color(0xffc4b4),
-    clearcoat: 0.3, clearcoatRoughness: 0.5,
+    vertexColors: true, roughness: 0.55, metalness: 0, envMapIntensity: 0.7,
+    sheen: 1.0, sheenRoughness: 0.45, sheenColor: new THREE.Color(0xffc4b4),
+    clearcoat: 0.25, clearcoatRoughness: 0.55,
     emissive: new THREE.Color(0x2e2086), emissiveIntensity: 0.3,
   });
   mat.onBeforeCompile = (shader) => {
@@ -226,13 +320,12 @@ function makeSkinMaterial(u) {
         // stardust threshold: the hand condenses as uForm rises and frays back into dust as it falls;
         // the far part of the arm is always frayed, so the arm thins into the sky instead of ending
         'float n = vnoise(vBind * 9.0) * 0.4 + vnoise(vBind * 31.0) * 0.6;',
-        'float g = clamp((vBind.x + 2.1) / 4.2, 0.0, 1.0);',
+        'float g = clamp((vBind.x + 2.05) / 4.1, 0.0, 1.0);',
         'float arm = 1.0 - smoothstep(0.0, 0.5, g);',
         'float th = uForm * 1.14 - 0.07 - arm * arm * 1.25;',
         'if (n > th) discard;',
         'float edge = smoothstep(th - 0.16, th, n);',
         'totalEmissiveRadiance += uGlow * edge * (0.9 + uNight);',
-        // a soft lavender light on the silhouette, stronger once the sky is dark
         'float fres = pow(1.0 - max(dot(normal, normalize(vViewPosition)), 0.0), 3.0);',
         'totalEmissiveRadiance += vec3(0.6, 0.52, 1.0) * fres * (0.18 + 0.55 * uNight);',
         'totalEmissiveRadiance += diffuseColor.rgb * uNight * 0.22;',
@@ -249,8 +342,8 @@ const STAR_VERT = [
   'void main() {',
   '  vec4 bp = vec4(position, 1.0);',
   '  vec3 p = (uBones[int(aSkin.x + 0.5)] * bp).xyz * aSkin.y + (uBones[int(aSkin.z + 0.5)] * bp).xyz * aSkin.w;',
-  '  float g = clamp((position.x + 2.1) / 4.2, 0.0, 1.0);',
-  '  float tail = 1.0 - smoothstep(0.05, 0.34, g);', // along the frayed arm the stars drift loose: the arm becomes a trail
+  '  float g = clamp((position.x + 2.05) / 4.1, 0.0, 1.0);',
+  '  float tail = 1.0 - smoothstep(0.05, 0.34, g);',
   '  float f = 1.0 - uForm;',
   '  p += aScatter * (f * f * 0.12 + tail * tail * 0.05) * uD;',
   '  float d = uDissolve;',
@@ -293,34 +386,24 @@ export function start(canvas, state) {
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
   if ('environmentIntensity' in scene) scene.environmentIntensity = 0.55;
-  // warm key from the upper left, cool fill from the right, a lavender rim from behind
   const key = new THREE.DirectionalLight(0xffd9bc, 2.3); key.position.set(-600, 900, 1200); scene.add(key);
   const fill = new THREE.DirectionalLight(0x9fb4ff, 0.8); fill.position.set(900, -300, 700); scene.add(fill);
   const rim = new THREE.DirectionalLight(0xcdbcff, 1.5); rim.position.set(500, 600, -900); scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xdcd2ff, 0x1e1848, 0.5));
 
-  const rig = buildRig();
   const tune = Object.assign({}, TUNE, state.tune || {});
   const mobile = () => (canvas.clientWidth || innerWidth) < 900;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   const hands = [];
-  let built = false;
+  let built = false, boneCount = 16;
 
   const makeHand = (geo, seed, back) => {
-    // a fresh skeleton per hand, bound in the rest pose
     const group = new THREE.Group();
     group.matrixAutoUpdate = false;
-    const root = new THREE.Bone();
-    const bones = rig.map((b) => {
-      const bone = new THREE.Bone();
-      bone.position.set(b.p < 0 ? b.at[0] : rig[b.p].len, b.p < 0 ? b.at[1] : 0, b.p < 0 ? b.at[2] : 0);
-      bone.rotation.set(b.rot[2] * DEG, b.rot[1] * DEG, b.rot[0] * DEG, 'ZYX');
-      return bone;
-    });
-    rig.forEach((b, i) => (b.p < 0 ? root : bones[b.p]).add(bones[i]));
-    group.add(root);
-    root.updateMatrixWorld(true);
-    const skeleton = new THREE.Skeleton(bones);
+    const sk = buildSkeleton(POSES.open);
+    group.add(sk.root);
+    sk.root.updateMatrixWorld(true);
+    const skeleton = new THREE.Skeleton(sk.bones);
     const u = { uForm: { value: 0 }, uNight: { value: 0 }, uGlow: { value: new THREE.Vector3(0.82, 0.74, 1.0) } };
     const mesh = new THREE.SkinnedMesh(geo, makeSkinMaterial(u));
     mesh.frustumCulled = false;
@@ -349,17 +432,20 @@ export function start(canvas, state) {
     sg.setAttribute('aSize', new THREE.Float32BufferAttribute(size, 1));
     sg.setAttribute('aSeed', new THREE.Float32BufferAttribute(sd, 1));
     sg.setAttribute('aKind', new THREE.Float32BufferAttribute(kind, 1));
-    const boneArr = new Float32Array(rig.length * 16);
+    const boneArr = new Float32Array(sk.bones.length * 16);
     const su = { uBones: { value: boneArr }, uTime: { value: 0 }, uForm: { value: 0 }, uDissolve: { value: 0 }, uAlpha: { value: 0 }, uPR: { value: dpr }, uD: { value: 1000 }, uNight: { value: 0 } };
-    const stars = new THREE.Points(sg, new THREE.ShaderMaterial({ defines: { BONES: rig.length }, uniforms: su, vertexShader: STAR_VERT, fragmentShader: STAR_FRAG, transparent: true, depthTest: true, depthWrite: false, premultipliedAlpha: true }));
+    const stars = new THREE.Points(sg, new THREE.ShaderMaterial({ defines: { BONES: sk.bones.length }, uniforms: su, vertexShader: STAR_VERT, fragmentShader: STAR_FRAG, transparent: true, depthTest: true, depthWrite: false, premultipliedAlpha: true }));
     stars.frustumCulled = false;
     scene.add(stars);
-    return { group, mesh, skeleton, bones, u, stars, su, boneArr, back, root: new THREE.Matrix4(), from: new THREE.Vector2(), rest: new THREE.Vector2(), z: 0, angle: 0 };
+    return { group, mesh, skeleton, sk, u, stars, su, boneArr, back, root: new THREE.Matrix4(), rot: new THREE.Matrix4(), from: new THREE.Vector3(), rest: new THREE.Vector3() };
   };
 
   const build = () => {
-    const geo = buildSurface(rig, mobile() ? [104, 46, 25] : [128, 56, 30], { min: [-2.25, -0.78, -0.5], max: [2.3, 1.27, 0.55] });
-    hands.push(makeHand(geo, 11, false), makeHand(geo, 29, true));
+    const sk = buildSkeleton(POSES.open);
+    const fine = !mobile();
+    const geo = buildSurface(sk, fine ? [172, 86, 42] : [130, 66, 32], { min: [-2.2, -0.78, -0.42], max: [2.2, 1.3, 0.58] });
+    boneCount = sk.bones.length;
+    hands.push(makeHand(mirrored(geo), 11, false), makeHand(geo, 29, true)); // a left hand reaching, a right hand helping
     built = true;
     place();
   };
@@ -378,30 +464,29 @@ export function start(canvas, state) {
     camera.position.set(0, 0, D);
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
-    W = clamp(Math.min(vw * 0.33, vh * tune.sizeK), 90, 200); // palm width in px
+    W = clamp(Math.min(vw * 0.33, vh * tune.sizeK), 84, 200); // palm width in px
     place();
   };
-  /* the staging: state.cx/cy (stage fractions, y down) is the grip, on the reaching forearm just below its wrist.
-     Hand A reaches up from below; hand B comes in from the right, palm toward the forearm, and closes around it. */
+  /* the staging: state.cx/cy (stage fractions, y down) is the centre of the reaching palm; see TUNE. */
   const place = () => {
-    clasp.set(((state.cx ?? 0.5) - 0.5) * vw, (0.5 - (state.cy ?? 0.5)) * vh);
+    clasp.set(((state.cx ?? 0.5) - 0.5) * vw, (0.5 - (state.cy ?? 0.66)) * vh);
+    const C = new THREE.Vector3(clasp.x, clasp.y, 0);
+    const diag = Math.hypot(vw, vh);
+    const aDir = new THREE.Vector3(Math.cos(tune.aAngle * DEG), Math.sin(tune.aAngle * DEG), 0);
+    const bDir = new THREE.Vector3(Math.cos(tune.bAngle * DEG), Math.sin(tune.bAngle * DEG), 0);
     hands.forEach((h) => {
       h.su.uD.value = D;
       if (!h.back) {
-        h.angle = tune.aAngle * DEG;
-        const dir = new THREE.Vector2(Math.cos(h.angle), Math.sin(h.angle));
-        h.rest.copy(clasp).addScaledVector(dir, tune.grabBelow * W);
-        h.z = 0;
-        h.from.set(h.rest.x, h.rest.y - vh * 0.95);
+        h.rot.makeRotationZ(tune.aAngle * DEG);
+        const palm = C.clone();
+        h.rest.copy(palm).sub(new THREE.Vector3(0.56 * W, 0, 0).applyMatrix4(h.rot)); // the wrist, so the palm centre lands there
+        h.from.copy(h.rest).addScaledVector(aDir, -diag * 0.8);
       } else {
-        h.angle = tune.bAngle * DEG;
-        const dir = new THREE.Vector2(Math.cos(h.angle), Math.sin(h.angle));
-        const along = new THREE.Vector2(Math.cos(tune.aAngle * DEG), Math.sin(tune.aAngle * DEG));
-        // the palm centre (0.62 along the hand) sits back from the forearm axis so the knuckles reach its far edge
-        const palm = new THREE.Vector2().copy(clasp).addScaledVector(dir, -tune.bShift * W).addScaledVector(along, tune.bUp * W);
-        h.rest.copy(palm).addScaledVector(dir, -0.62 * W);
-        h.z = tune.bZ * W;
-        h.from.set(h.rest.x + vw * 0.8, h.rest.y + vh * 0.18);
+        h.rot.makeRotationZ(tune.bAngle * DEG).multiply(new THREE.Matrix4().makeRotationX(Math.PI + tune.bRoll * DEG)); // palm toward the other hand
+        const palm = C.clone().addScaledVector(aDir, tune.bAlong * W).addScaledVector(bDir, tune.bAcross * W);
+        palm.z = tune.bZ * W;
+        h.rest.copy(palm).sub(new THREE.Vector3(0.56 * W, 0, 0).applyMatrix4(h.rot));
+        h.from.copy(h.rest).addScaledVector(bDir, -diag * 0.8);
       }
     });
   };
@@ -409,7 +494,7 @@ export function start(canvas, state) {
   let resizeTimer = 0;
   addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 120); });
 
-  const _pos = new THREE.Vector2(), _dir = new THREE.Vector2(), _m = new THREE.Matrix4();
+  const _pos = new THREE.Vector3(), _dir = new THREE.Vector3(), _m = new THREE.Matrix4();
   const ease = (t) => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
   const setRoot = (h, reach, time, phase, curl) => {
     const e = ease(reach);
@@ -419,28 +504,20 @@ export function start(canvas, state) {
     const arc = Math.sin(e * Math.PI) * 0.05 * L * (h.back ? 1 : -1);
     _pos.x += -_dir.y / L * arc;
     _pos.y += _dir.x / L * arc;
-    // alive at rest: a slow sway and bob, shared by both hands once they hold
     const own = Math.sin(time * 0.8 + phase) * 1.4 * DEG;
     const together = Math.sin(time * 0.7) * 0.9 * DEG;
     const sway = lerp(own, together, curl) * e;
     const bob = lerp(Math.sin(time * 1.1 + phase) * 0.03, Math.sin(time * 0.9) * 0.02, curl) * W * e;
     const settle = (1 - e) * (h.back ? -10 : 8) * DEG;
     _pos.y += bob;
-    h.root.makeTranslation(_pos.x, _pos.y, h.z);
-    h.root.multiply(_m.makeRotationZ(h.angle + sway + settle));
-    if (h.back) h.root.multiply(_m.makeRotationX(Math.PI)); // palm toward the forearm, knuckles toward us
+    h.root.makeTranslation(_pos.x, _pos.y, _pos.z);
+    h.root.multiply(_m.makeRotationZ(sway + settle));
+    h.root.multiply(h.rot);
     h.root.multiply(_m.makeScale(W, W, W));
     h.group.matrix.copy(h.root);
     h.group.matrixWorldNeedsUpdate = true;
   };
-  const pose = (h, a, b, t) => {
-    for (let i = 0; i < rig.length; i++) {
-      const bone = rig[i];
-      if (!bone.joint) continue;
-      const ja = a[bone.joint], jb = b[bone.joint];
-      h.bones[i].rotation.set(bone.rot[2] * DEG, (bone.rot[1] + lerp(ja[1], jb[1], t) * bone.k) * DEG, (bone.rot[0] + lerp(ja[0], jb[0], t) * bone.k) * DEG, 'ZYX');
-    }
-  };
+  const blend = (a, b, t) => ({ f: a.f.map((v, i) => lerp(v, b.f[i], t)), t: a.t.map((v, i) => lerp(v, b.t[i], t)) });
 
   let cleared = true, lastActive = false;
   function render(now) {
@@ -459,12 +536,11 @@ export function start(canvas, state) {
     hands.forEach((h, idx) => {
       const reach = h.back ? state.reachB : state.reachA;
       setRoot(h, reach, time, idx * 2.1, curl);
-      pose(h, POSES.open, h.back ? POSES.grip : POSES.hold, curl);
+      posePose(h.sk, blend(POSES.open, h.back ? POSES.grip : POSES.hold, curl * (h.back ? tune.gripK : tune.holdK)), 1);
       h.group.updateMatrixWorld(true);
       h.skeleton.update();
-      h.boneArr.set(h.skeleton.boneMatrices.subarray(0, rig.length * 16));
-      const form = clamp(reach / 0.72, 0, 1) * (1 - dissolve);
-      h.u.uForm.value = form;
+      h.boneArr.set(h.skeleton.boneMatrices.subarray(0, boneCount * 16));
+      h.u.uForm.value = clamp(reach / 0.72, 0, 1) * (1 - dissolve);
       h.u.uNight.value = night;
       h.mesh.material.emissiveIntensity = 0.3 + 0.5 * night;
       const su = h.su;

@@ -547,12 +547,15 @@
   .thing--sage svg { color: var(--sage-btn); }
   .thing--note { display: none; }
 
-  /* support title */
-  .scene--title { justify-content: center; padding: 0 16px; }
-  .scene--title h2 { font-size: clamp(2.2rem, 1.3rem + 4.6vw, 5.4rem); color: var(--dark-ink); letter-spacing: -0.04em; line-height: 1.02; }
+  /* support title: the words sit at the top of the stage while the hands play beneath them */
+  .scene--title { justify-content: flex-start; padding: calc(var(--nav-h) + 5vh) 16px 0; padding-top: calc(var(--nav-h) + 5dvh); }
+  .scene--title h2 { font-size: clamp(2.1rem, 1.2rem + 4vw, 4.6rem); color: var(--dark-ink); letter-spacing: -0.04em; line-height: 1.02; }
   .scene--title h2 em { color: #CFC4FF; }
   .scene--title .eyebrow, .scene--hub .eyebrow { color: #B9C6FF; }
-  .scene--title p { margin-top: 18px; color: var(--dark-body); font-size: var(--fs-lede); max-width: 34ch; margin-inline: auto; }
+  .scene--title p { margin-top: 14px; color: var(--dark-body); font-size: var(--fs-lede); font-weight: 600; max-width: 34ch; margin-inline: auto; }
+  @media (max-width: 899px) and (max-height: 720px) { .scene--title h2 { font-size: 1.9rem; } .scene--title p { font-size: 1rem; margin-top: 10px; } }
+  @media (max-width: 899px) and (max-height: 620px) { .scene--title p:not(.eyebrow) { display: none; } }
+  @media (max-width: 379px) { .scene--title .eyebrow { font-size: 0.7rem; letter-spacing: 0.08em; margin-bottom: 12px; } }
 
   /* the Support hub: two screens, two messages (stacked in one grid cell), the goals beside the settings screen */
   .scene--hub .scene__block { max-width: 520px; display: grid; }
@@ -624,7 +627,7 @@
     .thing { font-size: 0.95rem; padding: 11px 16px; }
     .thing--note { display: block; background: transparent; border: 0; box-shadow: none; padding: 4px 0 0; color: var(--ink-muted); font-weight: 500; font-size: 0.9rem; white-space: normal; max-width: 26ch; margin-left: 0 !important; }
 
-    .scene--title { justify-content: center; }
+    .scene--title { justify-content: center; align-items: flex-start; padding-top: calc(var(--nav-h) + 6vh); }
     .scene--title .scene__block { width: min(80vw, 900px); text-align: center; }
     .scene--title p { margin-inline: auto; }
     .scene--hub .scene__block { width: 30vw; max-width: 520px; }

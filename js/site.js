@@ -165,6 +165,10 @@ function initPlay() {
   const heroScene = q('[data-scene="hero"]');
   const steps = [...play.querySelectorAll('[data-scene="step"]')];
   const titleBlock = q('[data-scene="title"] .scene__block');
+  const titleEye = titleBlock ? titleBlock.querySelector('.eyebrow') : null;
+  const titleH2 = titleBlock ? titleBlock.querySelector('h2') : null;
+  const titleEm = titleBlock ? titleBlock.querySelector('h2 em') : null;
+  const titleP = titleBlock ? titleBlock.querySelector('p:not(.eyebrow)') : null;
   const hubA = q('.hub--a');
   const hubB = q('.hub--b');
   const hubAside = q('.hub__aside');
@@ -213,13 +217,21 @@ function initPlay() {
     gsap.set(stepTexts, { autoAlpha: 0, x: desktop ? -40 : 0, y: desktop ? 0 : 20 });
     gsap.set(stepNums, { autoAlpha: 0, y: 30 });
     stepThings.forEach((t) => gsap.set(t, { autoAlpha: 0, y: 18 }));
+    // the words sit at the top while the hands play beneath them, then settle to the centre once the hands have gone
+    gsap.set(titleBlock, { clearProps: 'transform' });
+    const tr = titleBlock.getBoundingClientRect();
+    const titleShift = (stage.clientHeight || innerHeight) / 2 - (tr.top + tr.height / 2);
     gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
+    // on the dusk the words are ink; they turn to light as the night reaches them
+    const inkColours = [[titleH2, '#1A1815'], [titleEm, '#4C3FBF'], [titleEye, '#5A4EC8'], [titleP, '#3A342E']];
+    const lightColours = [[titleH2, '#FBF6EC'], [titleEm, '#CFC4FF'], [titleEye, '#B9C6FF'], [titleP, 'rgba(245, 239, 230, 0.78)']];
+    inkColours.forEach(([el, c]) => { if (el) gsap.set(el, { color: c }); });
     gsap.set([hubA, hubB, hubAside].filter(Boolean), { autoAlpha: 0, y: 20 });
     gsap.set(goals, { autoAlpha: 0, y: 14, scale: 0.96 });
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
     // where the hands meet, as fractions of the stage; the flash and the ripple sit on that point
-    const clasp = desktop ? [0.5, 0.58] : [0.5, 0.6]; // the grip on the reaching wrist; the open hand rises above it, clear of the nav
+    const clasp = desktop ? [0.46, 0.74] : [0.42, 0.72]; // the centre of the reaching palm, beneath the words
     const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
     const ringK = Math.hypot(sw, sh) / (0.1523 * Math.max(sw, sh)); // ring scale per unit of reveal, so its bright edge rides the night's edge
     night.style.setProperty('--cx', clasp[0] * 100 + '%');
@@ -265,43 +277,45 @@ function initPlay() {
       t = out + 0.55;
     });
 
-    // ── the reach: a hand of starlight gathers and reaches in, another takes it, and the night spreads out from
-    //    the point where they meet
+    // ── the Support hub introduces itself: the words first, at the top; then beneath them a hand reaches up
+    //    for help, another comes to take it, and the night spreads out from the point where they meet
     const ts = t;
     tl.to(playState, { ambient: 0, duration: 0.7, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(dusk, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(fade, { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, ts - 0.1);
-    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 1 }, ts - 0.05);
-    tl.set(handsState, { active: 1 }, ts - 0.05);
-    tl.to(handsState, { alpha: 1, duration: 0.5, ease: 'sine.out' }, ts);
-    tl.to(handsState, { reachA: 1, duration: 1.8, ease: 'power2.out' }, ts);
-    tl.to(handsState, { reachB: 1, duration: 1.6, ease: 'power2.inOut' }, ts + 0.9);
-    tl.to(handsState, { curl: 1, duration: 0.6, ease: 'power2.inOut' }, ts + 2.3);
+    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 0.2);
+    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 1 }, ts + 0.6);
+    tl.set(handsState, { active: 1 }, ts + 0.6);
+    tl.to(handsState, { alpha: 1, duration: 0.5, ease: 'sine.out' }, ts + 0.7);
+    tl.to(handsState, { reachA: 1, duration: 1.8, ease: 'power2.out' }, ts + 0.7);
+    tl.to(handsState, { reachB: 1, duration: 1.6, ease: 'power2.inOut' }, ts + 1.7);
+    tl.to(handsState, { curl: 1, duration: 0.6, ease: 'power2.inOut' }, ts + 3.1);
     // a pool of light gathers where they are about to meet, then the touch: a flash, and a ripple of light that
     // carries the night across the whole sky (the night is clipped to a circle whose radius is the --reveal variable)
     if (flash) {
-      tl.fromTo(flash, { scale: 0.5, opacity: 0 }, { scale: 1.1, opacity: 0.45, duration: 1.6, ease: 'sine.inOut' }, ts + 0.7);
-      tl.to(flash, { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' }, ts + 2.55);
-      tl.to(flash, { scale: 1.8, opacity: 0, duration: 1.0, ease: 'power2.out' }, ts + 2.9);
+      tl.fromTo(flash, { scale: 0.5, opacity: 0 }, { scale: 1.1, opacity: 0.45, duration: 1.6, ease: 'sine.inOut' }, ts + 1.6);
+      tl.to(flash, { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' }, ts + 3.35);
+      tl.to(flash, { scale: 1.8, opacity: 0, duration: 1.0, ease: 'power2.out' }, ts + 3.7);
     }
-    tl.set(night, { opacity: 1 }, ts + 2.7);
-    tl.fromTo(night, { '--reveal': 0 }, { '--reveal': 142, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
-    tl.to(handsState, { reveal: 1, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
-    if (ring) tl.fromTo(ring, { scale: 0.1, opacity: 0.9 }, { scale: 0.1 + ringK, opacity: 0, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
-    if (glow) tl.to(glow, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts + 3.1);
+    tl.set(night, { opacity: 1 }, ts + 3.5);
+    tl.fromTo(night, { '--reveal': 0 }, { '--reveal': 142, duration: 1.5, ease: 'power2.out' }, ts + 3.52);
+    tl.to(handsState, { reveal: 1, duration: 1.5, ease: 'power2.out' }, ts + 3.52);
+    if (ring) tl.fromTo(ring, { scale: 0.1, opacity: 0.9 }, { scale: 0.1 + ringK, opacity: 0, duration: 1.5, ease: 'power2.out' }, ts + 3.52);
+    if (glow) tl.to(glow, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts + 3.9);
+    lightColours.forEach(([el, c]) => { if (el) tl.to(el, { color: c, duration: 0.8, ease: 'sine.inOut' }, ts + 3.85); }); // the words turn to light
     tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 2.0);
-    tl.addLabel('hands', ts + 3.8);
-    tl.to(handsState, { dissolve: 1, duration: 1.1, ease: 'power1.in' }, ts + 4.4); // the hands lift away and become the stars
-    tl.to(stars, { opacity: 1, duration: 1.3, ease: 'sine.inOut' }, ts + 4.6);
-    tl.set(handsState, { active: 0 }, ts + 5.6);
-    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 0 }, ts + 5.6);
-    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 5.4);
-    tl.addLabel('support', ts + 6.1);
-    tl.to(titleBlock, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut' }, ts + 6.8);
-    const nightIn = ts + 3.3;
+    tl.addLabel('hands', ts + 4.8);
+    tl.to(handsState, { dissolve: 1, duration: 1.1, ease: 'power1.in' }, ts + 5.4); // the hands lift away and become the stars
+    tl.to(stars, { opacity: 1, duration: 1.3, ease: 'sine.inOut' }, ts + 5.6);
+    tl.set(handsState, { active: 0 }, ts + 6.6);
+    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 0 }, ts + 6.6);
+    tl.to(titleBlock, { y: titleShift, duration: 1.0, ease: 'sine.inOut' }, ts + 6.3); // the words settle to the centre
+    tl.addLabel('support', ts + 7.3);
+    tl.to(titleBlock, { autoAlpha: 0, y: titleShift - 14, duration: 0.6, ease: 'sine.inOut' }, ts + 8.0);
+    const nightIn = ts + 4.1;
 
     // ── the Support hub: the phone fades back in, then each screen gets its own words
-    const th = ts + 7.2;
+    const th = ts + 8.4;
     tl.to(fade, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, th);
     tl.to(hubA, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.4);
     if (hubAside) tl.to(hubAside, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.7);

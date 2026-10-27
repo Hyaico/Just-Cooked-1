@@ -31,7 +31,7 @@ terms.html privacy.html cookies.html disclaimer.html eula.html delete.html
 css/site.css          Design system: tokens from the V1.2c rebrand spec, components, pages
 js/site.js            Nav, reveals, Next Meal story, dusk tint, FAQ/TOC helpers
 js/scene.js           Three.js scene (lazy-loaded by site.js on the home page only)
-js/hands.js           The reach: two skinned 3D hands (built from capsules at load) on their own canvas
+js/hands.js           The reach: two skinned 3D hands (built as a smooth surface at load) on their own canvas
 api/recipe/[shareId].js   Vercel function that renders a shared recipe
 assets/screens/       Screen-only crops used as 3D phone textures
 assets/shots/         Framed phone shots (560w / 980w WebP) used as fallbacks
@@ -43,13 +43,15 @@ scripts/build-assets.py   Regenerates assets/screens, assets/shots and the downl
 
 The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
 page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
-place: hero, three steps around the centred phone, then the reach: the phone fades, a hand
-of starlight gathers from dust and reaches in from the lower left, a second takes it from
-the upper right, and where they touch a flash and a ripple of light carry the night across
-the sky (`.play__night` is clipped to a circle whose radius is the `--reveal` variable the
-timeline tweens). The hands lift away into the stars, the title lands, the phone returns
-with the Support screen and each of its two screens gets its own message (`.hub--a`,
-`.hub--b`). For the finale the cream page comes back as a day sheet (`.play__sheet`) with
+place: hero, three steps around the centred phone, then the Support hub introduces itself:
+the phone fades, the words land at the top of the stage ("Introducing the Support hub",
+"Support, for everything food touches.", "Support made for you."), and beneath them a hand
+rises from below reaching for help, a second comes across to take it, and where they meet
+a flash and a ripple of light carry the night across the sky (`.play__night` is clipped to
+a circle whose radius is the `--reveal` variable the timeline tweens) while the words turn
+from ink to light. The hands fray back into stardust, the words settle to the centre, the
+phone returns with the Support screen and each of its two screens gets its own message
+(`.hub--a`, `.hub--b`). For the finale the cream page comes back as a day sheet (`.play__sheet`) with
 one curved edge over the night: the phone sits on the line between the two worlds and the
 words sit on the cream. While the night is on screen the nav bar turns to night glass
 (`.nav.is-night`, with the `theme-color` meta to match). Each scene is a `.scene` block;
@@ -58,15 +60,19 @@ and download scenes, so moving them in CSS moves the phone.
 Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 
 `js/hands.js` draws the two hands on a second transparent canvas that only renders during
-the passage. Each hand is a small 3D skeleton (forearm, palm, thumb, four fingers) wrapped
-in tapered capsules; at load the capsules are melted into one smooth surface with marching
-cubes (a few hundred milliseconds, off the critical path), the surface is skinned to the
-bones, and from then on it is an ordinary skinned mesh with a warm physical material. One
-hand reaches up from below, the other comes in from the side and closes around its wrist;
-they condense out of stardust and fray back into it through a noise threshold in the
-fragment shader, with a few hundred stars riding on the surface. The timeline drives it
-through `handsState` in `js/site.js` (`reachA`, `reachB`, `curl`, `dissolve`, `reveal`),
-and the staging numbers live in `TUNE` at the top of the module.
+the passage. A hand is modelled as a smooth surface: a tapered, gently domed palm, a thumb
+pad and a heel pad, fingers swept along smooth curves, a slim wrist and a forearm, all
+melted together and turned into a mesh with marching cubes at load (about a second, off
+the critical path), then smoothed and skinned to a small skeleton. From then on it is an
+ordinary skinned mesh with a warm physical material. The reaching hand (a left hand, palm
+toward us) rises from the lower right; the helping hand (a right hand, palm toward it)
+comes down from the upper right across it and closes round the far edge of the palm while
+the reaching fingers close a little in return. They condense out of stardust and fray back
+into it through a noise threshold in the fragment shader, with a few hundred stars riding
+on the surface. The timeline drives it through `handsState` in `js/site.js` (`reachA`,
+`reachB`, `curl`, `dissolve`, `reveal`), and the staging numbers live in `TUNE` at the top
+of the module. An uncommitted `dev-hands.html` at the repo root renders the hands alone
+with query parameters for tuning.
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which
