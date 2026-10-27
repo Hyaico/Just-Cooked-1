@@ -16,24 +16,28 @@ REPO = sys.argv[1] if len(sys.argv) > 1 else "."
 OUT = os.path.join(REPO, "assets")
 
 
-def stars(path, seed, n_small=150, n_mid=12):
+def stars(path, seed, n_tiny=230, n_small=40, n_bright=7):
     rnd = random.Random(seed)
     W, H = 1600, 1000
     parts = []
+    for _ in range(n_tiny):
+        x, y = rnd.uniform(0, W), rnd.uniform(0, H)
+        r = rnd.uniform(0.45, 1.0)
+        o = rnd.uniform(0.35, 0.9)
+        col = "#FFE9D6" if rnd.random() < 0.15 else ("#DCE6FF" if rnd.random() < 0.3 else "#FFFFFF")
+        parts.append('<circle cx="%.1f" cy="%.1f" r="%.2f" fill="%s" opacity="%.2f"/>' % (x, y, r, col, o))
     for _ in range(n_small):
         x, y = rnd.uniform(0, W), rnd.uniform(0, H)
-        r = rnd.uniform(0.6, 1.5)
-        o = rnd.uniform(0.3, 0.95)
-        col = "#FFE9D6" if rnd.random() < 0.18 else "#F2F4FF"
-        parts.append('<circle cx="%.1f" cy="%.1f" r="%.2f" fill="%s" opacity="%.2f"/>' % (x, y, r, col, o))
-    for _ in range(n_mid):
-        x, y = rnd.uniform(40, W - 40), rnd.uniform(40, H - 40)
-        r = rnd.uniform(1.8, 2.6)
-        parts.append('<circle cx="%.1f" cy="%.1f" r="%.1f" fill="url(#halo)" opacity="0.9"/>' % (x, y, r * 4.5))
-        parts.append('<circle cx="%.1f" cy="%.1f" r="%.2f" fill="#FFFFFF" opacity="0.95"/>' % (x, y, r))
-    svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" preserveAspectRatio="xMidYMid slice">'
-           '<defs><radialGradient id="halo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"/>'
-           '<stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient></defs>%s</svg>') % (W, H, W, H, "".join(parts))
+        r = rnd.uniform(1.1, 1.7)
+        parts.append('<circle cx="%.1f" cy="%.1f" r="%.2f" fill="#FFFFFF" opacity="%.2f"/>' % (x, y, r, rnd.uniform(0.7, 1)))
+    for _ in range(n_bright):
+        x, y = rnd.uniform(60, W - 60), rnd.uniform(60, H - 60)
+        arm = rnd.uniform(7, 12)
+        parts.append('<path d="M%.1f %.1f l%.1f %.1f l%.1f %.1f l%.1f %.1f z M%.1f %.1f l%.1f %.1f l%.1f %.1f l%.1f %.1f z" fill="#FFFFFF" opacity="0.85"/>'
+                     % (x - arm, y, arm, -1.1, arm, 1.1, -arm, 1.1, x, y - arm, 1.1, arm, -1.1, arm, -1.1, -arm))
+        parts.append('<circle cx="%.1f" cy="%.1f" r="1.9" fill="#FFFFFF"/>' % (x, y))
+    svg = ('<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" preserveAspectRatio="xMidYMid slice">%s</svg>'
+           % (W, H, W, H, "".join(parts)))
     with open(path, "w", encoding="utf-8", newline="\n") as f:
         f.write(svg)
     print("wrote", os.path.relpath(path, REPO), len(svg), "bytes")

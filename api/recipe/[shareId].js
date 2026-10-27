@@ -163,8 +163,8 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   const heroInner = thumbnailUrl
     ? ''
     : `<div class="hero-placeholder">
-        <span class="hero-ph-chip"><svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="23" fill="none" stroke="#E94B1F" stroke-width="6"/><circle cx="32" cy="32" r="11" fill="#E94B1F"/></svg></span>
-        <span class="hero-ph-cap">A Just Cooked recipe</span>
+        <span class="hero-ph-chip"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#E94B1F" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+        <span class="hero-ph-cap">No photo yet</span>
       </div>`;
 
   const ogImage = thumbnailUrl

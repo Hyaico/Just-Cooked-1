@@ -436,9 +436,11 @@
                 radial-gradient(60% 50% at 50% 48%, rgba(120, 140, 220, 0.12) 0%, rgba(120, 140, 220, 0) 70%); }
   .play__night::after { content: ""; position: absolute; inset: 0; background: radial-gradient(90% 80% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(4, 7, 18, 0.5) 100%); }
   .play__stars { position: absolute; inset: 0; z-index: 3; opacity: 0; will-change: opacity; }
-  .play__stars i { position: absolute; inset: 0; background: url('/assets/stars-a.svg') center / cover no-repeat; animation: twinkle 6s ease-in-out infinite alternate; }
-  .play__stars i + i { background-image: url('/assets/stars-b.svg'); animation-delay: -3s; }
-  @keyframes twinkle { from { opacity: 0.3; } to { opacity: 1; } }
+  .play__stars i { position: absolute; inset: -4%; background: url('/assets/stars-a.svg') center / cover no-repeat; animation: twinkle 7s ease-in-out infinite alternate, drift-stars 60s ease-in-out infinite alternate; }
+  .play__stars i + i { background-image: url('/assets/stars-b.svg'); animation-delay: -3.5s, -30s; animation-direction: alternate-reverse; }
+  @keyframes twinkle { from { opacity: 0.35; } to { opacity: 1; } }
+  @keyframes drift-stars { from { transform: translate(-1.5%, -1%); } to { transform: translate(1.5%, 1%); } }
+  @media (prefers-reduced-motion: reduce) { .play__stars i { animation: none; opacity: 0.8; } }
 
   /* layout anchors: invisible boxes, laid out in the flow of their scene, that tell the timeline where the phone rests */
   .play__anchor { flex: none; pointer-events: none; visibility: hidden; position: relative; height: var(--ah); width: calc(var(--ah) * 0.4775); --ah: 38vh; --ah: 38dvh; }
@@ -501,13 +503,15 @@
   .scene--title h2 em { color: #FFB07A; }
   .scene--title p { margin-top: 18px; color: var(--dark-body); font-size: var(--fs-lede); max-width: 34ch; margin-inline: auto; }
 
-  /* support hub notes: soft panels, one pair per screen */
-  .note { position: absolute; left: 16px; right: 16px; top: 54vh; top: 54dvh; padding: 18px 20px; border-radius: 22px; background: rgba(255, 255, 255, 0.055); border: 1px solid rgba(255, 255, 255, 0.09); color: var(--dark-ink); text-align: center; }
-  .note__ic { width: 40px; height: 40px; border-radius: 13px; background: rgba(255, 176, 122, 0.14); color: #FFB07A; display: grid; place-items: center; margin: 0 auto 12px; }
-  .note__ic svg { width: 19px; height: 19px; }
-  .note h3 { font-size: 1.25rem; letter-spacing: -0.02em; color: var(--dark-ink); }
-  .note p { margin-top: 8px; color: var(--dark-body); font-size: 0.95rem; line-height: 1.55; }
-  .note::after { content: ""; display: none; }
+  /* made for you: message beside the phone, goals lighting up around it */
+  .scene--hub .scene__block { max-width: 520px; }
+  .scene--hub h2 { font-size: clamp(1.6rem, 1rem + 3vw, 3.2rem); color: var(--dark-ink); letter-spacing: -0.03em; line-height: 1.04; }
+  .scene--hub h2 em { color: #FFB07A; }
+  .scene--hub .scene__block p { margin-top: 12px; color: var(--dark-body); font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem); line-height: 1.55; max-width: 42ch; margin-inline: auto; }
+  .goals { margin-top: auto; width: 100%; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .goal { display: inline-flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); color: var(--dark-ink); font-weight: 600; font-size: 0.85rem; white-space: nowrap; box-shadow: 0 0 0 0 rgba(255, 176, 122, 0); }
+  .goal::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #FFB07A; box-shadow: 0 0 10px rgba(255, 176, 122, 0.8); }
+  @media (max-width: 899px) { .scene--hub .scene__block p { display: none; } .goal:nth-child(n+6) { display: none; } }
 
   /* finale */
   .scene--download .scene__block { max-width: 600px; }
@@ -560,6 +564,10 @@
     .scene--title { justify-content: center; }
     .scene--title .scene__block { width: min(80vw, 900px); text-align: center; }
     .scene--title p { margin-inline: auto; }
+    .scene--hub .scene__block { width: 30vw; max-width: 520px; }
+    .scene--hub .scene__block p { margin-inline: 0; }
+    .goals { margin-top: 0; width: 26vw; display: flex; flex-wrap: wrap; justify-content: flex-start; align-content: center; gap: 10px; }
+    .goal { font-size: 0.95rem; padding: 11px 16px; }
 
     .note { width: min(26vw, 340px); left: auto; right: auto; top: calc(50% - 110px); text-align: left; }
     .note__ic { margin: 0 0 12px; }
@@ -592,7 +600,7 @@
   html:not(.js) .scene, .play--static .scene { position: static; padding: 0; flex-direction: column; }
   html:not(.js) .scene > *, .play--static .scene > * { position: static !important; width: auto !important; max-width: 640px; margin-inline: auto; text-align: center; }
   html:not(.js) .scene--title, .play--static .scene--title, html:not(.js) .scene--hub, .play--static .scene--hub { background: var(--night); border-radius: var(--r-xxl); padding: 48px 24px; }
-  html:not(.js) .note, .play--static .note { margin-top: 24px; }
+  html:not(.js) .goals, .play--static .goals { margin-top: 16px; display: flex; justify-content: center; }
   html:not(.js) .play .phone-slot, .play--static .phone-slot { position: static; height: min(60vh, 540px); width: auto; aspect-ratio: 1274 / 2668; margin-inline: auto; order: 1; }
   html:not(.js) .things, .play--static .things { margin-top: 12px; display: flex; justify-content: center; }
 }
