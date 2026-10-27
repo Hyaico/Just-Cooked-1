@@ -25,7 +25,7 @@ plain content. `prefers-reduced-motion` turns the motion off.
 ## Files
 
 ```
-index.html            Home (hero, story, bento, savings, Support hub, CTA)
+index.html            Home (the play: hero, three steps, the hands, Support hub, download)
 faq.html support.html download.html 404.html
 terms.html privacy.html cookies.html disclaimer.html eula.html delete.html
 css/site.css          Design system: tokens from the V1.2c rebrand spec, components, pages
@@ -42,17 +42,21 @@ scripts/build-assets.py   Regenerates assets/screens, assets/shots and the downl
 
 The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
 page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
-place: hero, three steps around the centred phone, the night sky that envelops the
-screen for the Support hub, four callouts, then the download ask. Each scene is a
+place: hero, three steps around the centred phone, then the Support passage: the phone
+fades, one starry hand reaches out and another takes it (`.play__hands`, three SVG layers
+that slide in; the fingers curl from `data-open` to `data-curl` degrees), the night sky
+arrives behind them, the phone returns with the Support screen and each of its two
+screens gets its own message (`.hub--a`, `.hub--b`), then the download ask. Each scene is a
 `.scene` block; the invisible `.play__anchor` boxes tell the timeline where the phone
 rests in the hero and download scenes, so moving them in CSS moves the phone.
 Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which
-screen to show, resting angle, how visible the props are). The phone reacts to the mouse,
-the finger while scrolling, the gyroscope on Android, scroll speed, and can be dragged to
-spin. The food and kitchen models only react when the mouse is over them; their positions are
+screen to show, resting angle, how visible the props are). The phone turns by how far the
+mouse or finger is from the phone itself (half a viewport away is a full turn), follows the
+gyroscope on Android, and can be dragged to spin. The food and kitchen models only react
+when the mouse is over them; their positions are
 declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`), anchored to the phone, the text block or the stage.
 
 ## Editing a policy

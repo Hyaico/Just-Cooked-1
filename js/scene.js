@@ -1,11 +1,12 @@
-/* Just Cooked — 3D scene (v5).
+/* Just Cooked — 3D scene (v7).
    One procedurally built phone on a fixed, transparent canvas. It sits exactly
    on the page's single phone slot (which the home-page timeline moves around
    the stage), shows whichever app screen the play asks for, and reacts to the
-   mouse, the finger, the gyroscope and drag-to-spin. Around it, low-poly food
-   and kitchen models (Kenney Food Kit, CC0) rest around the hero, in the stage
-   corners during the steps, and return for the finale. They only react when
-   the mouse is over them. */
+   mouse, the finger, the gyroscope and drag-to-spin: it turns by how far the
+   pointer is from the phone itself. Around it, low-poly food and kitchen models
+   (Kenney Food Kit, CC0) lie scattered around the hero, sit in the stage corners
+   during the steps, and return for the finale. They only react when the mouse
+   is over them. */
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -96,28 +97,33 @@ function buildPhone(screenMat) {
    its top-left corner (outside the box). anchor "stage": viewport fractions.
    rot tilts each model so its best side faces the camera (models lie flat on y). */
 const HERO_DESKTOP = [
-  { model: 'pancakes', anchor: 'stage', off: [0.3, 0.11, -0.3], rot: [0.75, 0.4, 0], s: 0.85 },
-  { model: 'egg-cooked', anchor: 'stage', off: [0.5, 0.12, -0.6], rot: [0.95, 0.2, 0.3], s: 0.85 },
-  { model: 'tomato', anchor: 'stage', off: [0.9, 0.12, 0.2], rot: [0.4, 0.3, 0], s: 0.7 },
-  { model: 'utensil-fork', anchor: 'stage', off: [0.035, 0.32, 0.1], rot: [0.8, 0.1, -0.9], s: 0.9 },
-  { model: 'strawberry', anchor: 'stage', off: [0.055, 0.56, 0.2], rot: [0.5, 0.3, 0.2], s: 0.5 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.96, 0.34, -0.3], rot: [0.85, 0.3, 0.3], s: 0.65 },
-  { model: 'whisk', anchor: 'stage', off: [0.965, 0.64, -0.5], rot: [0.6, 0.2, 0.5], s: 0.95 },
-  { model: 'bread', anchor: 'stage', off: [0.04, 0.9, 0.2], rot: [0.4, 0.5, 0.1], s: 0.8 },
-  { model: 'rollingPin', anchor: 'stage', off: [0.17, 0.95, 0.1], rot: [0.7, 0.2, 0.25], s: 1.0 },
-  { model: 'shaker-salt', anchor: 'stage', off: [0.3, 0.91, 0.3], rot: [0.3, 0.3, 0.1], s: 0.7 },
-  { model: 'broccoli', anchor: 'stage', off: [0.44, 0.94, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
-  { model: 'cheese-cut', anchor: 'stage', off: [0.57, 0.92, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
-  { model: 'mushroom', anchor: 'stage', off: [0.71, 0.96, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
-  { model: 'croissant', anchor: 'stage', off: [0.87, 0.92, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85 },
+  // scattered, not lined up: different sizes, depths and tilts, everywhere the title and the phone are not
+  { model: 'croissant', anchor: 'stage', off: [0.36, 0.12, 0.2], rot: [0.8, 0.5, 0.2], s: 0.75 },
+  { model: 'tomato', anchor: 'stage', off: [0.07, 0.17, -0.2], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.49, 0.145, -0.4], rot: [0.85, 0.3, 0.3], s: 0.6 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.3, 0.95, -0.3], rot: [0.95, 0.2, 0.3], s: 0.82 },
+  { model: 'strawberry', anchor: 'stage', off: [0.585, 0.3, 0.3], rot: [0.5, 0.3, 0.2], s: 0.45 },
+  { model: 'bread', anchor: 'stage', off: [0.9, 0.19, 0.1], rot: [0.5, 0.6, 0.1], s: 0.85 },
+  { model: 'whisk', anchor: 'stage', off: [0.955, 0.37, -0.4], rot: [0.6, 0.2, 0.5], s: 1.0 },
+  { model: 'broccoli', anchor: 'stage', off: [0.905, 0.57, 0.4], rot: [0.3, 0.4, 0], s: 0.8 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.965, 0.8, 0.0], rot: [0.8, 0.1, -0.6], s: 0.9 },
+  { model: 'pancakes', anchor: 'stage', off: [0.79, 0.93, 0.2], rot: [0.75, 0.4, 0], s: 0.9 },
+  { model: 'mushroom', anchor: 'stage', off: [0.61, 0.955, 0.5], rot: [0.4, 0.3, 0.2], s: 0.55 },
+  { model: 'carrot', anchor: 'stage', off: [0.47, 0.885, 0.1], rot: [0.7, 0.2, 0.9], s: 1.0 },
+  { model: 'advocado-half', anchor: 'stage', off: [0.4, 0.95, 0.3], rot: [0.7, -0.3, 0.1], s: 0.72 },
+  { model: 'cheese-cut', anchor: 'stage', off: [0.12, 0.92, 0.0], rot: [0.7, -0.3, 0.1], s: 0.85 },
+  { model: 'frying-pan', anchor: 'stage', off: [0.06, 0.66, -0.5], rot: [0.95, -0.5, 0.2], s: 1.1 },
+  { model: 'apple', anchor: 'stage', off: [0.04, 0.4, 0.2], rot: [0.4, 0.3, 0], s: 0.62 },
+  { model: 'utensil-fork', anchor: 'stage', off: [0.1, 0.25, 0.1], rot: [0.8, 0.1, -0.9], s: 0.8 },
 ];
 const HERO_MOBILE = [
-  { model: 'egg-cooked', anchor: 'stage', off: [0.08, 0.15, -0.6], rot: [0.95, 0.2, 0.3], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.92, 0.16, 0.4], rot: [0.4, 0.3, 0], s: 0.65 },
-  { model: 'utensil-spoon', anchor: 'stage', off: [0.06, 0.3, 0.2], rot: [0.8, 0, -0.9], s: 0.85 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.93, 0.34, -0.3], rot: [0.85, 0.3, 0.3], s: 0.58 },
-  { model: 'broccoli', anchor: 'stage', off: [0.07, 0.45, 0.5], rot: [0.3, 0.4, 0], s: 0.65 },
-  { model: 'strawberry', anchor: 'stage', off: [0.92, 0.49, -0.2], rot: [0.5, 0.3, 0.2], s: 0.45 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.1, 0.1, -0.4], rot: [0.95, 0.2, 0.3], s: 0.75 },
+  { model: 'tomato', anchor: 'stage', off: [0.88, 0.07, 0.3], rot: [0.4, 0.3, 0], s: 0.62 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.07, 0.28, 0.1], rot: [0.8, 0, -0.9], s: 0.85 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.91, 0.23, -0.3], rot: [0.85, 0.3, 0.3], s: 0.55 },
+  { model: 'broccoli', anchor: 'stage', off: [0.12, 0.46, 0.4], rot: [0.3, 0.4, 0], s: 0.62 },
+  { model: 'strawberry', anchor: 'stage', off: [0.84, 0.4, -0.2], rot: [0.5, 0.3, 0.2], s: 0.42 },
+  { model: 'mushroom', anchor: 'stage', off: [0.91, 0.5, 0.2], rot: [0.4, 0.3, 0.2], s: 0.42 },
 ];
 const STEPS_DESKTOP = [
   { model: 'frying-pan', anchor: 'stage', off: [0.9, 0.14, -0.6], rot: [0.95, -0.5, 0.2], s: 1.0 },
@@ -141,10 +147,10 @@ const FINALE_DESKTOP = [
   { model: 'orange', anchor: 'stage', off: [0.96, 0.4, -0.3], rot: [0.4, 0.3, 0], s: 0.65 },
   { model: 'utensil-spoon', anchor: 'stage', off: [0.05, 0.66, 0.2], rot: [0.8, 0, -0.9], s: 0.9 },
   { model: 'shaker-salt', anchor: 'stage', off: [0.96, 0.66, 0.3], rot: [0.3, 0.3, 0.1], s: 0.7 },
-  { model: 'broccoli', anchor: 'stage', off: [0.1, 0.92, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.3, 0.95, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
-  { model: 'rollingPin', anchor: 'stage', off: [0.52, 0.94, 0.1], rot: [0.7, 0.2, 0.25], s: 1.0 },
-  { model: 'cheese-cut', anchor: 'stage', off: [0.72, 0.93, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
+  { model: 'broccoli', anchor: 'stage', off: [0.06, 0.92, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
+  { model: 'tomato', anchor: 'stage', off: [0.16, 0.9, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'rollingPin', anchor: 'stage', off: [0.27, 0.88, 0.1], rot: [0.7, 0.2, 0.25], s: 1.0 },
+  { model: 'cheese-cut', anchor: 'stage', off: [0.8, 0.9, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
   { model: 'croissant', anchor: 'stage', off: [0.9, 0.92, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85 },
   { model: 'mushroom', anchor: 'stage', off: [0.42, 0.11, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
 ];
@@ -317,7 +323,7 @@ export async function start(canvas, opts = {}) {
 
   // ---- input: mouse / finger / gyro tilt the phone; hovering a prop wakes it up
   const fine = matchMedia('(pointer: fine)').matches;
-  const pointer = { x: 0, y: 0, tx: 0, ty: 0, moved: false };
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0, cx: 0, cy: 0, has: false, moved: false };
   const touch = { active: false };
   const gyro = { x: 0, y: 0, on: false };
   if (fine) {
@@ -325,6 +331,7 @@ export async function start(canvas, opts = {}) {
       if (e.pointerType !== 'mouse') return;
       pointer.tx = (e.clientX / vw) * 2 - 1;
       pointer.ty = (e.clientY / vh) * 2 - 1;
+      pointer.cx = e.clientX; pointer.cy = e.clientY; pointer.has = true;
       pointer.moved = true;
     }, { passive: true });
   }
@@ -334,6 +341,7 @@ export async function start(canvas, opts = {}) {
     touch.active = true;
     pointer.tx = (t.clientX / vw) * 2 - 1;
     pointer.ty = (t.clientY / vh) * 2 - 1;
+    pointer.cx = t.clientX; pointer.cy = t.clientY; pointer.has = true;
   }, { passive: true });
   addEventListener('touchend', () => { touch.active = false; }, { passive: true });
   addEventListener('touchcancel', () => { touch.active = false; }, { passive: true });
@@ -429,12 +437,15 @@ export async function start(canvas, opts = {}) {
     intro = Math.min(1, intro + dt / 1.5);
     const e = easeOut(intro);
 
-    const useGyro = !touch.active && !fine && gyro.on;
-    pointer.x = lerp(pointer.x, useGyro ? gyro.x * 0.7 : pointer.tx, kf(0.16));
-    pointer.y = lerp(pointer.y, useGyro ? gyro.y * 0.7 : pointer.ty, kf(0.16));
-    if (!drag.active) { drag.ry = lerp(drag.ry, 0, kf(0.07)); drag.rx = lerp(drag.rx, 0, kf(0.07)); }
-
     const r = slot.getBoundingClientRect();
+    // the tilt follows how far the pointer is from the phone itself (half a viewport away = full turn), so it
+    // turns the same amount either way wherever the phone rests
+    const useGyro = !touch.active && !fine && gyro.on;
+    const relX = pointer.has ? clamp((pointer.cx - (r.left + r.width / 2)) / (vw * 0.5), -1, 1) : 0;
+    const relY = pointer.has ? clamp((pointer.cy - (r.top + r.height / 2)) / (vh * 0.5), -1, 1) : 0;
+    pointer.x = lerp(pointer.x, useGyro ? gyro.x * 0.7 : relX, kf(0.16));
+    pointer.y = lerp(pointer.y, useGyro ? gyro.y * 0.7 : relY, kf(0.16));
+    if (!drag.active) { drag.ry = lerp(drag.ry, 0, kf(0.07)); drag.rx = lerp(drag.rx, 0, kf(0.07)); }
     const fitH = Math.max(0, Math.min(r.height, r.width / ASPECT));
     const px = (r.left + r.width / 2 - vw / 2) * wpp;
     const py = -(r.top + r.height / 2 - vh / 2) * wpp;
@@ -443,8 +454,8 @@ export async function start(canvas, opts = {}) {
 
     const baseRy = play ? play.ry : slotRot[0] || 0;
     const baseRx = play ? play.rx : slotRot[1] || 0;
-    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.3 + drag.ry) * e, kf(0.18));
-    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.2 + drag.rx) * e, kf(0.18));
+    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.36 + drag.ry) * e, kf(0.18));
+    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.22 + drag.rx) * e, kf(0.18));
     state.rz = lerp(state.rz, Math.sin(t * 0.6) * 0.012 * e, kf(0.1));
 
     const onScreen = Math.abs(py) < visH / 2 + (state.s * PHONE.h) / 2 + 0.3;
