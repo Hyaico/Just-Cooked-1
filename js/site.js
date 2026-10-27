@@ -1,5 +1,5 @@
-/* Just Cooked — site behaviour (buildless ES module).
-   GSAP + ScrollTrigger + Lenis are optional globals loaded from a CDN; everything
+/* Just Cooked — site behaviour (buildless ES module, v2).
+   Native scrolling. GSAP + ScrollTrigger are optional CDN globals; everything
    degrades to plain CSS / IntersectionObserver if they fail to arrive. */
 
 const doc = document.documentElement;
@@ -14,30 +14,11 @@ if (hasST) {
   ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
-let lenis = null;
-
-/* ---------------------------------------------------------------- smooth scroll */
-function initSmooth() {
-  if (reduced || typeof window.Lenis === 'undefined') return;
-  lenis = new Lenis({ lerp: 0.09, smoothWheel: true, syncTouch: false });
-  window.__lenis = lenis;
-  if (hasST) {
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((t) => lenis.raf(t * 1000));
-    gsap.ticker.lagSmoothing(0);
-  } else {
-    const raf = (t) => { lenis.raf(t); requestAnimationFrame(raf); };
-    requestAnimationFrame(raf);
-  }
-}
-
+/* ---------------------------------------------------------------- scrolling helpers */
+const navOffset = () => (parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 62) + 24;
 function scrollToEl(el) {
-  const offset = -(parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 64) - 24;
-  if (lenis) lenis.scrollTo(el, { offset, duration: 1.1 });
-  else {
-    const top = el.getBoundingClientRect().top + window.scrollY + offset;
-    window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
-  }
+  const top = el.getBoundingClientRect().top + window.scrollY - navOffset();
+  window.scrollTo({ top, behavior: reduced ? 'auto' : 'smooth' });
 }
 
 /* in-page anchors (delegated so generated TOC links work too) */
@@ -66,25 +47,25 @@ function setMenu(open) {
   toggle.setAttribute('aria-expanded', String(open));
   menu.classList.toggle('is-open', open);
   document.body.classList.toggle('menu-open', open);
-  if (lenis) open ? lenis.stop() : lenis.start();
   if (open) nav.classList.remove('is-hidden');
 }
 function closeMenu() { if (menuOpen) setMenu(false); }
 
 function initNav() {
   if (!nav) return;
-  let last = 0;
-  const onScroll = (y) => {
+  let last = window.scrollY, ticking = false;
+  const update = () => {
+    ticking = false;
+    const y = window.scrollY;
     nav.classList.toggle('is-scrolled', y > 24);
     if (!menuOpen) {
-      if (y > 360 && y > last + 8) nav.classList.add('is-hidden');
-      else if (y < last - 8 || y < 360) nav.classList.remove('is-hidden');
+      if (y > 360 && y > last + 10) nav.classList.add('is-hidden');
+      else if (y < last - 10 || y < 360) nav.classList.remove('is-hidden');
     }
     last = y;
   };
-  if (lenis) lenis.on('scroll', ({ scroll }) => onScroll(scroll));
-  else addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
-  onScroll(window.scrollY);
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+  update();
 
   if (toggle && menu) {
     toggle.addEventListener('click', () => setMenu(!menuOpen));
@@ -94,37 +75,7 @@ function initNav() {
   }
 }
 
-/* ---------------------------------------------------------------- reveals */
-function initReveals() {
-  const els = document.querySelectorAll('[data-reveal], [data-reveal-stagger]');
-  if (!els.length) return;
-  if (reduced) { els.forEach((el) => el.classList.add('is-revealed')); return; }
-
-  if (hasST) {
-    els.forEach((el) => {
-      const targets = el.hasAttribute('data-reveal-stagger') ? [...el.children] : [el];
-      el.classList.add('is-revealed');
-      gsap.from(targets, {
-        opacity: 0, y: 30, duration: 1.1, ease: 'power3.out', stagger: 0.09,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-        clearProps: 'transform',
-      });
-    });
-    return;
-  }
-
-  doc.classList.add('io');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-revealed');
-      io.unobserve(entry.target);
-    });
-  }, { rootMargin: '0px 0px -10% 0px' });
-  els.forEach((el) => io.observe(el));
-}
-
-/* ---------------------------------------------------------------- hero title split */
+/* ---------------------------------------------------------------- word splitting (keeps inline markup like <em>) */
 function splitWords(root) {
   const words = [];
   const walk = (node) => {
@@ -149,44 +100,76 @@ function splitWords(root) {
     });
   };
   walk(root);
+  root.classList.add('is-split');
   return words;
 }
 
-function initSplit() {
-  const el = document.querySelector('[data-split]');
-  if (!el) return;
-  if (reduced || !hasGsap) return;
-  const words = splitWords(el);
-  el.classList.add('is-split');
-  gsap.from(words, { yPercent: 110, rotate: 2, opacity: 0, duration: 1.2, ease: 'power4.out', stagger: 0.045, delay: 0.15 });
-  const after = document.querySelectorAll('[data-hero-in]');
-  if (after.length) gsap.from(after, { opacity: 0, y: 24, duration: 1, ease: 'power3.out', stagger: 0.1, delay: 0.55 });
+/* ---------------------------------------------------------------- reveals */
+function initReveals() {
+  const els = document.querySelectorAll('[data-reveal], [data-reveal-stagger], [data-split]:not([data-hero])');
+  if (!els.length) return;
+  if (reduced) { els.forEach((el) => el.classList.add('is-revealed')); return; }
+
+  if (hasST) {
+    els.forEach((el) => {
+      if (el.hasAttribute('data-split')) {
+        const words = splitWords(el);
+        gsap.from(words, { yPercent: 110, duration: 1.1, ease: 'power4.out', stagger: 0.035, scrollTrigger: { trigger: el, start: 'top 86%', once: true } });
+        return;
+      }
+      const targets = el.hasAttribute('data-reveal-stagger') ? [...el.children] : [el];
+      el.classList.add('is-revealed');
+      gsap.from(targets, {
+        opacity: 0, y: 30, duration: 1.1, ease: 'power3.out', stagger: 0.09,
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        clearProps: 'transform',
+      });
+    });
+    return;
+  }
+
+  doc.classList.add('io');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-revealed');
+      io.unobserve(entry.target);
+    });
+  }, { rootMargin: '0px 0px -10% 0px' });
+  els.forEach((el) => io.observe(el));
 }
 
-/* ---------------------------------------------------------------- scroll-driven word reveal */
+/* ---------------------------------------------------------------- hero entrance */
+function initHero() {
+  const el = document.querySelector('[data-split][data-hero]');
+  if (!el || reduced || !hasGsap) return;
+  const words = splitWords(el);
+  gsap.from(words, { yPercent: 110, rotate: 2, opacity: 0, duration: 1.2, ease: 'power4.out', stagger: 0.045, delay: 0.15 });
+  const after = document.querySelectorAll('[data-hero-in]');
+  if (after.length) gsap.from(after, { opacity: 0, y: 24, duration: 1, ease: 'power3.out', stagger: 0.1, delay: 0.5, clearProps: 'transform' });
+}
+
+/* ---------------------------------------------------------------- scroll-driven statement (one CSS variable per frame) */
 function initWords() {
   document.querySelectorAll('[data-words]').forEach((p) => {
     const text = p.textContent.trim().split(/\s+/);
     p.textContent = '';
-    const words = text.map((w, i) => {
+    text.forEach((w, i) => {
       const s = document.createElement('span');
       s.className = 'w';
       s.textContent = w;
+      s.style.setProperty('--i', i);
       p.appendChild(s);
       if (i < text.length - 1) p.appendChild(document.createTextNode(' '));
-      return s;
     });
-    if (reduced) { words.forEach((w) => w.classList.add('is-on')); return; }
+    p.style.setProperty('--n', text.length);
+    if (reduced) { p.style.setProperty('--p', 1); return; }
     if (hasST) {
-      gsap.to(words, { opacity: 1, stagger: 0.05, ease: 'none', scrollTrigger: { trigger: p, start: 'top 78%', end: 'bottom 40%', scrub: 0.5 } });
+      ScrollTrigger.create({ trigger: p, start: 'top 80%', end: 'bottom 45%', scrub: true, onUpdate: (self) => p.style.setProperty('--p', self.progress.toFixed(4)) });
       return;
     }
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (!e.isIntersecting) return;
-        words.forEach((w, i) => setTimeout(() => w.classList.add('is-on'), i * 40));
-        io.disconnect();
-      });
+      entries.forEach((e) => { if (e.isIntersecting) { p.style.setProperty('--p', 1); io.disconnect(); } });
     }, { threshold: 0.4 });
     io.observe(p);
   });
@@ -236,7 +219,7 @@ function initStory() {
   mq.addEventListener('change', setup);
 }
 
-/* ---------------------------------------------------------------- tools: pinned horizontal scroll on desktop */
+/* ---------------------------------------------------------------- tools: progress bar + pinned horizontal scroll on desktop */
 function initTools() {
   const tools = document.querySelector('[data-tools]');
   if (!tools) return;
@@ -255,7 +238,7 @@ function initTools() {
     gsap.to(track, {
       x: () => -dist(), ease: 'none',
       scrollTrigger: {
-        trigger: tools, start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.6, invalidateOnRefresh: true, anticipatePin: 1,
+        trigger: tools, start: 'center center', end: () => '+=' + dist(), pin: true, scrub: 0.5, invalidateOnRefresh: true, anticipatePin: 1,
         onUpdate: (self) => setProgress(self.progress),
       },
     });
@@ -263,13 +246,13 @@ function initTools() {
   });
 }
 
-/* ---------------------------------------------------------------- parallax bits (hero chips etc.) */
-function initParallax() {
-  if (!hasST || reduced) return;
-  document.querySelectorAll('[data-parallax]').forEach((el) => {
-    const amt = parseFloat(el.dataset.parallax) || 60;
-    gsap.to(el, { y: amt, ease: 'none', scrollTrigger: { trigger: el.closest('section') || el, start: 'top bottom', end: 'bottom top', scrub: true } });
-  });
+/* ---------------------------------------------------------------- dusk: tint the page as the dark section approaches */
+function initDusk() {
+  const beat = document.querySelector('.beat');
+  if (!beat || !hasST || reduced) return;
+  const set = (v) => doc.style.setProperty('--dusk', Math.max(0, Math.min(1, v)).toFixed(3));
+  ScrollTrigger.create({ trigger: beat, start: 'top 125%', end: 'top 30%', scrub: true, onUpdate: (self) => set(self.progress) });
+  ScrollTrigger.create({ trigger: beat, start: 'bottom 70%', end: 'bottom -25%', scrub: true, onUpdate: (self) => set(1 - self.progress) });
 }
 
 /* ---------------------------------------------------------------- FAQ side nav */
@@ -322,9 +305,7 @@ function initPointerFx() {
     const strength = 0.28;
     btn.addEventListener('pointermove', (e) => {
       const r = btn.getBoundingClientRect();
-      const dx = e.clientX - (r.left + r.width / 2);
-      const dy = e.clientY - (r.top + r.height / 2);
-      gsap.to(btn, { x: dx * strength, y: dy * strength, duration: 0.5, ease: 'power3.out' });
+      gsap.to(btn, { x: (e.clientX - (r.left + r.width / 2)) * strength, y: (e.clientY - (r.top + r.height / 2)) * strength, duration: 0.5, ease: 'power3.out' });
     });
     btn.addEventListener('pointerleave', () => gsap.to(btn, { x: 0, y: 0, duration: 0.8, ease: 'elastic.out(1, 0.5)' }));
   });
@@ -351,22 +332,23 @@ async function initScene() {
   } catch { return; }
   try {
     const mod = await import('/js/scene.js');
-    window.__jcScene = await mod.start(canvas, { getLenis: () => lenis });
+    const api = await mod.start(canvas);
+    window.__jcScene = api;
     doc.classList.add('webgl');
+    if (hasST) ScrollTrigger.addEventListener('refresh', api.measure);
   } catch (err) {
     console.warn('[just cooked] 3D scene unavailable, showing static screens.', err);
   }
 }
 
 /* ---------------------------------------------------------------- boot */
-initSmooth();
 initNav();
 initReveals();
-initSplit();
+initHero();
 initWords();
 initStory();
 initTools();
-initParallax();
+initDusk();
 initFaqNav();
 initPolicy();
 initPointerFx();

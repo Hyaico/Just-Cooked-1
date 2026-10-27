@@ -27,14 +27,13 @@
     </script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <script type="module" src="/js/site.js"></script>
     <script type="speculationrules">
     {"prerender":[{"where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":"/download"}},{"not":{"href_matches":"/recipe/*"}}]},"eagerness":"moderate"}]}
     </script>
 </head>
 <body>
-    <div class="bg" aria-hidden="true"><div class="bg__marble"></div><div class="bg__glow bg__glow--a"></div><div class="bg__glow bg__glow--b"></div><div class="bg__grain"></div></div>
+    <div class="bg" aria-hidden="true"><div class="bg__dusk"></div><div class="bg__grain"></div></div>
     <a class="skip" href="#main">Skip to content</a>
     <div class="progress" aria-hidden="true"></div>
     <header class="nav" data-nav>
@@ -62,7 +61,7 @@
             <div class="container hero__grid">
                 <div class="hero__copy">
                     <p class="eyebrow" data-hero-in>For when food feels hard.</p>
-                    <h1 class="hero__title" id="hero-title" data-split>When food feels hard, <em>we make the next meal easier.</em></h1>
+                    <h1 class="hero__title" id="hero-title" data-split data-hero>When food feels hard, <em>we make the next meal easier.</em></h1>
                     <p class="lede hero__lede" data-hero-in>Food feels hard for a lot of people. Just Cooked helps you find your way back, one small meal at a time.</p>
                     <div class="hero__cta" data-hero-in>
                         <a href="/download" class="btn btn--lg">Start where you are. <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -74,11 +73,10 @@
                     </div>
                 </div>
                 <div class="hero__visual" data-hero-in>
+                    <div class="hero__aura" aria-hidden="true"></div>
                     <div class="phone-slot" data-phone-slot data-hero-slot data-screen="home" data-rot="-0.42,0.06">
-                        <img class="phone-slot__img" src="/assets/shots/home-560.webp" srcset="/assets/shots/home-560.webp 560w, /assets/shots/home-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Just Cooked home screen on a phone, showing a gentle meals tracker and recent cooking activity" fetchpriority="high">
+                        <img class="phone-slot__img" src="/assets/shots/home-560.webp" srcset="/assets/shots/home-560.webp 560w, /assets/shots/home-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Just Cooked home screen on a phone, showing a gentle meals tracker and recent cooking activity" fetchpriority="high" draggable="false">
                     </div>
-                    <div class="float-chip float-chip--a float" data-parallax="-40"><span class="dot" style="background:#E4ECDC;color:#4A5C3D"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.4 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .9-4.5 2.5C10.5 3.9 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.1 3 5.5l7 7z"/></svg></span>No judgement</div>
-                    <div class="float-chip float-chip--b float float--slow" data-parallax="40"><span class="dot" style="background:#FBE3D2;color:#E94B1F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.5 5-6.5"/></svg></span>Small steps count</div>
                 </div>
                 <div class="hero__stores hero__stores--mobile" data-hero-in>
                     <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
@@ -88,23 +86,13 @@
             <div class="hero__cue" aria-hidden="true"><i></i>Scroll</div>
         </section>
 
-        <!-- Marquee -->
-        <div class="marquee" aria-hidden="true"><div class="marquee__track"><div class="marquee__group"><span>Not perfect. Just cooked.</span><i></i><span>For when food feels hard.</span><i></i><span>Start where you are.</span><i></i><span>No judgement.</span><i></i><span>Any amount counts.</span><i></i><span>Small steps count.</span><i></i></div><div class="marquee__group"><span>Not perfect. Just cooked.</span><i></i><span>For when food feels hard.</span><i></i><span>Start where you are.</span><i></i><span>No judgement.</span><i></i><span>Any amount counts.</span><i></i><span>Small steps count.</span><i></i></div></div></div>
-
-        <!-- Why it matters -->
-        <section class="section why" aria-labelledby="why-title">
+        <!-- Statement -->
+        <section class="section statement" aria-labelledby="why-title">
             <div class="container container--narrow">
                 <p class="eyebrow" data-reveal>Why it matters</p>
                 <h2 class="sr-only" id="why-title">Food is never just food</h2>
                 <p class="words" data-words>Food is not just food. It shapes your energy, your mood, your money, your goals, your headspace. When food feels hard, the cost shows up everywhere.</p>
-                <ul class="chips" role="list" data-reveal-stagger>
-                    <li class="chip chip--lg"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg> Energy</li>
-                    <li class="chip chip--lg chip--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01M15 9h.01"/></svg> Mood</li>
-                    <li class="chip chip--lg chip--butter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M18.1 11.7A6 6 0 1 1 11.7 18.1"/><path d="M7 6h1v4"/></svg> Money</li>
-                    <li class="chip chip--lg chip--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg> Focus</li>
-                    <li class="chip chip--lg chip--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9z"/></svg> Headspace</li>
-                </ul>
-                <p class="why__close" data-reveal>Your relationship with food can change, and you do not have to do it alone.</p>
+                <p class="statement__close" data-reveal>Your relationship with food can change, and you do not have to do it alone.</p>
             </div>
         </section>
 
@@ -113,80 +101,37 @@
             <div class="container">
                 <header class="section-head section-head--center">
                     <p class="eyebrow" data-reveal>Meet Next Meal</p>
-                    <h2 class="h2" id="story-title" data-reveal>Your next meal, decided for you.</h2>
-                    <p class="lede" data-reveal style="margin-inline:auto">Next Meal is the heart of the app. It takes the deciding off your plate and walks you through three calm steps, then cooks up the rest.</p>
+                    <h2 class="h2" id="story-title" data-split>Your next meal, decided for you.</h2>
+                    <p class="lede" data-reveal>Three calm steps. Then we cook up the rest.</p>
                 </header>
                 <div class="story__grid">
                     <div class="story__visual">
                         <div class="phone-slot" data-phone-slot data-screen="next-meal" data-rot="0.16,0">
-                            <img class="phone-slot__img" src="/assets/shots/next-meal-560.webp" srcset="/assets/shots/next-meal-560.webp 560w, /assets/shots/next-meal-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Next Meal screen: a flagship card that builds your next meal in three guided steps" loading="lazy" decoding="async">
+                            <img class="phone-slot__img" src="/assets/shots/next-meal-560.webp" srcset="/assets/shots/next-meal-560.webp 560w, /assets/shots/next-meal-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Next Meal screen: a flagship card that builds your next meal in three guided steps" loading="lazy" decoding="async" draggable="false">
                         </div>
-                        <div class="story__dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span><span></span></div>
+                        <div class="story__dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span></div>
                     </div>
                     <div class="story__steps">
                         <article class="step" data-step data-screen="next-meal" data-shot="next-meal">
                             <span class="step__num">1</span>
                             <span class="chip">In the mood</span>
                             <h3>Tell us what you fancy</h3>
-                            <p>A craving, or leave it open. We take it from there.</p>
-                        </article>
-                        <article class="step" data-step data-screen="next-meal" data-shot="next-meal">
-                            <span class="step__num">2</span>
-                            <span class="chip">Just for now</span>
-                            <h3>We shape it to you</h3>
-                            <p>Pre-set from your profile: your diet, your time, the things you cannot eat. Tweak any of it for this meal only.</p>
+                            <p>A craving, or leave it open. It is shaped to you from the start: your diet, your time, the things you cannot eat.</p>
                         </article>
                         <article class="step" data-step data-screen="pantry" data-shot="pantry">
-                            <span class="step__num">3</span>
+                            <span class="step__num">2</span>
                             <span class="chip">Four ways in</span>
                             <h3>Pick where it&rsquo;s built from</h3>
-                            <p>Your full pantry, a few ingredients, a photo of what you have, or just an idea. Then we cook up the rest.</p>
+                            <p>There is no wrong way to begin. Pick the one that feels easiest today.</p>
+                            <div class="step__ways"><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18l-2 10H5z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg> Your pantry</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg> A few ingredients</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg> A photo</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg> Just an idea</span></div>
                         </article>
                         <article class="step" data-step data-screen="recipe" data-shot="recipe">
                             <span class="step__num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
                             <span class="chip chip--sage">Ready to cook</span>
-                            <h3>A recipe, plated up</h3>
-                            <p>You see exactly what we will make before anything happens. Then it is one tap, and we take the deciding off your plate.</p>
+                            <h3>We cook up the rest</h3>
+                            <p>You see exactly what we will make before anything happens. Then it is one tap, and the deciding is off your plate.</p>
                         </article>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Four ways in -->
-        <section class="section section--tight" aria-labelledby="ways-title">
-            <div class="container">
-                <header class="section-head">
-                    <p class="eyebrow eyebrow--sage" data-reveal>Four ways in</p>
-                    <h2 class="h2" id="ways-title" data-reveal>Start from whatever you have.</h2>
-                    <p class="lede" data-reveal>There is no wrong way to begin. Pick the one that feels easiest today.</p>
-                </header>
-                <div class="bento" data-reveal-stagger>
-                    <article class="card card--hover bento__item bento__item--feature" data-tilt>
-                        <div class="bento__copy">
-                            <span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18l-2 10H5z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg></span>
-                            <h3>Your full pantry</h3>
-                            <p>Keep a simple pantry in the app and Next Meal builds from what you already have, so there is less going to waste.</p>
-                        </div>
-                        <div class="bento__media"><img class="bento__shot" src="/assets/shots/pantry-560.webp" width="1274" height="2668" loading="lazy" decoding="async" alt="The pantry screen, where a scanned receipt adds ingredients in one go"></div>
-                    </article>
-                    <article class="card card--hover bento__item bento__item--half" data-tilt>
-                        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg></span>
-                        <h3>A few ingredients</h3>
-                        <p>Type in the handful of things you have in. We will only suggest meals you can actually make.</p>
-                    </article>
-                    <article class="card card--hover bento__item bento__item--half" data-tilt>
-                        <span class="icon icon--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
-                        <h3>A photo of what you have</h3>
-                        <p>Choose Snap ingredients and take a photo. The app reads what is there, and you confirm everything before it cooks.</p>
-                    </article>
-                    <article class="card card--hover bento__item bento__item--wide" data-tilt>
-                        <span class="icon icon--butter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg></span>
-                        <div>
-                            <h3>Just an idea</h3>
-                            <p>No pantry needed. Describe what you feel like and Just Cooked builds a recipe from your request alone.</p>
-                        </div>
-                    </article>
                 </div>
             </div>
         </section>
@@ -196,13 +141,13 @@
             <div class="container grid-2">
                 <div>
                     <div class="phone-slot phone-slot--dark" data-phone-slot data-screen="savings" data-rot="-0.22,0">
-                        <img class="phone-slot__img" src="/assets/shots/savings-560.webp" srcset="/assets/shots/savings-560.webp 560w, /assets/shots/savings-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The takeaway savings screen, tallying the money saved by cooking instead of ordering" loading="lazy" decoding="async">
+                        <img class="phone-slot__img" src="/assets/shots/savings-560.webp" srcset="/assets/shots/savings-560.webp 560w, /assets/shots/savings-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The takeaway savings screen, tallying the money saved by cooking instead of ordering" loading="lazy" decoding="async" draggable="false">
                     </div>
                 </div>
                 <div>
                     <p class="eyebrow" data-reveal>Worth it</p>
-                    <h2 class="h2" id="savings-title" data-reveal>Cook what you have. Keep what you&rsquo;d have spent.</h2>
-                    <p class="lede mt-3" data-reveal>Every meal you cook instead of ordering quietly adds up. Tell Just Cooked your usual takeaway cost, and it keeps a gentle tally of what you save. Every cook counts, even a quick one you log by hand.</p>
+                    <h2 class="h2" id="savings-title" data-split>Cook what you have. Keep what you&rsquo;d have spent.</h2>
+                    <p class="lede mt-3" data-reveal>Every meal you cook instead of ordering quietly adds up. Tell Just Cooked your usual takeaway cost and it keeps a gentle tally of what you save.</p>
                     <ul class="check-list mt-4" role="list" data-reveal-stagger>
                         <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>Built from the pantry you already have</strong>, so there is less going to waste.</span></li>
                         <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>Logging a meal you made is free</strong> and keeps your savings and history complete.</span></li>
@@ -218,18 +163,18 @@
             <div class="container">
                 <header class="section-head section-head--center">
                     <p class="eyebrow" data-reveal>The Support hub</p>
-                    <h2 class="h2" id="support-title" data-reveal>A calm toolbox for the hard food moments.</h2>
-                    <p class="lede" data-reveal style="margin-inline:auto">It is the one space in Just Cooked made just for the harder days. Seven gentle tools so far, picked for you based on what you share during setup, and your hub keeps growing.</p>
+                    <h2 class="h2" id="support-title" data-split>A calm toolbox for the hard food moments.</h2>
+                    <p class="lede" data-reveal>The one space in Just Cooked made for the harder days. Seven gentle tools, picked for you from what you share during setup.</p>
                 </header>
                 <div class="stage">
                     <div>
                         <div class="phone-slot phone-slot--dark" data-phone-slot data-screen="support" data-rot="0.12,0">
-                            <img class="phone-slot__img" src="/assets/shots/support-560.webp" srcset="/assets/shots/support-560.webp 560w, /assets/shots/support-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Support home screen, with a panic button for the hardest moments and a takeaway savings summary" loading="lazy" decoding="async">
+                            <img class="phone-slot__img" src="/assets/shots/support-560.webp" srcset="/assets/shots/support-560.webp 560w, /assets/shots/support-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Support home screen, with a panic button for the hardest moments and a takeaway savings summary" loading="lazy" decoding="async" draggable="false">
                         </div>
                         <p class="stage__caption mt-3"><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.4 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .9-4.5 2.5C10.5 3.9 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.1 3 5.5l7 7z"/></svg> Your toolbox</span>Support, when you need it</p>
                     </div>
                     <div class="stage__second-wrap">
-                        <div class="stage__second"><img src="/assets/shots/support-settings-560.webp" srcset="/assets/shots/support-settings-560.webp 560w, /assets/shots/support-settings-980.webp 980w" sizes="300px" width="1274" height="2668" loading="lazy" decoding="async" alt="The Support settings screen, where you switch on only the tools that help you"></div>
+                        <div class="stage__second"><img src="/assets/shots/support-settings-560.webp" srcset="/assets/shots/support-settings-560.webp 560w, /assets/shots/support-settings-980.webp 980w" sizes="300px" width="1274" height="2668" loading="lazy" decoding="async" draggable="false" alt="The Support settings screen, where you switch on only the tools that help you"></div>
                         <p class="stage__caption mt-3 hide-mobile"><span class="chip chip--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg> Yours to set</span>Switch on only what helps</p>
                     </div>
                 </div>
@@ -238,7 +183,7 @@
                         <h3>Seven gentle tools, picked for you.</h3>
                         <div class="tools__progress" aria-hidden="true"><i></i></div>
                     </div>
-                    <div class="tools__track"><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M9.2 14.8l-4.3 4.3"/></svg></span><h3>Panic button</h3><p>For the hardest moments. Slow guided breathing, plus the helplines and the people you trust, a tap away.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7a3 3 0 0 0 6 0V2"/><path d="M6 12v10"/><path d="M19 2a4 4 0 0 0-4 4v6h4v10"/></svg></span><h3>I need to eat</h3><p>When eating feels like too much, it finds a meal in about five minutes from what you have. No decisions, no numbers.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 9h2v4h-2"/><path d="M5 11a7 7 0 0 1 7-7h3a6 6 0 0 1 4 10.5V19h-3l-1-2H9l-1 2H5v-4.2A7 7 0 0 1 5 11z"/><path d="M15 10h.01"/></svg></span><h3>Takeaway savings</h3><p>Tell it your usual takeaway cost, and every meal you cook instead adds to what you have saved. It really adds up.</p></article><article class="beat-card"><span class="icon icon--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 3.8a5 5 0 0 0-7 0L4 13v7h7l9.2-9.2a5 5 0 0 0 0-7z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg></span><h3>Gentle mode</h3><p>Soften the whole app whenever you want. Quietly hide numbers, streaks and goals so food feels lighter.</p></article><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><h3>Choose your focus</h3><p>Pick one small, doable thing to follow this week. Change it whenever, with no streaks lost.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4.4 0 7-2.9 7-7 0-3-2-5.5-3.5-7-.5 2-1.5 3-2.5 3.5C13 9 12.5 6 10 3c-1 3-2 4.5-3.5 6.5S5 13 5 15c0 4.1 2.6 7 7 7z"/></svg></span><h3>Calorie goal</h3><p>A gentle daily calorie number to aim for, if a target helps you. An estimate, not a rule, and always optional.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg></span><h3>Protein goal</h3><p>A gentle daily protein target across your meals, when that is useful to you. Optional, and easy to switch off.</p></article><article class="beat-card beat-card--ghost"><span class="icon icon--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span><h3>More on the way</h3><p>Your hub is personal, and it keeps growing.</p></article></div>
+                    <div class="tools__track"><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M9.2 14.8l-4.3 4.3"/></svg></span><h3>Panic button</h3><p>For the hardest moments. Slow guided breathing, plus the helplines and the people you trust, a tap away.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7a3 3 0 0 0 6 0V2"/><path d="M6 12v10"/><path d="M19 2a4 4 0 0 0-4 4v6h4v10"/></svg></span><h3>I need to eat</h3><p>When eating feels like too much, it finds a meal in about five minutes from what you have. No decisions, no numbers.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 9h2v4h-2"/><path d="M5 11a7 7 0 0 1 7-7h3a6 6 0 0 1 4 10.5V19h-3l-1-2H9l-1 2H5v-4.2A7 7 0 0 1 5 11z"/><path d="M15 10h.01"/></svg></span><h3>Takeaway savings</h3><p>Tell it your usual takeaway cost, and every meal you cook instead adds to what you have saved. It really adds up.</p></article><article class="beat-card"><span class="icon icon--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 3.8a5 5 0 0 0-7 0L4 13v7h7l9.2-9.2a5 5 0 0 0 0-7z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg></span><h3>Gentle mode</h3><p>Soften the whole app whenever you want. Quietly hide numbers, streaks and goals so food feels lighter.</p></article><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><h3>Choose your focus</h3><p>Pick one small, doable thing to follow this week. Change it whenever, with no streaks lost.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4.4 0 7-2.9 7-7 0-3-2-5.5-3.5-7-.5 2-1.5 3-2.5 3.5C13 9 12.5 6 10 3c-1 3-2 4.5-3.5 6.5S5 13 5 15c0 4.1 2.6 7 7 7z"/></svg></span><h3>Calorie goal</h3><p>A gentle daily calorie number to aim for, if a target helps you. An estimate, not a rule, and always optional.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg></span><h3>Protein goal</h3><p>A gentle daily protein target across your meals, when that is useful to you. Optional, and easy to switch off.</p></article></div>
                     <p class="tools__hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Swipe to see every tool</p>
                 </div>
                 <p class="beat__note" data-reveal>Just Cooked is not a medical or therapeutic tool. On the hardest days, it points you toward people who can help.</p>

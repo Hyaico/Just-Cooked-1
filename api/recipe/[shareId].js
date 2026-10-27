@@ -370,10 +370,10 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     /* ── Marble counter behind the page (fixed, painted once) ── */
     .bg { position: fixed; inset: 0; z-index: -1; pointer-events: none;
       background:
-        radial-gradient(90% 70% at 20% 10%, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 60%),
-        radial-gradient(60% 50% at 82% 94%, rgba(251,227,210,0.45) 0%, rgba(251,227,210,0) 70%),
-        url('/assets/marble.svg') center / cover no-repeat,
-        linear-gradient(135deg, #FCF7EE 0%, #F2EBDA 55%, #E6DBC2 100%); }
+        radial-gradient(60% 50% at 12% 6%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(45% 40% at 90% 8%, rgba(251,227,210,0.6) 0%, rgba(251,227,210,0) 65%),
+        radial-gradient(50% 45% at 85% 92%, rgba(228,236,220,0.7) 0%, rgba(228,236,220,0) 65%),
+        linear-gradient(180deg, #FCF8F1 0%, #F5EFE6 55%, #F0E8DA 100%); }
 
     /* ── Notebook page (centred, lined) ── */
     .notebook {
@@ -706,7 +706,7 @@ function renderNotFound() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recipe Not Found &middot; Just Cooked</title>
   <style>
-    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 url('/assets/marble.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#1A1815;margin:0;}
+    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 radial-gradient(60% 50% at 12% 6%, rgba(255,255,255,0.8), rgba(255,255,255,0) 60%);display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#1A1815;margin:0;}
     .box{background:rgba(251,246,236,0.85);border:1px solid rgba(224,213,194,0.6);border-radius:28px;padding:40px 28px;max-width:420px;box-shadow:0 16px 33px rgba(26,24,21,0.13);}
     .box img{height:26px;width:auto;margin:0 auto 22px;display:block;}
     h1{font-size:26px;font-weight:800;margin:0 0 8px;letter-spacing:-0.6px;}
@@ -733,7 +733,7 @@ function renderError(msg) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Error &middot; Just Cooked</title>
   <style>
-    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 url('/assets/marble.svg') center/cover no-repeat;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#3A342E;margin:0;}
+    body{font-family:'Inter',-apple-system,'Segoe UI',sans-serif;background:#F5EFE6 radial-gradient(60% 50% at 12% 6%, rgba(255,255,255,0.8), rgba(255,255,255,0) 60%);display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px;color:#3A342E;margin:0;}
     p{color:#8B847C;font-size:15px;background:rgba(251,246,236,0.85);border:1px solid rgba(224,213,194,0.6);border-radius:20px;padding:24px 28px;}
   </style>
 </head>
