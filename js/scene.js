@@ -1,18 +1,20 @@
-/* Just Cooked — 3D scene (v4).
+/* Just Cooked — 3D scene (v5).
    One procedurally built phone on a fixed, transparent canvas. It sits exactly
    on the page's single phone slot (which the home-page timeline moves around
    the stage), shows whichever app screen the play asks for, and reacts to the
-   mouse, the finger, the gyroscope and drag-to-spin. Stylised food and
-   utensils (js/props.js) drift independently around the hero, in the stage
-   corners during the steps, and come back for the finale. */
+   mouse, the finger, the gyroscope and drag-to-spin. Around it, low-poly food
+   and kitchen models (Kenney Food Kit, CC0) rest around the hero, in the stage
+   corners during the steps, and return for the finale. They only react when
+   the mouse is over them. */
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
-import { MAKERS } from './props.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const SCREEN_KEYS = ['home', 'next-meal', 'recipe', 'pantry', 'savings', 'support', 'support-settings'];
 const screenUrl = (key) => '/assets/screens/' + key + '.webp';
+const modelUrl = (name) => '/assets/models/' + name + '.glb';
 
 const PHONE = { w: 1, h: 2.07, d: 0.082, r: 0.15, bevel: 0.016 };
 const SCREEN = { w: 0.925, h: 2.008 };
@@ -91,67 +93,68 @@ function buildPhone(screenMat) {
 
 /* Prop layouts. anchor "phone": offsets in phone-heights from the phone centre (the phone
    spans x ±0.24, y ±0.5). anchor "copy": fractions of the text block's width/height from
-   its top-left corner (outside the box). anchor "stage": viewport fractions. */
+   its top-left corner (outside the box). anchor "stage": viewport fractions.
+   rot tilts each model so its best side faces the camera (models lie flat on y). */
 const HERO_DESKTOP = [
-  { make: 'egg', anchor: 'phone', off: [-0.24, 0.46, -0.6], rot: [0.5, -0.35, 0.3], s: 0.9 },
-  { make: 'tomato', anchor: 'phone', off: [0.38, -0.42, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85 },
-  { make: 'lemon', anchor: 'phone', off: [0.42, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.75 },
-  { make: 'broccoli', anchor: 'phone', off: [-0.38, -0.42, 0.5], rot: [0.1, 0.3, -0.2], s: 0.78 },
-  { make: 'whisk', anchor: 'phone', off: [0.46, -0.02, -0.5], rot: [0.1, 0, 0.22], s: 1.05 },
-  { make: 'mushroom', anchor: 'phone', off: [0.22, -0.66, 0.6], rot: [0.3, 0.2, 0.3], s: 0.6 },
-  { make: 'fork', anchor: 'copy', off: [-0.1, 0.26], rot: [0.1, 0.2, -0.55], s: 0.95 },
-  { make: 'bread', anchor: 'copy', off: [-0.07, 0.8], rot: [0.2, 0.3, 0.2], s: 0.8 },
-  { make: 'knife', anchor: 'copy', off: [0.78, 0.0], rot: [0.05, -0.2, 1.25], s: 0.9 },
-  { make: 'pancakes', anchor: 'copy', off: [0.62, -0.13], rot: [0.35, 0.3, 0.05], s: 0.85 },
-  { make: 'mug', anchor: 'copy', off: [1.0, 0.86], rot: [0.2, -0.4, 0.05], s: 0.85 },
-  { make: 'rollingPin', anchor: 'copy', off: [0.14, 1.12], rot: [0.2, 0, 0.22], s: 1.1 },
-  { make: 'cheese', anchor: 'copy', off: [0.9, 1.08], rot: [0.3, -0.4, 0.1], s: 0.85 },
-  { make: 'saltShaker', anchor: 'copy', off: [0.5, 1.16], rot: [0.1, 0.3, 0.15], s: 0.75 },
+  { model: 'egg-cooked', anchor: 'phone', off: [-0.3, 0.46, -0.6], rot: [0.95, 0.2, 0.3], s: 0.85 },
+  { model: 'tomato', anchor: 'phone', off: [0.38, -0.42, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'lemon-half', anchor: 'phone', off: [0.42, 0.3, -0.3], rot: [0.85, 0.3, 0.3], s: 0.65 },
+  { model: 'broccoli', anchor: 'phone', off: [-0.3, -0.52, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
+  { model: 'whisk', anchor: 'phone', off: [0.46, -0.02, -0.5], rot: [0.6, 0.2, 0.5], s: 0.95 },
+  { model: 'mushroom', anchor: 'phone', off: [0.22, -0.66, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
+  { model: 'utensil-fork', anchor: 'copy', off: [-0.1, 0.26], rot: [0.8, 0.1, -0.9], s: 0.9 },
+  { model: 'strawberry', anchor: 'copy', off: [-0.06, 0.52], rot: [0.5, 0.3, 0.2], s: 0.5 },
+  { model: 'bread', anchor: 'copy', off: [-0.07, 0.82], rot: [0.4, 0.5, 0.1], s: 0.8 },
+  { model: 'pancakes', anchor: 'copy', off: [0.88, 0.04], rot: [0.75, 0.4, 0], s: 0.85 },
+  { model: 'rollingPin', anchor: 'copy', off: [0.1, 1.08], rot: [0.7, 0.2, 0.25], s: 1.0 },
+  { model: 'shaker-salt', anchor: 'copy', off: [0.36, 1.14], rot: [0.3, 0.3, 0.1], s: 0.7 },
+  { model: 'cheese-cut', anchor: 'copy', off: [0.62, 1.12], rot: [0.7, -0.3, 0.1], s: 0.8 },
+  { model: 'croissant', anchor: 'copy', off: [0.95, 1.1], rot: [0.8, 0.3, 0.2], s: 0.85 },
 ];
 const HERO_MOBILE = [
-  { make: 'egg', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.5, -0.35, 0.3], s: 0.85 },
-  { make: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.75 },
-  { make: 'lemon', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.68 },
-  { make: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.7 },
-  { make: 'spoon', anchor: 'phone', off: [-0.56, 0.04, 0.2], rot: [0.15, 0.1, -0.6], s: 0.9 },
-  { make: 'mug', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.2, -0.4, 0.05], s: 0.62 },
+  { model: 'egg-cooked', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.95, 0.2, 0.3], s: 0.8 },
+  { model: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'lemon-half', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.85, 0.3, 0.3], s: 0.62 },
+  { model: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.3, 0.4, 0], s: 0.7 },
+  { model: 'utensil-spoon', anchor: 'phone', off: [-0.56, 0.04, 0.2], rot: [0.8, 0, -0.9], s: 0.9 },
+  { model: 'strawberry', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.5, 0.3, 0.2], s: 0.5 },
 ];
 const STEPS_DESKTOP = [
-  { make: 'pan', anchor: 'stage', off: [0.86, 0.17, -0.6], rot: [0.55, -0.5, 0.25], s: 1.0 },
-  { make: 'pancakes', anchor: 'stage', off: [0.13, 0.18, -0.3], rot: [0.35, 0.3, 0.05], s: 0.8 },
-  { make: 'mug', anchor: 'stage', off: [0.17, 0.84, 0.3], rot: [0.2, -0.4, 0.05], s: 0.8 },
-  { make: 'mushroom', anchor: 'stage', off: [0.85, 0.85, 0.4], rot: [0.3, 0.2, 0.3], s: 0.65 },
-  { make: 'lemon', anchor: 'stage', off: [0.38, 0.12, -0.5], rot: [0.2, 0.35, 0.3], s: 0.62 },
-  { make: 'tomato', anchor: 'stage', off: [0.63, 0.9, -0.2], rot: [0.2, 0.4, 0.1], s: 0.7 },
+  { model: 'frying-pan', anchor: 'stage', off: [0.86, 0.17, -0.6], rot: [0.95, -0.5, 0.2], s: 1.0 },
+  { model: 'pancakes', anchor: 'stage', off: [0.13, 0.18, -0.3], rot: [0.75, 0.4, 0], s: 0.8 },
+  { model: 'croissant', anchor: 'stage', off: [0.17, 0.84, 0.3], rot: [0.8, 0.3, 0.2], s: 0.8 },
+  { model: 'mushroom', anchor: 'stage', off: [0.85, 0.85, 0.4], rot: [0.4, 0.3, 0.2], s: 0.6 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.38, 0.12, -0.5], rot: [0.85, 0.3, 0.3], s: 0.6 },
+  { model: 'tomato', anchor: 'stage', off: [0.63, 0.9, -0.2], rot: [0.4, 0.3, 0], s: 0.7 },
 ];
 const STEPS_MOBILE = [
-  { make: 'lemon', anchor: 'stage', off: [0.1, 0.22, -0.3], rot: [0.2, 0.35, 0.3], s: 0.5 },
-  { make: 'tomato', anchor: 'stage', off: [0.9, 0.2, -0.3], rot: [0.2, 0.4, 0.1], s: 0.5 },
-  { make: 'mug', anchor: 'stage', off: [0.1, 0.46, 0.2], rot: [0.2, -0.4, 0.05], s: 0.42 },
-  { make: 'mushroom', anchor: 'stage', off: [0.9, 0.45, 0.2], rot: [0.3, 0.2, 0.3], s: 0.42 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.1, 0.22, -0.3], rot: [0.85, 0.3, 0.3], s: 0.5 },
+  { model: 'tomato', anchor: 'stage', off: [0.9, 0.2, -0.3], rot: [0.4, 0.3, 0], s: 0.5 },
+  { model: 'strawberry', anchor: 'stage', off: [0.1, 0.46, 0.2], rot: [0.5, 0.3, 0.2], s: 0.4 },
+  { model: 'mushroom', anchor: 'stage', off: [0.9, 0.45, 0.2], rot: [0.4, 0.3, 0.2], s: 0.42 },
 ];
 const FINALE_DESKTOP = [
-  { make: 'egg', anchor: 'phone', off: [-0.4, 0.38, -0.6], rot: [0.5, -0.35, 0.3], s: 0.95 },
-  { make: 'broccoli', anchor: 'phone', off: [-0.5, -0.28, 0.5], rot: [0.1, 0.3, -0.2], s: 0.8 },
-  { make: 'spoon', anchor: 'phone', off: [-0.62, 0.04, 0.2], rot: [0.15, 0.1, -0.6], s: 1.0 },
-  { make: 'tomato', anchor: 'phone', off: [0.3, -0.62, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85 },
-  { make: 'orangeSlice', anchor: 'phone', off: [0.28, 0.5, -0.3], rot: [0.2, 0.35, 0.3], s: 0.75 },
-  { make: 'mushroom', anchor: 'phone', off: [-0.22, -0.68, 0.6], rot: [0.3, 0.2, 0.3], s: 0.6 },
-  { make: 'whisk', anchor: 'phone', off: [-0.46, 0.46, -0.5], rot: [0.1, 0, -0.3], s: 0.95 },
-  { make: 'pancakes', anchor: 'copy', off: [0.62, -0.14], rot: [0.35, 0.3, 0.05], s: 0.85 },
-  { make: 'rollingPin', anchor: 'copy', off: [0.2, 1.14], rot: [0.2, 0, 0.22], s: 1.1 },
-  { make: 'cheese', anchor: 'copy', off: [0.9, 1.08], rot: [0.3, -0.4, 0.1], s: 0.85 },
-  { make: 'mug', anchor: 'copy', off: [1.02, 0.2], rot: [0.2, -0.4, 0.05], s: 0.85 },
-  { make: 'saltShaker', anchor: 'copy', off: [1.0, 0.78], rot: [0.1, 0.3, 0.15], s: 0.75 },
-  { make: 'bread', anchor: 'copy', off: [0.55, 1.18], rot: [0.2, 0.3, 0.2], s: 0.8 },
+  { model: 'egg-cooked', anchor: 'phone', off: [-0.4, 0.38, -0.6], rot: [0.95, 0.2, 0.3], s: 0.85 },
+  { model: 'broccoli', anchor: 'phone', off: [-0.5, -0.28, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
+  { model: 'utensil-spoon', anchor: 'phone', off: [-0.62, 0.04, 0.2], rot: [0.8, 0, -0.9], s: 0.9 },
+  { model: 'tomato', anchor: 'phone', off: [0.3, -0.62, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'orange', anchor: 'phone', off: [0.28, 0.5, -0.3], rot: [0.4, 0.3, 0], s: 0.65 },
+  { model: 'mushroom', anchor: 'phone', off: [-0.22, -0.68, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
+  { model: 'whisk', anchor: 'phone', off: [-0.46, 0.46, -0.5], rot: [0.6, 0.2, -0.4], s: 0.9 },
+  { model: 'pancakes', anchor: 'copy', off: [0.62, -0.14], rot: [0.75, 0.4, 0], s: 0.85 },
+  { model: 'rollingPin', anchor: 'copy', off: [0.2, 1.14], rot: [0.7, 0.2, 0.25], s: 1.0 },
+  { model: 'cheese-cut', anchor: 'copy', off: [0.9, 1.08], rot: [0.7, -0.3, 0.1], s: 0.8 },
+  { model: 'apple', anchor: 'copy', off: [1.04, 0.2], rot: [0.4, 0.3, 0], s: 0.65 },
+  { model: 'shaker-salt', anchor: 'copy', off: [1.02, 0.78], rot: [0.3, 0.3, 0.1], s: 0.7 },
+  { model: 'croissant', anchor: 'copy', off: [0.55, 1.18], rot: [0.8, 0.3, 0.2], s: 0.85 },
 ];
 const FINALE_MOBILE = [
-  { make: 'egg', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.5, -0.35, 0.3], s: 0.85 },
-  { make: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.75 },
-  { make: 'orangeSlice', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.68 },
-  { make: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.7 },
-  { make: 'whisk', anchor: 'phone', off: [-0.54, 0.06, 0.2], rot: [0.1, 0, -0.3], s: 0.85 },
-  { make: 'mug', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.2, -0.4, 0.05], s: 0.62 },
+  { model: 'egg-cooked', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.95, 0.2, 0.3], s: 0.8 },
+  { model: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'orange', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.4, 0.3, 0], s: 0.62 },
+  { model: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.3, 0.4, 0], s: 0.7 },
+  { model: 'whisk', anchor: 'phone', off: [-0.54, 0.06, 0.2], rot: [0.6, 0.2, -0.4], s: 0.85 },
+  { model: 'strawberry', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.5, 0.3, 0.2], s: 0.5 },
 ];
 
 export async function start(canvas, opts = {}) {
@@ -166,8 +169,8 @@ export async function start(canvas, opts = {}) {
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.08;
+  renderer.toneMapping = THREE.NeutralToneMapping || THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.0;
   renderer.setClearColor(0x000000, 0);
 
   const scene = new THREE.Scene();
@@ -177,15 +180,15 @@ export async function start(canvas, opts = {}) {
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   pmrem.dispose();
-  if ('environmentIntensity' in scene) scene.environmentIntensity = 0.9;
+  if ('environmentIntensity' in scene) scene.environmentIntensity = 0.8;
 
-  const key = new THREE.DirectionalLight(0xfff2e4, 2.4);
+  const key = new THREE.DirectionalLight(0xfff2e4, 2.2);
   key.position.set(3, 5, 7);
   scene.add(key);
   const fill = new THREE.DirectionalLight(0xe4ecdc, 0.9);
   fill.position.set(-5, -2, 4);
   scene.add(fill);
-  scene.add(new THREE.HemisphereLight(0xfff6ec, 0xe0d5c2, 0.5));
+  scene.add(new THREE.HemisphereLight(0xfff6ec, 0xe0d5c2, 0.7));
 
   // ---- textures + crossfading screen material
   const loader = new THREE.TextureLoader();
@@ -239,34 +242,55 @@ export async function start(canvas, opts = {}) {
     for (const k of wanted.concat(SCREEN_KEYS)) { if (SCREEN_KEYS.includes(k) && !textures[k]) { try { await loadTex(k); } catch { /* keep going */ } } }
   })();
 
-  // ---- phone + props
+  // ---- phone
   const phone = buildPhone(screenMat);
   scene.add(phone);
+
+  // ---- props: low-poly models, normalised to one unit and centred
+  const gltf = new GLTFLoader();
+  const modelCache = {};
+  const loadModel = (name) => {
+    if (!modelCache[name]) {
+      modelCache[name] = new Promise((resolve, reject) => {
+        gltf.load(modelUrl(name), (g) => {
+          const obj = g.scene;
+          obj.traverse((o) => {
+            if (o.isMesh && o.material) {
+              o.material.metalness = 0;
+              o.material.roughness = 0.9;
+              o.material.envMapIntensity = 0.6;
+            }
+          });
+          const box = new THREE.Box3().setFromObject(obj);
+          const size = box.getSize(new THREE.Vector3());
+          const c = box.getCenter(new THREE.Vector3());
+          const s = 1 / Math.max(size.x, size.y, size.z, 0.0001);
+          obj.scale.setScalar(s);
+          obj.position.set(-c.x * s, -c.y * s, -c.z * s);
+          resolve(obj);
+        }, undefined, reject);
+      });
+    }
+    return modelCache[name];
+  };
+
   const mobile = () => (canvas.clientWidth || innerWidth) < 900;
   const buildGroup = (defs) => {
     const g = new THREE.Group();
     const items = defs.map((d, i) => {
-      const mesh = MAKERS[d.make]();
-      mesh.rotation.set(d.rot[0], d.rot[1], d.rot[2]);
-      g.add(mesh);
-      // each prop drifts on its own: its own parallax strength, direction, lag, bob and spin
-      const seed = ((i * 7919 + d.make.length * 131) % 97) / 97;
-      const depth = d.off[2] || 0;
-      return {
-        mesh, d, phase: seed * Math.PI * 2,
-        parX: (0.05 + 0.1 * (0.5 + depth * 0.5) + seed * 0.05) * (seed > 0.72 ? -0.6 : 1),
-        parY: 0.03 + 0.07 * (0.5 + depth * 0.5) + (1 - seed) * 0.03,
-        lag: 0.04 + seed * 0.1, px: 0, py: 0,
-        bobSpeed: 0.5 + seed * 0.5, bobAmp: 0.03 + seed * 0.03,
-        spin: [(seed - 0.5) * 0.2, 0.08 + seed * 0.25, (0.5 - seed) * 0.12],
-      };
+      const seed = ((i * 7919 + d.model.length * 131) % 97) / 97;
+      const it = { d, wrap: new THREE.Group(), ready: false, hover: 0, phase: seed * Math.PI * 2, bobSpeed: 0.45 + seed * 0.4, bobAmp: 0.025 + seed * 0.02, spin: 0.06 + seed * 0.12 };
+      it.wrap.visible = false;
+      g.add(it.wrap);
+      loadModel(d.model).then((obj) => { it.wrap.add(obj.clone()); it.ready = true; it.t0 = performance.now(); }).catch(() => {});
+      return it;
     });
     scene.add(g);
     return { group: g, items };
   };
   let sets = null, builtMobile = null;
   const rebuildProps = () => {
-    if (sets) Object.values(sets).forEach((set) => { scene.remove(set.group); set.items.forEach((it) => it.mesh.traverse((o) => { if (o.geometry) o.geometry.dispose(); })); });
+    if (sets) Object.values(sets).forEach((set) => scene.remove(set.group));
     const m = mobile();
     sets = { hero: buildGroup(m ? HERO_MOBILE : HERO_DESKTOP), steps: buildGroup(m ? STEPS_MOBILE : STEPS_DESKTOP), finale: buildGroup(m ? FINALE_MOBILE : FINALE_DESKTOP) };
     builtMobile = m;
@@ -291,9 +315,9 @@ export async function start(canvas, opts = {}) {
   let resizeTimer = 0;
   addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 120); });
 
-  // ---- input: mouse, finger, gyroscope, drag-to-spin
+  // ---- input: mouse / finger / gyro tilt the phone; hovering a prop wakes it up
   const fine = matchMedia('(pointer: fine)').matches;
-  const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+  const pointer = { x: 0, y: 0, tx: 0, ty: 0, moved: false };
   const touch = { active: false };
   const gyro = { x: 0, y: 0, on: false };
   if (fine) {
@@ -301,6 +325,7 @@ export async function start(canvas, opts = {}) {
       if (e.pointerType !== 'mouse') return;
       pointer.tx = (e.clientX / vw) * 2 - 1;
       pointer.ty = (e.clientY / vh) * 2 - 1;
+      pointer.moved = true;
     }, { passive: true });
   }
   addEventListener('touchmove', (e) => {
@@ -337,6 +362,25 @@ export async function start(canvas, opts = {}) {
   addEventListener('pointerup', endDrag);
   addEventListener('pointercancel', endDrag);
 
+  const raycaster = new THREE.Raycaster();
+  const ndc = new THREE.Vector2();
+  let hovered = null;
+  function pickHover() {
+    if (!fine || !pointer.moved) return;
+    pointer.moved = false;
+    ndc.set(pointer.tx, -pointer.ty);
+    raycaster.setFromCamera(ndc, camera);
+    const visibleWraps = [];
+    Object.values(sets).forEach((set) => { if (set.group.visible) set.items.forEach((it) => { if (it.ready && it.wrap.visible) visibleWraps.push(it.wrap); }); });
+    const hits = raycaster.intersectObjects(visibleWraps, true);
+    hovered = null;
+    if (hits.length) {
+      let o = hits[0].object;
+      while (o && !visibleWraps.includes(o)) o = o.parent;
+      hovered = o || null;
+    }
+  }
+
   // ---- props placement
   let intro = 0;
   function layoutProps(set, vis, t, dt, kf, phoneRect, copyRect, spread) {
@@ -345,11 +389,11 @@ export async function start(canvas, opts = {}) {
     const H = Math.min(phoneRect.height, phoneRect.width / ASPECT) * wpp;
     const pcx = (phoneRect.left + phoneRect.width / 2 - vw / 2) * wpp;
     const pcy = -(phoneRect.top + phoneRect.height / 2 - vh / 2) * wpp;
-    const base = H * 0.3;
+    const base = H * 0.21;
     set.items.forEach((it, i) => {
       const d = it.d;
-      if (d.anchor === 'copy' && !copyRect) { it.mesh.visible = false; return; }
-      it.mesh.visible = true;
+      if (!it.ready || (d.anchor === 'copy' && !copyRect)) { it.wrap.visible = false; return; }
+      it.wrap.visible = true;
       let x, y, z;
       if (d.anchor === 'copy') {
         x = (copyRect.left + d.off[0] * copyRect.width - vw / 2) * wpp;
@@ -364,15 +408,12 @@ export async function start(canvas, opts = {}) {
         y = pcy + d.off[1] * H * spread;
         z = d.off[2] * Math.min(H, 2.2) * 0.5;
       }
-      it.px = lerp(it.px, pointer.x, kf(it.lag));
-      it.py = lerp(it.py, pointer.y, kf(it.lag));
-      const ei = easeOut((intro - 0.1 - i * 0.05) / 0.9);
-      const bob = Math.sin(t * it.bobSpeed + it.phase) * it.bobAmp * H;
-      it.mesh.position.set(x + it.px * it.parX * H, y + bob - it.py * it.parY * H, z);
-      it.mesh.scale.setScalar(base * d.s * ei * vis);
-      it.mesh.rotation.x += it.spin[0] * dt;
-      it.mesh.rotation.y += it.spin[1] * dt;
-      it.mesh.rotation.z += it.spin[2] * dt;
+      const appear = easeOut(((t * 1000 - (it.t0 || 0)) / 1000 - i * 0.04) / 0.9);
+      it.hover = lerp(it.hover, it.wrap === hovered ? 1 : 0, kf(0.14));
+      const bob = Math.sin(t * it.bobSpeed + it.phase) * it.bobAmp * H + it.hover * 0.06 * H;
+      it.wrap.position.set(x, y + bob, z + it.hover * 0.3);
+      it.wrap.scale.setScalar(base * d.s * appear * vis * (1 + 0.16 * it.hover));
+      it.wrap.rotation.set(d.rot[0] + Math.sin(t * 0.5 + it.phase) * 0.05, d.rot[1] + Math.sin(t * it.spin + it.phase) * 0.12 + it.hover * 0.55, d.rot[2]);
     });
   }
 
@@ -393,7 +434,6 @@ export async function start(canvas, opts = {}) {
     pointer.y = lerp(pointer.y, useGyro ? gyro.y * 0.7 : pointer.ty, kf(0.16));
     if (!drag.active) { drag.ry = lerp(drag.ry, 0, kf(0.07)); drag.rx = lerp(drag.rx, 0, kf(0.07)); }
 
-    // the slot is the single source of truth for where the phone is and how big it is
     const r = slot.getBoundingClientRect();
     const fitH = Math.max(0, Math.min(r.height, r.width / ASPECT));
     const px = (r.left + r.width / 2 - vw / 2) * wpp;
@@ -403,8 +443,8 @@ export async function start(canvas, opts = {}) {
 
     const baseRy = play ? play.ry : slotRot[0] || 0;
     const baseRx = play ? play.rx : slotRot[1] || 0;
-    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.34 + drag.ry) * e, kf(0.18));
-    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.22 + drag.rx) * e, kf(0.18));
+    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.3 + drag.ry) * e, kf(0.18));
+    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.2 + drag.rx) * e, kf(0.18));
     state.rz = lerp(state.rz, Math.sin(t * 0.6) * 0.012 * e, kf(0.1));
 
     const onScreen = Math.abs(py) < visH / 2 + (state.s * PHONE.h) / 2 + 0.3;
@@ -416,7 +456,7 @@ export async function start(canvas, opts = {}) {
     const wantKey = play && play.keys ? play.keys[clamp(Math.round(play.screenIndex), 0, play.keys.length - 1)] : slot.dataset.screen;
     if (wantKey) setScreen(wantKey);
     if (fading) {
-      screenMat.uniforms.uMix.value = Math.min(1, screenMat.uniforms.uMix.value + dt / 0.45);
+      screenMat.uniforms.uMix.value = Math.min(1, screenMat.uniforms.uMix.value + dt / 0.5);
       if (screenMat.uniforms.uMix.value >= 1) {
         screenMat.uniforms.tA.value = screenMat.uniforms.tB.value;
         screenMat.uniforms.uMix.value = 0;
@@ -427,7 +467,7 @@ export async function start(canvas, opts = {}) {
       setScreen(screenTarget);
     }
 
-    // props: hero set, step set (stage corners), finale set
+    pickHover();
     const heroVis = play ? clamp(play.shapes, 0, 1) : 1;
     const stepVis = play ? clamp(play.ambient, 0, 1) : 0;
     const finVis = play ? clamp(play.finale, 0, 1) : 0;
@@ -453,9 +493,11 @@ export async function start(canvas, opts = {}) {
 
   const settle = () => { // jump to the resting state (used by screenshot tooling)
     intro = 1;
+    Object.values(sets).forEach((set) => set.items.forEach((it) => { it.t0 = performance.now() - 5000; }));
     for (let i = 0; i < 60; i++) tick(performance.now() + i * 16);
     if (fading) { screenMat.uniforms.tA.value = screenMat.uniforms.tB.value; screenMat.uniforms.uMix.value = 0; screenCurrent = screenTarget; fading = false; }
     tick(performance.now() + 1000);
   };
-  return { setScreen, settle, renderer, scene };
+  const ready = Promise.all([...new Set([].concat(HERO_DESKTOP, HERO_MOBILE, STEPS_DESKTOP, STEPS_MOBILE, FINALE_DESKTOP, FINALE_MOBILE).map((d) => d.model))].map((n) => loadModel(n).catch(() => null)));
+  return { setScreen, settle, ready, renderer, scene };
 }

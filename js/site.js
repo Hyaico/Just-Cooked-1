@@ -1,4 +1,4 @@
-/* Just Cooked — site behaviour (buildless ES module, v4).
+/* Just Cooked — site behaviour (buildless ES module, v5).
    The home page is "the play": one pinned stage whose timeline is driven by
    scroll (GSAP ScrollTrigger). Interior pages use light reveals. Everything
    degrades to a static layout if GSAP fails to arrive or motion is reduced. */
@@ -154,14 +154,14 @@ function initPlay() {
   const dlAnchor = q('.play__anchor--download');
   const aura = q('.play__aura');
   const dusk = q('.play__dusk');
-  const glow = q('.play__glow');
   const night = q('.play__night');
   const stars = q('.play__stars');
   const dawn = q('.play__dawn');
   const heroScene = q('[data-scene="hero"]');
   const steps = [...play.querySelectorAll('[data-scene="step"]')];
   const titleBlock = q('[data-scene="title"] .scene__block');
-  const callouts = [...play.querySelectorAll('[data-callout]')];
+  const notesA = [...play.querySelectorAll('[data-note-screen="support"]')];
+  const notesB = [...play.querySelectorAll('[data-note-screen="support-settings"]')];
   const dlBlock = q('[data-scene="download"] .scene__block');
   const dlFoot = q('[data-scene="download"] .play__foot');
   const idx = (key) => Math.max(0, SCREENS.indexOf(key));
@@ -182,9 +182,8 @@ function initPlay() {
 
     // resting states
     gsap.set(slot, { x: heroPos.x, y: heroPos.y, scale: heroPos.scale });
-    gsap.set(night, { clipPath: 'circle(0% at 50% 50%)', opacity: 1 });
+    gsap.set(night, { opacity: 0, scale: 1.12 });
     gsap.set([dusk, stars, dawn], { opacity: 0 });
-    gsap.set(glow, { opacity: 0, scale: 0.2 });
     gsap.set(heroScene, { autoAlpha: 1, x: 0, y: 0 });
     gsap.set(aura, { opacity: 1 });
     const stepTexts = steps.map((s) => s.querySelector('.scene__block'));
@@ -193,8 +192,8 @@ function initPlay() {
     gsap.set(stepTexts, { autoAlpha: 0, x: desktop ? -40 : 0, y: desktop ? 0 : 20 });
     gsap.set(stepNums, { autoAlpha: 0, y: 30 });
     stepThings.forEach((t) => gsap.set(t, { autoAlpha: 0, y: 18 }));
-    gsap.set(titleBlock, { autoAlpha: 0, scale: 0.92 });
-    gsap.set(callouts, { autoAlpha: 0, y: 16 });
+    gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
+    gsap.set([...notesA, ...notesB], { autoAlpha: 0, y: 16 });
     gsap.set(dlBlock, { autoAlpha: 0, y: 24 });
     gsap.set(dlFoot, { autoAlpha: 0 });
     Object.assign(playState, { screenIndex: idx('home'), ry: -0.42, rx: 0.06, shapes: 1, ambient: 0, finale: 0 });
@@ -230,49 +229,54 @@ function initPlay() {
       t = out + 0.55;
     });
 
-    // ── dusk to night: the page tints, a bloom grows from the phone, the night follows it, stars arrive
+    // ── dusk to night, gently: the page tints, the phone rests, the sky settles in, stars arrive
     const ts = t;
-    tl.to(playState, { ambient: 0, duration: 0.5, ease: 'power2.in' }, ts - 0.4);
-    tl.to(dusk, { opacity: 1, duration: 0.8, ease: 'sine.inOut' }, ts - 0.5);
-    tl.to(slot, { scale: 0.001, duration: 0.6, ease: 'power3.in' }, ts);
-    tl.to(glow, { opacity: 1, scale: 3.4, duration: 0.9, ease: 'power2.inOut' }, ts + 0.1);
-    tl.to(night, { clipPath: 'circle(112% at 50% 50%)', duration: 1.0, ease: 'power2.inOut' }, ts + 0.3);
-    tl.to(glow, { opacity: 0.35, duration: 0.6, ease: 'sine.inOut' }, ts + 1.0);
-    tl.to(stars, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, ts + 0.7);
-    tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 0.6);
-    tl.to(titleBlock, { autoAlpha: 1, scale: 1, duration: 0.6, ease: 'power3.out' }, ts + 1.0);
-    tl.addLabel('support', ts + 1.6);
-    tl.to(titleBlock, { autoAlpha: 0, scale: 1.05, duration: 0.4, ease: 'power2.in' }, ts + 2.2);
+    tl.to(playState, { ambient: 0, duration: 0.6, ease: 'sine.inOut' }, ts - 0.5);
+    tl.to(dusk, { opacity: 1, duration: 1.1, ease: 'sine.inOut' }, ts - 0.6);
+    tl.to(slot, { scale: 0.001, duration: 0.9, ease: 'sine.inOut' }, ts);
+    tl.to(night, { opacity: 1, scale: 1, duration: 1.5, ease: 'sine.inOut' }, ts + 0.2);
+    tl.to(stars, { opacity: 1, duration: 1.2, ease: 'sine.inOut' }, ts + 0.9);
+    tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 0.8);
+    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'power2.out' }, ts + 1.3);
+    tl.addLabel('support', ts + 2.1);
+    tl.to(titleBlock, { autoAlpha: 0, y: -16, duration: 0.5, ease: 'sine.inOut' }, ts + 2.8);
 
-    // ── hub: the phone re-emerges in the same spot showing the Support hub; callouts light up around it
-    const th = ts + 2.5;
-    tl.to(slot, { scale: 1, duration: 0.7, ease: 'back.out(1.3)' }, th);
-    const groups = desktop ? [[0, 1], [2, 3]] : [[0], [1], [2], [3]];
-    let tc = th + 0.55;
-    groups.forEach((g, gi) => {
-      const els = g.map((i) => callouts[i]).filter(Boolean);
-      if (gi === (desktop ? 1 : 2)) tl.set(playState, { screenIndex: idx('support-settings') }, tc - 0.1);
-      tl.to(els, { autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.12, ease: 'power3.out' }, tc);
-      tl.addLabel('hub' + (gi + 1), tc + 0.55);
-      if (desktop) { tc += 1.35; }
-      else { tl.to(els, { autoAlpha: 0, y: -12, duration: 0.3, ease: 'power2.in' }, tc + 1.05); tc += 1.45; }
-    });
+    // ── hub: the phone re-emerges in the same spot; each screen gets its own notes
+    const th = ts + 3.1;
+    tl.to(slot, { scale: 1, duration: 0.9, ease: 'sine.out' }, th);
+    let tc = th + 0.7;
+    if (desktop) {
+      tl.to(notesA, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out' }, tc);
+      tl.addLabel('hub1', tc + 0.65);
+      tl.to(notesA, { autoAlpha: 0, y: -12, duration: 0.35, ease: 'sine.inOut' }, tc + 1.55);
+      tl.set(playState, { screenIndex: idx('support-settings') }, tc + 1.75);
+      tl.to(notesB, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.15, ease: 'power2.out' }, tc + 1.95);
+      tl.addLabel('hub2', tc + 2.6);
+      tc += 3.6;
+    } else {
+      [...notesA, ...notesB].forEach((note, i) => {
+        if (i === notesA.length) tl.set(playState, { screenIndex: idx('support-settings') }, tc - 0.1);
+        tl.to(note, { autoAlpha: 1, y: 0, duration: 0.45, ease: 'power2.out' }, tc);
+        tl.addLabel('hub' + (i + 1), tc + 0.55);
+        tl.to(note, { autoAlpha: 0, y: -12, duration: 0.3, ease: 'sine.inOut' }, tc + 1.05);
+        tc += 1.45;
+      });
+    }
 
-    // ── dawn: the night lifts, the phone steps beside the ask, the food comes back
+    // ── dawn: the night lifts, the phone settles beside the ask, the food comes back
     const td = tc + 0.15;
-    if (desktop) tl.to(callouts, { autoAlpha: 0, y: -12, duration: 0.35, stagger: 0.04, ease: 'power2.in' }, td);
-    tl.to([night, stars], { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, td + 0.1);
-    tl.to(glow, { opacity: 0, duration: 0.5 }, td + 0.1);
-    tl.to(dusk, { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, td + 0.3);
-    tl.to(dawn, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, td + 0.3);
+    if (desktop) tl.to(notesB, { autoAlpha: 0, y: -12, duration: 0.35, ease: 'sine.inOut' }, td);
+    tl.to([night, stars], { opacity: 0, duration: 1.1, ease: 'sine.inOut' }, td + 0.1);
+    tl.to(dusk, { opacity: 0, duration: 1.1, ease: 'sine.inOut' }, td + 0.4);
+    tl.to(dawn, { opacity: 1, duration: 1.1, ease: 'sine.inOut' }, td + 0.4);
     tl.set(playState, { screenIndex: idx('home') }, td + 0.35);
-    tl.to(slot, { x: dlPos.x, y: dlPos.y, scale: dlPos.scale, duration: 0.9, ease: 'power3.inOut' }, td + 0.1);
-    tl.to(playState, { ry: -0.3, rx: 0.05, duration: 0.9, ease: 'power3.inOut' }, td + 0.1);
-    tl.to(playState, { finale: 1, duration: 0.9, ease: 'power2.out' }, td + 0.55);
-    tl.to(dlBlock, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, td + 0.5);
-    tl.to(dlFoot, { autoAlpha: 1, duration: 0.4 }, td + 0.9);
-    tl.addLabel('download', td + 1.25);
-    tl.to({}, { duration: 0.35 }, td + 1.25);
+    tl.to(slot, { x: dlPos.x, y: dlPos.y, scale: dlPos.scale, duration: 1.0, ease: 'power3.inOut' }, td + 0.1);
+    tl.to(playState, { ry: -0.3, rx: 0.05, duration: 1.0, ease: 'power3.inOut' }, td + 0.1);
+    tl.to(playState, { finale: 1, duration: 0.9, ease: 'power2.out' }, td + 0.6);
+    tl.to(dlBlock, { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' }, td + 0.6);
+    tl.to(dlFoot, { autoAlpha: 1, duration: 0.4 }, td + 1.0);
+    tl.addLabel('download', td + 1.35);
+    tl.to({}, { duration: 0.35 }, td + 1.35);
 
     const go = (label) => window.scrollTo({ top: tl.scrollTrigger.labelToScroll(label), behavior: 'smooth' });
     const buttons = [...play.querySelectorAll('[data-play-go]')];

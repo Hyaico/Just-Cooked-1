@@ -33,7 +33,7 @@
     </script>
 </head>
 <body>
-    <div class="bg" aria-hidden="true"><div class="bg__dusk"></div><div class="bg__grain"></div></div>
+    <div class="bg" aria-hidden="true"><div class="bg__blob bg__blob--a"></div><div class="bg__blob bg__blob--b"></div><div class="bg__blob bg__blob--c"></div><div class="bg__grain"></div></div>
     <a class="skip" href="#main">Skip to content</a>
     <header class="nav" data-nav>
         <nav class="nav__bar" aria-label="Primary">
@@ -59,13 +59,9 @@
                 <div class="play__dusk" aria-hidden="true"></div>
                 <div class="play__dawn" aria-hidden="true"></div>
                 <div class="play__night" aria-hidden="true"></div>
-                <div class="play__stars" aria-hidden="true"></div>
-                <div class="play__glow" aria-hidden="true"></div>
-                <div class="play__aura" aria-hidden="true"></div>
-                <div class="play__anchor play__anchor--hero" aria-hidden="true"></div>
-                <div class="play__anchor play__anchor--download" aria-hidden="true"></div>
+                <div class="play__stars" aria-hidden="true"><i></i><i></i></div>
 
-                <!-- Hero -->
+                <!-- Hero: copy beside the phone (phone above the copy on phones) -->
                 <div class="scene scene--hero" data-scene="hero">
                     <div class="scene__block">
                         <p class="eyebrow" data-hero-in>For when food feels hard.</p>
@@ -77,6 +73,7 @@
                         </div>
                         <p class="trust" data-hero-in><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> No judgement</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Any amount counts</span></p>
                     </div>
+                    <div class="play__anchor play__anchor--hero" aria-hidden="true"><div class="play__aura"></div></div>
                 </div>
 
                 <!-- Three screens, three steps -->
@@ -123,31 +120,30 @@
                     </div>
                 </div>
 
-                <!-- Support: the night takes over -->
+                <!-- Support: a safe space, beyond cooking -->
                 <div class="scene scene--title" data-scene="title">
                     <div class="scene__block">
                         <p class="eyebrow eyebrow--light">The Support hub</p>
-                        <h2>Support, <em>made for you.</em></h2>
-                        <p>A calm toolbox for the hard food moments, picked from what you share during setup.</p>
+                        <h2>Support, for everything <em>food touches.</em></h2>
+                        <p>Food goes beyond cooking. Whatever you need with it, this is a soft place to land.</p>
                     </div>
                 </div>
                 <div class="scene scene--hub" data-scene="hub">
-                    <div class="callout callout--1" data-callout><span class="callout__dot"></span><h3>Press for help</h3><p>When the moment is too much: steady breathing, your own reasons, and a person to call.</p></div>
-                    <div class="callout callout--2" data-callout><span class="callout__dot"></span><h3>Five minutes, no numbers</h3><p>When eating feels like too much, a simple meal from what is already in your pantry. No decisions.</p></div>
-                    <div class="callout callout--3" data-callout><span class="callout__dot"></span><h3>Soften everything</h3><p>Gentle mode hides numbers, streaks and goals until you want them back.</p></div>
-                    <div class="callout callout--4" data-callout><span class="callout__dot"></span><h3>One small thing</h3><p>Choose a single focus for the week. Change it whenever, with nothing lost.</p></div>
+                    <div class="note note--l" data-note data-note-screen="support"><span class="note__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M9.2 14.8l-4.3 4.3"/></svg></span><h3>Press for help</h3><p>One tap when the moment is too much. Steady breathing, your own reasons, and a person to call.</p></div>
+                    <div class="note note--r" data-note data-note-screen="support"><span class="note__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7a3 3 0 0 0 6 0V2"/><path d="M6 12v10"/><path d="M19 2a4 4 0 0 0-4 4v6h4v10"/></svg></span><h3>I need to eat</h3><p>Five minutes, no numbers, no decisions. A simple meal from what is already in your pantry.</p></div>
+                    <div class="note note--l" data-note data-note-screen="support-settings"><span class="note__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 3.8a5 5 0 0 0-7 0L4 13v7h7l9.2-9.2a5 5 0 0 0 0-7z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg></span><h3>Switch on only what helps</h3><p>Gentle mode softens the whole app. Numbers, streaks and goals stay hidden until you want them back.</p></div>
+                    <div class="note note--r" data-note data-note-screen="support-settings"><span class="note__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><h3>One small thing</h3><p>Choose a single focus for the week and change it whenever. Nothing is lost.</p></div>
                 </div>
 
                 <!-- Finale -->
                 <div class="scene scene--download" data-scene="download">
+                    <div class="play__anchor play__anchor--download" aria-hidden="true"></div>
                     <div class="scene__block">
                         <p class="eyebrow">No judgement</p>
                         <h2 class="finale__title">For when food feels hard. <em>Just Cooked.</em></h2>
                         <p>Any amount counts and any meal is enough.<span class="hide-mobile"> Download the app and let us take the deciding off your plate.</span></p>
-                        <div class="finale__row">
-                            <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
-                            <div class="qr-mini"><img src="/assets/qr-download.svg" alt="" width="54" height="54"><span>Point your phone here to get the app</span></div>
-                        </div>
+                        <div class="finale__row"><div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div></div>
+                        <div class="qr-tile"><img src="/assets/qr-download.svg" alt="" width="84" height="84"><div><strong>Scan to download</strong><span>Point your phone camera here</span></div></div>
                         <p class="finale__trust"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> No judgement</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Any amount counts</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Free to try</span></p>
                     </div>
                     <div class="play__foot">

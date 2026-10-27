@@ -14,7 +14,10 @@ No build step. Plain HTML, modern CSS and ES modules, with two libraries from CD
 | Library | Used for |
 |---|---|
 | [three.js](https://threejs.org) 0.170 | The 3D phone and clay shapes on the home page (`js/scene.js`) |
-| [GSAP](https://gsap.com) 3.12 + ScrollTrigger | Scroll-driven reveals, the pinned tools strip, the dusk tint, word reveal |
+| [GSAP](https://gsap.com) 3.12 + ScrollTrigger | The home-page timeline and interior reveals |
+
+The food and kitchen models in `assets/models` are from the [Kenney Food Kit](https://kenney.nl/assets/food-kit)
+(CC0, no attribution required). `scripts/build-decor.py` regenerates the star layers and the QR code.
 
 Everything degrades: without JavaScript or WebGL the pages show static screenshots and
 plain content. `prefers-reduced-motion` turns the motion off.
@@ -49,7 +52,7 @@ Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 `[data-phone-slot]` element. The timeline shares a small state object with it (which
 screen to show, resting angle, how visible the props are). The phone reacts to the mouse,
 the finger while scrolling, the gyroscope on Android, scroll speed, and can be dragged to
-spin. `js/props.js` builds the food and utensils from primitives; their positions are
+spin. The food and kitchen models only react when the mouse is over them; their positions are
 declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`), anchored to the phone, the text block or the stage.
 
 ## Editing a policy
