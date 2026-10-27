@@ -436,11 +436,12 @@
   .play { position: relative; height: 1000vh; }
   .play__stage { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: clip; isolation: isolate; }
 
-  /* atmosphere, bottom to top: dusk veil, night sky (revealed from the clasp with a clip-path circle), stars, then the
-     day sheet of the finale. All sit under the 3D canvas. */
+  /* atmosphere, bottom to top: dusk veil, night sky (painted in behind the shooting star by a soft mask whose edge
+     is the --sweep variable), stars, then the day sheet of the finale. All sit under the 3D canvas. */
   .play__dusk { position: absolute; inset: 0; z-index: 1; opacity: 0; background: linear-gradient(180deg, #EFE5EF 0%, #DACAE3 55%, #C9B4D8 100%); will-change: opacity; }
-  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity;
-    clip-path: circle(calc(var(--reveal, 142) * 1%) at var(--cx, 50%) var(--cy, 46%));
+  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity; --sweep: -20%;
+    -webkit-mask-image: linear-gradient(100deg, #000 calc(var(--sweep) - 20%), transparent var(--sweep));
+    mask-image: linear-gradient(100deg, #000 calc(var(--sweep) - 20%), transparent var(--sweep));
     background: linear-gradient(180deg, #17214F 0%, #0F1737 45%, #0B1128 100%); }
   /* the nebula and the vignette live on their own layer so the clipped sky stays cheap to repaint while it spreads */
   .play__glow { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity;
@@ -466,12 +467,8 @@
     .play__sheet { left: 39vw; right: -12vw; top: -40vh; bottom: -40vh; border-radius: 42vw 0 0 42vw / 90vh 0 0 90vh;
       box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), -10px 0 60px rgba(176, 158, 255, 0.3), -30px 0 140px rgba(120, 100, 220, 0.22); }
   }
-  /* the reach: two hands of starlight drawn on their own canvas (js/hands.js), above the sky, under the words */
-  .play__hands { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; opacity: 0; visibility: hidden; }
-  /* where the hands meet: a soft flash, and a ripple of light whose bright edge carries the night across the sky */
-  .play__flash, .play__ring { position: absolute; z-index: 5; left: 50%; top: 46%; width: 44vmax; height: 44vmax; border-radius: 50%; pointer-events: none; opacity: 0; will-change: transform, opacity; }
-  .play__flash { background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(216, 206, 255, 0.6) 16%, rgba(160, 140, 255, 0.2) 38%, rgba(160, 140, 255, 0) 60%); }
-  .play__ring { background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(205, 195, 255, 0.3) 66%, rgba(255, 255, 255, 0.8) 69.5%, rgba(205, 195, 255, 0.3) 73%, rgba(0, 0, 0, 0) 79%); }
+  /* the shooting star: drawn on its own canvas (js/star.js), over the sky and over the wish, only while in flight */
+  .play__star { position: absolute; inset: 0; z-index: 8; width: 100%; height: 100%; pointer-events: none; opacity: 0; visibility: hidden; }
 
   /* layout anchors: invisible boxes, laid out in the flow of their scene, that tell the timeline where the phone rests */
   .play__anchor { flex: none; pointer-events: none; visibility: hidden; position: relative; height: var(--ah); width: calc(var(--ah) * 0.4775); --ah: 41vh; --ah: min(41dvh, calc(100dvh - 330px)); }
@@ -547,14 +544,22 @@
   .thing--sage svg { color: var(--sage-btn); }
   .thing--note { display: none; }
 
-  /* support title: the words sit at the top of the stage while the hands play beneath them */
-  .scene--title { justify-content: flex-start; padding: calc(var(--nav-h) + 5vh) 16px 0; padding-top: calc(var(--nav-h) + 5dvh); }
-  .scene--title h2 { font-size: clamp(2.1rem, 1.2rem + 4vw, 4.6rem); color: var(--dark-ink); letter-spacing: -0.04em; line-height: 1.02; }
+  /* the wish: a soft speech bubble in the middle of the stage, the thing someone says before the star */
+  .scene--wish { justify-content: center; padding: 0 16px; }
+  .wish { max-width: min(88vw, 540px); }
+  .wish__box { position: relative; padding: 24px 30px 26px; border-radius: 30px; background: #FFFDF9; color: var(--ink); text-align: center;
+    box-shadow: 0 24px 60px rgba(60, 40, 120, 0.18), 0 2px 6px rgba(60, 40, 120, 0.08), inset 0 1px 0 #FFFFFF; }
+  .wish__tail { position: absolute; left: 46px; bottom: -22px; width: 40px; height: 28px; color: #FFFDF9; }
+  .wish__text { font-size: clamp(1.3rem, 1rem + 1.5vw, 2rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.22; text-wrap: balance; }
+  .wish__text em { color: #5A4EC8; }
+
+  /* support title: the words land in the middle of the night once the star has crossed */
+  .scene--title { justify-content: center; padding: 0 16px; }
+  .scene--title h2 { font-size: clamp(2.1rem, 1.2rem + 4.2vw, 5rem); color: var(--dark-ink); letter-spacing: -0.04em; line-height: 1.02; }
   .scene--title h2 em { color: #CFC4FF; }
   .scene--title .eyebrow, .scene--hub .eyebrow { color: #B9C6FF; }
-  .scene--title p { margin-top: 14px; color: var(--dark-body); font-size: var(--fs-lede); font-weight: 600; max-width: 34ch; margin-inline: auto; }
-  @media (max-width: 899px) and (max-height: 720px) { .scene--title h2 { font-size: 1.9rem; } .scene--title p { font-size: 1rem; margin-top: 10px; } }
-  @media (max-width: 899px) and (max-height: 620px) { .scene--title p:not(.eyebrow) { display: none; } }
+  .scene--title p { margin-top: 16px; color: var(--dark-body); font-size: var(--fs-lede); font-weight: 600; max-width: 34ch; margin-inline: auto; }
+  @media (max-width: 899px) and (max-height: 720px) { .scene--title h2 { font-size: 2rem; } .scene--title p { font-size: 1rem; margin-top: 10px; } }
   @media (max-width: 379px) { .scene--title .eyebrow { font-size: 0.7rem; letter-spacing: 0.08em; margin-bottom: 12px; } }
 
   /* the Support hub: two screens, two messages (stacked in one grid cell), the goals beside the settings screen */
@@ -627,8 +632,11 @@
     .thing { font-size: 0.95rem; padding: 11px 16px; }
     .thing--note { display: block; background: transparent; border: 0; box-shadow: none; padding: 4px 0 0; color: var(--ink-muted); font-weight: 500; font-size: 0.9rem; white-space: normal; max-width: 26ch; margin-left: 0 !important; }
 
-    .scene--title { justify-content: center; align-items: flex-start; padding-top: calc(var(--nav-h) + 6vh); }
+    .scene--title { justify-content: center; }
     .scene--title .scene__block { width: min(80vw, 900px); text-align: center; }
+    .scene--wish { justify-content: center; }
+    .wish__box { padding: 30px 40px 32px; border-radius: 36px; }
+    .wish__tail { left: 60px; }
     .scene--title p { margin-inline: auto; }
     .scene--hub .scene__block { width: 30vw; max-width: 520px; }
     .scene--hub .hub > p:not(.eyebrow) { margin-inline: 0; }
@@ -675,7 +683,7 @@
   html:not(.js) .scene > *, .play--static .scene > * { position: static !important; width: auto !important; max-width: 640px; margin-inline: auto; text-align: center; }
   html:not(.js) .scene--title, .play--static .scene--title, html:not(.js) .scene--hub, .play--static .scene--hub { background: var(--night); border-radius: var(--r-xxl); padding: 48px 24px; }
   html:not(.js) .goals, .play--static .goals { margin-top: 16px; display: flex; justify-content: center; }
-  html:not(.js) .play__hands, .play--static .play__hands, html:not(.js) .play__flash, .play--static .play__flash, html:not(.js) .play__ring, .play--static .play__ring { display: none; }
+  html:not(.js) .play__star, .play--static .play__star, html:not(.js) .scene--wish, .play--static .scene--wish { display: none; }
   html:not(.js) .scene--hub .scene__block, .play--static .scene--hub .scene__block { display: block; }
   html:not(.js) .hub + .hub, .play--static .hub + .hub { margin-top: 36px; }
   html:not(.js) .play .phone-slot, .play--static .phone-slot { position: static; height: min(60vh, 540px); width: auto; aspect-ratio: 1274 / 2668; margin-inline: auto; order: 1; }
