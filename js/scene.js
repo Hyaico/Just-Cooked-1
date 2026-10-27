@@ -1,10 +1,10 @@
-/* Just Cooked — 3D scene (v3).
+/* Just Cooked — 3D scene (v4).
    One procedurally built phone on a fixed, transparent canvas. It sits exactly
    on the page's single phone slot (which the home-page timeline moves around
    the stage), shows whichever app screen the play asks for, and reacts to the
-   mouse, the finger, the gyroscope, scroll speed and drag-to-spin. Stylised
-   food and utensils (js/props.js) float around the hero and, more quietly,
-   around the phone during the three steps. */
+   mouse, the finger, the gyroscope and drag-to-spin. Stylised food and
+   utensils (js/props.js) drift independently around the hero, in the stage
+   corners during the steps, and come back for the finale. */
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
@@ -89,55 +89,79 @@ function buildPhone(screenMat) {
   return group;
 }
 
-/* Prop layouts. Offsets are fractions: for anchor "phone" in phone-heights from the
-   phone centre (the phone spans x ±0.24, y ±0.5); for anchor "copy" in fractions of
-   the hero text block's width/height from its top-left corner (outside the box). */
+/* Prop layouts. anchor "phone": offsets in phone-heights from the phone centre (the phone
+   spans x ±0.24, y ±0.5). anchor "copy": fractions of the text block's width/height from
+   its top-left corner (outside the box). anchor "stage": viewport fractions. */
 const HERO_DESKTOP = [
-  { make: 'egg', anchor: 'phone', off: [-0.42, 0.42, -0.6], rot: [0.5, -0.35, 0.3], s: 1.0, spin: [0, 0.15, 0.05] },
-  { make: 'tomato', anchor: 'phone', off: [0.38, -0.42, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85, spin: [0, 0.3, 0] },
-  { make: 'lemon', anchor: 'phone', off: [0.4, 0.36, -0.3], rot: [0.2, 0.35, 0.3], s: 0.78, spin: [0.05, 0.2, 0.1] },
-  { make: 'broccoli', anchor: 'phone', off: [-0.5, -0.3, 0.5], rot: [0.1, 0.3, -0.2], s: 0.8, spin: [0, 0.25, 0] },
-  { make: 'whisk', anchor: 'phone', off: [0.44, 0.0, -0.5], rot: [0.1, 0, 0.22], s: 1.1, spin: [0, 0.4, 0] },
-  { make: 'basil', anchor: 'phone', off: [0.18, 0.64, -0.2], rot: [0.5, 0.3, 0.7], s: 0.6, spin: [0.1, 0.2, 0.15] },
-  { make: 'spoon', anchor: 'phone', off: [-0.66, 0.06, 0.2], rot: [0.15, 0.1, -0.6], s: 1.05, spin: [0, 0.2, 0] },
-  { make: 'mushroom', anchor: 'phone', off: [0.22, -0.66, 0.6], rot: [0.3, 0.2, 0.3], s: 0.62, spin: [0, 0.3, 0] },
-  { make: 'fork', anchor: 'copy', off: [-0.1, 0.24], rot: [0.1, 0.2, -0.55], s: 0.95, spin: [0, 0.15, 0] },
-  { make: 'knife', anchor: 'copy', off: [0.3, -0.12], rot: [0.05, -0.2, 1.25], s: 0.95, spin: [0, -0.1, 0] },
-  { make: 'rollingPin', anchor: 'copy', off: [0.14, 1.12], rot: [0.2, 0, 0.22], s: 1.1, spin: [0, 0, 0.05] },
-  { make: 'chilli', anchor: 'copy', off: [-0.1, 0.66], rot: [0.2, 0.3, 0.4], s: 0.85, spin: [0.1, 0.25, 0] },
-  { make: 'avocado', anchor: 'copy', off: [0.93, 1.1], rot: [0.1, -0.2, 0.3], s: 0.9, spin: [0, 0.18, 0] },
-  { make: 'carrot', anchor: 'copy', off: [1.05, 0.18], rot: [0.2, 0.3, -0.5], s: 0.95, spin: [0.08, 0.2, 0] },
+  { make: 'egg', anchor: 'phone', off: [-0.24, 0.46, -0.6], rot: [0.5, -0.35, 0.3], s: 0.9 },
+  { make: 'tomato', anchor: 'phone', off: [0.38, -0.42, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85 },
+  { make: 'lemon', anchor: 'phone', off: [0.42, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.75 },
+  { make: 'broccoli', anchor: 'phone', off: [-0.38, -0.42, 0.5], rot: [0.1, 0.3, -0.2], s: 0.78 },
+  { make: 'whisk', anchor: 'phone', off: [0.46, -0.02, -0.5], rot: [0.1, 0, 0.22], s: 1.05 },
+  { make: 'mushroom', anchor: 'phone', off: [0.22, -0.66, 0.6], rot: [0.3, 0.2, 0.3], s: 0.6 },
+  { make: 'fork', anchor: 'copy', off: [-0.1, 0.26], rot: [0.1, 0.2, -0.55], s: 0.95 },
+  { make: 'bread', anchor: 'copy', off: [-0.07, 0.8], rot: [0.2, 0.3, 0.2], s: 0.8 },
+  { make: 'knife', anchor: 'copy', off: [0.78, 0.0], rot: [0.05, -0.2, 1.25], s: 0.9 },
+  { make: 'pancakes', anchor: 'copy', off: [0.62, -0.13], rot: [0.35, 0.3, 0.05], s: 0.85 },
+  { make: 'mug', anchor: 'copy', off: [1.0, 0.86], rot: [0.2, -0.4, 0.05], s: 0.85 },
+  { make: 'rollingPin', anchor: 'copy', off: [0.14, 1.12], rot: [0.2, 0, 0.22], s: 1.1 },
+  { make: 'cheese', anchor: 'copy', off: [0.9, 1.08], rot: [0.3, -0.4, 0.1], s: 0.85 },
+  { make: 'saltShaker', anchor: 'copy', off: [0.5, 1.16], rot: [0.1, 0.3, 0.15], s: 0.75 },
 ];
 const HERO_MOBILE = [
-  { make: 'egg', anchor: 'phone', off: [-0.4, 0.4, -0.6], rot: [0.5, -0.35, 0.3], s: 0.8, spin: [0, 0.15, 0.05] },
-  { make: 'tomato', anchor: 'phone', off: [0.42, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.7, spin: [0, 0.3, 0] },
-  { make: 'lemon', anchor: 'phone', off: [0.42, 0.32, -0.3], rot: [0.2, 0.35, 0.3], s: 0.65, spin: [0.05, 0.2, 0.1] },
-  { make: 'broccoli', anchor: 'phone', off: [-0.42, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.65, spin: [0, 0.25, 0] },
-  { make: 'spoon', anchor: 'phone', off: [-0.48, 0.05, 0.2], rot: [0.15, 0.1, -0.6], s: 0.85, spin: [0, 0.2, 0] },
-  { make: 'basil', anchor: 'phone', off: [0.46, 0.02, -0.2], rot: [0.5, 0.3, 0.7], s: 0.5, spin: [0.1, 0.2, 0.15] },
+  { make: 'egg', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.5, -0.35, 0.3], s: 0.85 },
+  { make: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.75 },
+  { make: 'lemon', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.68 },
+  { make: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.7 },
+  { make: 'spoon', anchor: 'phone', off: [-0.56, 0.04, 0.2], rot: [0.15, 0.1, -0.6], s: 0.9 },
+  { make: 'mug', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.2, -0.4, 0.05], s: 0.62 },
 ];
-// Step props sit in the corners of the stage (anchor "stage": viewport fractions), away from captions.
 const STEPS_DESKTOP = [
-  { make: 'pan', anchor: 'stage', off: [0.86, 0.17, -0.6], rot: [0.55, -0.5, 0.25], s: 1.0, spin: [0, 0.12, 0] },
-  { make: 'basil', anchor: 'stage', off: [0.13, 0.18, -0.3], rot: [0.5, 0.3, 0.7], s: 0.6, spin: [0.1, 0.2, 0.15] },
-  { make: 'carrot', anchor: 'stage', off: [0.17, 0.84, 0.3], rot: [0.2, 0.3, 0.8], s: 0.85, spin: [0.08, 0.2, 0] },
-  { make: 'mushroom', anchor: 'stage', off: [0.85, 0.85, 0.4], rot: [0.3, 0.2, 0.3], s: 0.65, spin: [0, 0.3, 0] },
-  { make: 'lemon', anchor: 'stage', off: [0.38, 0.12, -0.5], rot: [0.2, 0.35, 0.3], s: 0.62, spin: [0.05, 0.2, 0.1] },
-  { make: 'tomato', anchor: 'stage', off: [0.63, 0.9, -0.2], rot: [0.2, 0.4, 0.1], s: 0.7, spin: [0, 0.3, 0] },
+  { make: 'pan', anchor: 'stage', off: [0.86, 0.17, -0.6], rot: [0.55, -0.5, 0.25], s: 1.0 },
+  { make: 'pancakes', anchor: 'stage', off: [0.13, 0.18, -0.3], rot: [0.35, 0.3, 0.05], s: 0.8 },
+  { make: 'mug', anchor: 'stage', off: [0.17, 0.84, 0.3], rot: [0.2, -0.4, 0.05], s: 0.8 },
+  { make: 'mushroom', anchor: 'stage', off: [0.85, 0.85, 0.4], rot: [0.3, 0.2, 0.3], s: 0.65 },
+  { make: 'lemon', anchor: 'stage', off: [0.38, 0.12, -0.5], rot: [0.2, 0.35, 0.3], s: 0.62 },
+  { make: 'tomato', anchor: 'stage', off: [0.63, 0.9, -0.2], rot: [0.2, 0.4, 0.1], s: 0.7 },
 ];
 const STEPS_MOBILE = [
-  { make: 'lemon', anchor: 'stage', off: [0.1, 0.5, -0.3], rot: [0.2, 0.35, 0.3], s: 0.5, spin: [0.05, 0.2, 0.1] },
-  { make: 'tomato', anchor: 'stage', off: [0.9, 0.42, -0.3], rot: [0.2, 0.4, 0.1], s: 0.5, spin: [0, 0.3, 0] },
-  { make: 'basil', anchor: 'stage', off: [0.1, 0.72, 0.2], rot: [0.5, 0.3, 0.7], s: 0.4, spin: [0.1, 0.2, 0.15] },
-  { make: 'mushroom', anchor: 'stage', off: [0.9, 0.7, 0.2], rot: [0.3, 0.2, 0.3], s: 0.42, spin: [0, 0.3, 0] },
+  { make: 'lemon', anchor: 'stage', off: [0.1, 0.22, -0.3], rot: [0.2, 0.35, 0.3], s: 0.5 },
+  { make: 'tomato', anchor: 'stage', off: [0.9, 0.2, -0.3], rot: [0.2, 0.4, 0.1], s: 0.5 },
+  { make: 'mug', anchor: 'stage', off: [0.1, 0.46, 0.2], rot: [0.2, -0.4, 0.05], s: 0.42 },
+  { make: 'mushroom', anchor: 'stage', off: [0.9, 0.45, 0.2], rot: [0.3, 0.2, 0.3], s: 0.42 },
+];
+const FINALE_DESKTOP = [
+  { make: 'egg', anchor: 'phone', off: [-0.4, 0.38, -0.6], rot: [0.5, -0.35, 0.3], s: 0.95 },
+  { make: 'broccoli', anchor: 'phone', off: [-0.5, -0.28, 0.5], rot: [0.1, 0.3, -0.2], s: 0.8 },
+  { make: 'spoon', anchor: 'phone', off: [-0.62, 0.04, 0.2], rot: [0.15, 0.1, -0.6], s: 1.0 },
+  { make: 'tomato', anchor: 'phone', off: [0.3, -0.62, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85 },
+  { make: 'orangeSlice', anchor: 'phone', off: [0.28, 0.5, -0.3], rot: [0.2, 0.35, 0.3], s: 0.75 },
+  { make: 'mushroom', anchor: 'phone', off: [-0.22, -0.68, 0.6], rot: [0.3, 0.2, 0.3], s: 0.6 },
+  { make: 'whisk', anchor: 'phone', off: [-0.46, 0.46, -0.5], rot: [0.1, 0, -0.3], s: 0.95 },
+  { make: 'pancakes', anchor: 'copy', off: [0.62, -0.14], rot: [0.35, 0.3, 0.05], s: 0.85 },
+  { make: 'rollingPin', anchor: 'copy', off: [0.2, 1.14], rot: [0.2, 0, 0.22], s: 1.1 },
+  { make: 'cheese', anchor: 'copy', off: [0.9, 1.08], rot: [0.3, -0.4, 0.1], s: 0.85 },
+  { make: 'mug', anchor: 'copy', off: [1.02, 0.2], rot: [0.2, -0.4, 0.05], s: 0.85 },
+  { make: 'saltShaker', anchor: 'copy', off: [1.0, 0.78], rot: [0.1, 0.3, 0.15], s: 0.75 },
+  { make: 'bread', anchor: 'copy', off: [0.55, 1.18], rot: [0.2, 0.3, 0.2], s: 0.8 },
+];
+const FINALE_MOBILE = [
+  { make: 'egg', anchor: 'phone', off: [-0.46, 0.34, -0.6], rot: [0.5, -0.35, 0.3], s: 0.85 },
+  { make: 'tomato', anchor: 'phone', off: [0.48, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.75 },
+  { make: 'orangeSlice', anchor: 'phone', off: [0.48, 0.3, -0.3], rot: [0.2, 0.35, 0.3], s: 0.68 },
+  { make: 'broccoli', anchor: 'phone', off: [-0.48, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.7 },
+  { make: 'whisk', anchor: 'phone', off: [-0.54, 0.06, 0.2], rot: [0.1, 0, -0.3], s: 0.85 },
+  { make: 'mug', anchor: 'phone', off: [0.52, 0.0, -0.2], rot: [0.2, -0.4, 0.05], s: 0.62 },
 ];
 
 export async function start(canvas, opts = {}) {
-  const play = opts.state || null; // { keys, screenIndex, ry, rx, shapes, ambient } driven by the page timeline
+  const play = opts.state || null; // { keys, screenIndex, ry, rx, shapes, ambient, finale } driven by the page timeline
   const slot = document.querySelector('[data-phone-slot]');
   if (!slot) throw new Error('no phone slot');
   const heroAnchor = document.querySelector('.play__anchor--hero') || slot;
-  const copyAnchor = document.querySelector('[data-scene="hero"] .scene__block');
+  const dlAnchor = document.querySelector('.play__anchor--download') || slot;
+  const heroCopy = document.querySelector('[data-scene="hero"] .scene__block');
+  const dlCopy = document.querySelector('[data-scene="download"] .scene__block');
   const slotRot = (slot.dataset.rot || '0,0').split(',').map(Number);
 
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
@@ -221,24 +245,33 @@ export async function start(canvas, opts = {}) {
   const mobile = () => (canvas.clientWidth || innerWidth) < 900;
   const buildGroup = (defs) => {
     const g = new THREE.Group();
-    const items = defs.map((d) => {
+    const items = defs.map((d, i) => {
       const mesh = MAKERS[d.make]();
       mesh.rotation.set(d.rot[0], d.rot[1], d.rot[2]);
       g.add(mesh);
-      return { mesh, d, phase: Math.random() * Math.PI * 2 };
+      // each prop drifts on its own: its own parallax strength, direction, lag, bob and spin
+      const seed = ((i * 7919 + d.make.length * 131) % 97) / 97;
+      const depth = d.off[2] || 0;
+      return {
+        mesh, d, phase: seed * Math.PI * 2,
+        parX: (0.05 + 0.1 * (0.5 + depth * 0.5) + seed * 0.05) * (seed > 0.72 ? -0.6 : 1),
+        parY: 0.03 + 0.07 * (0.5 + depth * 0.5) + (1 - seed) * 0.03,
+        lag: 0.04 + seed * 0.1, px: 0, py: 0,
+        bobSpeed: 0.5 + seed * 0.5, bobAmp: 0.03 + seed * 0.03,
+        spin: [(seed - 0.5) * 0.2, 0.08 + seed * 0.25, (0.5 - seed) * 0.12],
+      };
     });
     scene.add(g);
     return { group: g, items };
   };
-  let hero = buildGroup(mobile() ? HERO_MOBILE : HERO_DESKTOP);
-  let steps = buildGroup(mobile() ? STEPS_MOBILE : STEPS_DESKTOP);
-  let builtMobile = mobile();
+  let sets = null, builtMobile = null;
   const rebuildProps = () => {
-    [hero, steps].forEach((set) => { scene.remove(set.group); set.items.forEach((it) => it.mesh.traverse((o) => { if (o.geometry) o.geometry.dispose(); })); });
-    hero = buildGroup(mobile() ? HERO_MOBILE : HERO_DESKTOP);
-    steps = buildGroup(mobile() ? STEPS_MOBILE : STEPS_DESKTOP);
-    builtMobile = mobile();
+    if (sets) Object.values(sets).forEach((set) => { scene.remove(set.group); set.items.forEach((it) => it.mesh.traverse((o) => { if (o.geometry) o.geometry.dispose(); })); });
+    const m = mobile();
+    sets = { hero: buildGroup(m ? HERO_MOBILE : HERO_DESKTOP), steps: buildGroup(m ? STEPS_MOBILE : STEPS_DESKTOP), finale: buildGroup(m ? FINALE_MOBILE : FINALE_DESKTOP) };
+    builtMobile = m;
   };
+  rebuildProps();
 
   // ---- sizing
   let vw = 1, vh = 1, wpp = 1, visH = 1;
@@ -305,20 +338,20 @@ export async function start(canvas, opts = {}) {
   addEventListener('pointercancel', endDrag);
 
   // ---- props placement
-  function layoutProps(set, vis, t, dt, phoneRect, copyRect, spread) {
+  let intro = 0;
+  function layoutProps(set, vis, t, dt, kf, phoneRect, copyRect, spread) {
     set.group.visible = vis > 0.01;
     if (!set.group.visible) return;
     const H = Math.min(phoneRect.height, phoneRect.width / ASPECT) * wpp;
     const pcx = (phoneRect.left + phoneRect.width / 2 - vw / 2) * wpp;
     const pcy = -(phoneRect.top + phoneRect.height / 2 - vh / 2) * wpp;
     const base = H * 0.3;
-    set.group.position.set(pointer.x * 0.14, pointer.y * 0.1, 0);
     set.items.forEach((it, i) => {
       const d = it.d;
-      let x, y, z;
       if (d.anchor === 'copy' && !copyRect) { it.mesh.visible = false; return; }
       it.mesh.visible = true;
-      if (d.anchor === 'copy' && copyRect) {
+      let x, y, z;
+      if (d.anchor === 'copy') {
         x = (copyRect.left + d.off[0] * copyRect.width - vw / 2) * wpp;
         y = -(copyRect.top + d.off[1] * copyRect.height - vh / 2) * wpp;
         z = 0.2;
@@ -331,19 +364,21 @@ export async function start(canvas, opts = {}) {
         y = pcy + d.off[1] * H * spread;
         z = d.off[2] * Math.min(H, 2.2) * 0.5;
       }
+      it.px = lerp(it.px, pointer.x, kf(it.lag));
+      it.py = lerp(it.py, pointer.y, kf(it.lag));
       const ei = easeOut((intro - 0.1 - i * 0.05) / 0.9);
-      const bob = Math.sin(t * 0.7 + it.phase) * 0.04 * base;
-      it.mesh.position.set(x, y + bob, z);
+      const bob = Math.sin(t * it.bobSpeed + it.phase) * it.bobAmp * H;
+      it.mesh.position.set(x + it.px * it.parX * H, y + bob - it.py * it.parY * H, z);
       it.mesh.scale.setScalar(base * d.s * ei * vis);
-      it.mesh.rotation.x += d.spin[0] * dt;
-      it.mesh.rotation.y += d.spin[1] * dt;
-      it.mesh.rotation.z += d.spin[2] * dt;
+      it.mesh.rotation.x += it.spin[0] * dt;
+      it.mesh.rotation.y += it.spin[1] * dt;
+      it.mesh.rotation.z += it.spin[2] * dt;
     });
   }
 
   // ---- frame loop
   const state = { s: 0.0001, rx: 0, ry: 0, rz: 0 };
-  let velSmooth = 0, lastY = window.scrollY, intro = 0, cleared = false, prev = performance.now();
+  let cleared = false, prev = performance.now();
 
   function tick(now) {
     const dt = clamp((now - prev) / 1000, 0.001, 0.05);
@@ -352,11 +387,6 @@ export async function start(canvas, opts = {}) {
     const kf = (k) => 1 - Math.pow(1 - k, dt * 60);
     intro = Math.min(1, intro + dt / 1.5);
     const e = easeOut(intro);
-
-    const sy = window.scrollY;
-    const vel = (sy - lastY) / dt;
-    lastY = sy;
-    velSmooth = lerp(velSmooth, clamp(vel, -4000, 4000), kf(0.12));
 
     const useGyro = !touch.active && !fine && gyro.on;
     pointer.x = lerp(pointer.x, useGyro ? gyro.x * 0.7 : pointer.tx, kf(0.16));
@@ -373,10 +403,9 @@ export async function start(canvas, opts = {}) {
 
     const baseRy = play ? play.ry : slotRot[0] || 0;
     const baseRx = play ? play.rx : slotRot[1] || 0;
-    const swing = clamp(velSmooth * 0.00022, -0.4, 0.4);
-    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.34 + swing + drag.ry) * e, kf(0.18));
+    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.34 + drag.ry) * e, kf(0.18));
     state.rx = lerp(state.rx, (baseRx - pointer.y * 0.22 + drag.rx) * e, kf(0.18));
-    state.rz = lerp(state.rz, (-swing * 0.12 + Math.sin(t * 0.6) * 0.012) * e, kf(0.1));
+    state.rz = lerp(state.rz, Math.sin(t * 0.6) * 0.012 * e, kf(0.1));
 
     const onScreen = Math.abs(py) < visH / 2 + (state.s * PHONE.h) / 2 + 0.3;
     phone.visible = state.s > 0.004 && onScreen;
@@ -398,17 +427,19 @@ export async function start(canvas, opts = {}) {
       setScreen(screenTarget);
     }
 
-    // props: hero set around the hero phone + beside the copy; step set around the centred phone
+    // props: hero set, step set (stage corners), finale set
     const heroVis = play ? clamp(play.shapes, 0, 1) : 1;
-    const ambientVis = play ? clamp(play.ambient, 0, 1) : 0;
-    if (heroVis > 0.01) {
-      const copyRect = copyAnchor && !mobile() ? copyAnchor.getBoundingClientRect() : null;
-      layoutProps(hero, heroVis, t, dt, heroAnchor.getBoundingClientRect(), copyRect, 1 + (1 - heroVis) * 0.9);
-    } else hero.group.visible = false;
-    if (ambientVis > 0.01) layoutProps(steps, ambientVis, t, dt, r, null, 1 + (1 - ambientVis) * 0.5);
-    else steps.group.visible = false;
+    const stepVis = play ? clamp(play.ambient, 0, 1) : 0;
+    const finVis = play ? clamp(play.finale, 0, 1) : 0;
+    const isMobile = mobile();
+    if (heroVis > 0.01) layoutProps(sets.hero, heroVis, t, dt, kf, heroAnchor.getBoundingClientRect(), heroCopy && !isMobile ? heroCopy.getBoundingClientRect() : null, 1 + (1 - heroVis) * 0.9);
+    else sets.hero.group.visible = false;
+    if (stepVis > 0.01) layoutProps(sets.steps, stepVis, t, dt, kf, r, null, 1 + (1 - stepVis) * 0.5);
+    else sets.steps.group.visible = false;
+    if (finVis > 0.01) layoutProps(sets.finale, finVis, t, dt, kf, dlAnchor.getBoundingClientRect(), dlCopy && !isMobile ? dlCopy.getBoundingClientRect() : null, 1 + (1 - finVis) * 0.6);
+    else sets.finale.group.visible = false;
 
-    if (!phone.visible && !hero.group.visible && !steps.group.visible) {
+    if (!phone.visible && !sets.hero.group.visible && !sets.steps.group.visible && !sets.finale.group.visible) {
       if (!cleared) { renderer.clear(); cleared = true; }
       return;
     }
@@ -422,7 +453,6 @@ export async function start(canvas, opts = {}) {
 
   const settle = () => { // jump to the resting state (used by screenshot tooling)
     intro = 1;
-    velSmooth = 0;
     for (let i = 0; i < 60; i++) tick(performance.now() + i * 16);
     if (fading) { screenMat.uniforms.tA.value = screenMat.uniforms.tB.value; screenMat.uniforms.uMix.value = 0; screenCurrent = screenTarget; fading = false; }
     tick(performance.now() + 1000);

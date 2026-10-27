@@ -63,9 +63,10 @@ function send(res, code, type, body) {
   res.end(body);
 }
 
-http.createServer(async (req, res) => {
+async function handle(req, res) {
   const url = new URL(req.url, 'http://localhost');
-  let p = decodeURIComponent(url.pathname);
+  let p;
+  try { p = decodeURIComponent(url.pathname); } catch { return send(res, 400, 'text/plain', 'Bad path'); }
   if (p.includes('..')) return send(res, 400, 'text/plain', 'Bad path');
 
   const recipe = p.match(/^\/recipe\/([^/]+)$/);
@@ -90,6 +91,16 @@ http.createServer(async (req, res) => {
   }
   const notFound = path.join(ROOT, '404.html');
   return send(res, 404, 'text/html; charset=utf-8', fs.existsSync(notFound) ? fs.readFileSync(notFound) : 'Not found');
+}
+
+process.on('uncaughtException', (err) => console.error('[preview] ' + err.message));
+process.on('unhandledRejection', (err) => console.error('[preview] ' + (err && err.message ? err.message : err)));
+
+http.createServer((req, res) => {
+  handle(req, res).catch((err) => {
+    console.error('[preview] ' + err.message);
+    if (!res.headersSent) send(res, 500, 'text/plain', 'Preview error: ' + err.message);
+  });
 }).listen(PORT, () => {
   const lan = Object.values(os.networkInterfaces()).flat().filter((i) => i && i.family === 'IPv4' && !i.internal).map((i) => i.address);
   console.log('Just Cooked preview');

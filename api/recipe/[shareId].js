@@ -163,8 +163,8 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
   const heroInner = thumbnailUrl
     ? ''
     : `<div class="hero-placeholder">
-        <span class="hero-ph-chip"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11h18M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 11v8M18 11v8M4 19h16"/></svg></span>
-        <span class="hero-ph-cap">A Just Cooked recipe. Photo coming soon.</span>
+        <span class="hero-ph-chip"><svg width="34" height="34" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="23" fill="none" stroke="#E94B1F" stroke-width="6"/><circle cx="32" cy="32" r="11" fill="#E94B1F"/></svg></span>
+        <span class="hero-ph-cap">A Just Cooked recipe</span>
       </div>`;
 
   const ogImage = thumbnailUrl
@@ -453,30 +453,41 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     /* ── Hero ── */
     .hero {
       width: 100%; aspect-ratio: 1 / 0.82; border-radius: 22px; overflow: hidden;
+      border: 1px solid rgba(224,213,194,0.7);
       box-shadow: 0 14px 28px rgba(26,24,21,0.14);
       background-size: cover; background-position: center 30%; background-repeat: no-repeat;
       background-color: #E4D8C0;
     }
     .hero-placeholder {
       width: 100%; height: 100%;
-      background: linear-gradient(135deg,#E4D8C0 0%,#D8CAAC 50%,#CBBB98 100%);
-      border: 1px solid rgba(120,95,60,0.18);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+      background:
+        radial-gradient(70% 60% at 20% 15%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(60% 50% at 85% 90%, rgba(243,149,104,0.35) 0%, rgba(243,149,104,0) 65%),
+        linear-gradient(145deg, #FBF1E4 0%, #F6E3D2 55%, #F0D5C2 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
       text-align: center; padding: 24px;
     }
     .hero-ph-chip {
-      width: 60px; height: 60px; border-radius: 19px;
-      background: rgba(255,252,245,0.6); border: 1.5px solid rgba(120,95,60,0.28);
-      color: rgba(86,66,42,0.62); display: inline-flex; align-items: center; justify-content: center;
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(255,253,248,0.9); box-shadow: 0 10px 24px rgba(233,75,31,0.18);
+      display: inline-flex; align-items: center; justify-content: center;
     }
-    .hero-ph-cap { font-size: 11px; font-weight: 600; line-height: 16px; color: rgba(86,66,42,0.62); max-width: 230px; }
+    .hero-ph-cap { font-size: 12px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #7A2410; opacity: 0.75; }
 
     /* ── Title card (overlaps hero) ── */
     .title-card {
-      position: relative; z-index: 2; margin: -24px 12px 0;
+      position: relative; z-index: 2; margin: 14px 0 0;
       background: #FCFAF3; border: 1px solid rgba(233,75,31,0.18);
-      border-radius: 20px; padding: 24px; box-shadow: 0 14px 30px rgba(26,24,21,0.08);
+      border-radius: 20px; padding: 22px 24px 20px; box-shadow: 0 14px 30px rgba(26,24,21,0.08);
     }
+    .desc-card {
+      margin-top: 14px; background: #FCFAF3; border: 1px solid rgba(233,75,31,0.18); border-left: 4px solid #E94B1F;
+      border-radius: 16px; padding: 16px 18px 18px; box-shadow: 0 10px 24px rgba(26,24,21,0.06);
+    }
+    .desc-head { display: flex; align-items: center; gap: 10px; }
+    .desc-chip { width: 30px; height: 30px; border-radius: 9px; background: #FBE3D2; color: #7A2410; display: inline-flex; align-items: center; justify-content: center; }
+    .desc-label { color: #7A2410; font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; }
+    .desc-text { margin-top: 10px; color: #3A342E; font-size: 15.5px; line-height: 24px; font-style: italic; }
     .dish-title { color: #1A1815; font-size: 29px; font-weight: 800; letter-spacing: -0.8px; line-height: 34px; }
     .byline { margin-top: 10px; color: #E94B1F; font-size: 14px; font-weight: 600; letter-spacing: 0.2px; }
     .byline strong { font-weight: 700; }
@@ -618,9 +629,12 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
           <div class="title-card">
             <h1 class="dish-title">${name}</h1>
             <div class="byline">${attribution}</div>
-            ${desc ? `<p class="dish-desc">${desc}</p>` : ''}
             ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
           </div>
+          ${desc ? `<div class="desc-card">
+            <div class="desc-head"><span class="desc-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span><span class="desc-label">Description</span></div>
+            <p class="desc-text">${desc}</p>
+          </div>` : ''}
         </div>
         <div class="col col-body">
           ${ingredientsHtml}
