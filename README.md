@@ -35,15 +35,22 @@ assets/*.png          Raw app screenshots (source for the two folders above)
 scripts/build-assets.py   Regenerates assets/screens, assets/shots and the download QR
 ```
 
-## How the 3D phone works
+## How the home page works
 
-`js/scene.js` draws one phone on a fixed, transparent canvas. Any element with
-`data-phone-slot` is a landing spot: the phone sizes itself to the slot, follows it as it
-scrolls, and shows the screen named by `data-screen` (a key from `assets/screens`).
-`data-rot="ry,rx"` sets the resting angle. The `<img>` inside each slot is the fallback
-and is hidden once WebGL is running. The Next Meal section swaps `data-screen` on the
-slot as each step becomes active. The phone reacts to the mouse, the finger while
-scrolling, the gyroscope on Android, scroll speed, and can be dragged to spin.
+The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
+page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
+place: hero, three steps around the centred phone, the night sky that envelops the
+screen for the Support hub, four callouts, then the download ask. Each scene is a
+`.scene` block; the invisible `.play__anchor` boxes tell the timeline where the phone
+rests in the hero and download scenes, so moving them in CSS moves the phone.
+Append `?nosnap` to the URL to turn off scroll snapping while tuning.
+
+`js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
+`[data-phone-slot]` element. The timeline shares a small state object with it (which
+screen to show, resting angle, how visible the props are). The phone reacts to the mouse,
+the finger while scrolling, the gyroscope on Android, scroll speed, and can be dragged to
+spin. `js/props.js` builds the food and utensils from primitives; their positions are
+declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`).
 
 ## Editing a policy
 

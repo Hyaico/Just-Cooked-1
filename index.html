@@ -53,186 +53,105 @@
             <div class="menu__legal"><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/disclaimer">Disclaimer</a><a href="/eula">EULA</a><a href="/delete">Account deletion</a></div>
         </div>
     </div>
-    <canvas id="scene" class="scene" aria-hidden="true"></canvas>
+    <canvas id="scene" class="scene3d" aria-hidden="true"></canvas>
     <main id="main">
+        <section class="play" data-play aria-label="Just Cooked, in motion">
+            <div class="play__stage">
+                <div class="play__night" aria-hidden="true"></div>
+                <div class="play__aura" aria-hidden="true"></div>
+                <div class="play__anchor play__anchor--hero" aria-hidden="true"></div>
+                <div class="play__anchor play__anchor--download" aria-hidden="true"></div>
 
-        <!-- Hero -->
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="container hero__grid">
-                <div class="hero__copy">
-                    <p class="eyebrow" data-hero-in>For when food feels hard.</p>
-                    <h1 class="hero__title" id="hero-title" data-split data-hero>When food feels hard, <em>we make the next meal easier.</em></h1>
-                    <p class="lede hero__lede" data-hero-in>Food feels hard for a lot of people. Just Cooked helps you find your way back, one small meal at a time.</p>
-                    <div class="hero__cta" data-hero-in>
-                        <a href="/download" class="btn btn--lg">Start where you are. <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-                        <a href="#next-meal" class="btn btn--lg btn--ghost">See how it works</a>
+                <!-- Hero -->
+                <div class="scene scene--hero" data-scene="hero">
+                    <div class="scene__block">
+                        <p class="eyebrow" data-hero-in>For when food feels hard.</p>
+                        <h1 data-split data-hero>When food feels hard, <em>we make the next meal easier.</em></h1>
+                        <p class="lede" data-hero-in>Food feels hard for a lot of people. Just Cooked helps you find your way back, one small meal at a time.</p>
+                        <div class="cta" data-hero-in>
+                            <a href="/download" class="btn btn--lg">Start where you are. <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+                            <button type="button" class="btn btn--lg btn--ghost" data-play-go="step1">See how it works</button>
+                        </div>
+                        <p class="trust" data-hero-in><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> No judgement</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Any amount counts</span></p>
                     </div>
-                    <div class="hero__stores hide-mobile" data-hero-in>
+                </div>
+
+                <!-- Three steps -->
+                <div class="scene scene--step" data-scene="step" data-screen="next-meal">
+                    <div class="scene__block">
+                        <p class="eyebrow">Step 1 of 3</p>
+                        <h2>Tell us what you fancy</h2>
+                        <p>A craving, or leave it open. It is shaped to you from the start.</p>
+                    </div>
+                    <div class="things">
+                        <span class="thing thing--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10z"/><path d="M2 21c0-3 1.9-5.5 5-6.5"/></svg> Your diet</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> Your time</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Things you cannot eat</span>
+                        <span class="thing thing--note">Pre-set from your profile. Tweak any of it for this meal only.</span>
+                    </div>
+                </div>
+                <div class="scene scene--step" data-scene="step" data-screen="pantry">
+                    <div class="scene__block">
+                        <p class="eyebrow">Step 2 of 3</p>
+                        <h2>Pick where it&rsquo;s built from</h2>
+                        <p>There is no wrong way to begin. Pick the one that feels easiest today.</p>
+                    </div>
+                    <div class="things">
+                        <span class="thing thing--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18l-2 10H5z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg> Your pantry</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg> A few ingredients</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg> A photo of what you have</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg> Just an idea</span>
+                        <span class="thing thing--note">Snap a photo and the app reads what is there. You confirm everything before it cooks.</span>
+                    </div>
+                </div>
+                <div class="scene scene--step" data-scene="step" data-screen="recipe">
+                    <div class="scene__block">
+                        <p class="eyebrow">Step 3 of 3</p>
+                        <h2>We cook up the rest</h2>
+                        <p>You see exactly what we will make before anything happens. Then it is one tap.</p>
+                    </div>
+                    <div class="things">
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> 25 min</span>
+                        <span class="thing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 20v-6M12 20V8M18 20V4"/></svg> 2 / 5 difficulty</span>
+                        <span class="thing thing--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg> Serves 2</span>
+                        <span class="thing thing--note">Step-by-step cook mode, timers and a grocery list, all in the app.</span>
+                    </div>
+                </div>
+
+                <!-- Support: the night takes over -->
+                <div class="scene scene--title" data-scene="title">
+                    <div class="scene__block">
+                        <p class="eyebrow eyebrow--light">The Support hub</p>
+                        <h2>Support, <em>made for you.</em></h2>
+                        <p>A calm toolbox for the hard food moments, picked from what you share during setup.</p>
+                    </div>
+                </div>
+                <div class="scene scene--hub" data-scene="hub">
+                    <div class="callout callout--1" data-callout><span class="callout__dot"></span><h3>Press for help</h3><p>When the moment is too much: steady breathing, your own reasons, and a person to call.</p></div>
+                    <div class="callout callout--2" data-callout><span class="callout__dot"></span><h3>Five minutes, no numbers</h3><p>When eating feels like too much, a simple meal from what is already in your pantry. No decisions.</p></div>
+                    <div class="callout callout--3" data-callout><span class="callout__dot"></span><h3>Soften everything</h3><p>Gentle mode hides numbers, streaks and goals until you want them back.</p></div>
+                    <div class="callout callout--4" data-callout><span class="callout__dot"></span><h3>One small thing</h3><p>Choose a single focus for the week. Change it whenever, with nothing lost.</p></div>
+                </div>
+
+                <!-- Download -->
+                <div class="scene scene--download" data-scene="download">
+                    <div class="scene__block">
+                        <p class="eyebrow">No judgement</p>
+                        <h2>Start where you are.</h2>
+                        <p>Any amount counts and any meal is enough. Just Cooked is on iPhone and Android.</p>
                         <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
-                        <p class="hero__trust"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> No judgement</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Any amount counts</span></p>
+                    </div>
+                    <div class="play__foot">
+                        <a href="/faq">FAQ</a><a href="/support">Support</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/cookies">Cookies</a><a href="/disclaimer">Disclaimer</a><a href="/eula">EULA</a><a href="/delete">Account deletion</a>
+                        <span class="copy">&copy; 2026 Hyaico Ltd. All Rights Reserved. Just Cooked&trade; is a trademark of Hyaico Ltd.</span>
                     </div>
                 </div>
-                <div class="hero__visual" data-hero-in>
-                    <div class="hero__aura" aria-hidden="true"></div>
-                    <div class="phone-slot" data-phone-slot data-hero-slot data-screen="home" data-rot="-0.42,0.06">
-                        <img class="phone-slot__img" src="/assets/shots/home-560.webp" srcset="/assets/shots/home-560.webp 560w, /assets/shots/home-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Just Cooked home screen on a phone, showing a gentle meals tracker and recent cooking activity" fetchpriority="high" draggable="false">
-                    </div>
-                </div>
-                <div class="hero__stores hero__stores--mobile" data-hero-in>
-                    <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
-                    <p class="hero__trust"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> No judgement</span><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg> Any amount counts</span></p>
-                </div>
-            </div>
-            <div class="hero__cue" aria-hidden="true"><i></i>Scroll</div>
-        </section>
 
-        <!-- Statement -->
-        <section class="section statement" aria-labelledby="why-title">
-            <div class="container container--narrow">
-                <p class="eyebrow" data-reveal>Why it matters</p>
-                <h2 class="sr-only" id="why-title">Food is never just food</h2>
-                <p class="words" data-words>Food is not just food. It shapes your energy, your mood, your money, your goals, your headspace. When food feels hard, the cost shows up everywhere.</p>
-                <p class="statement__close" data-reveal>Your relationship with food can change, and you do not have to do it alone.</p>
-            </div>
-        </section>
-
-        <!-- Next Meal story -->
-        <section class="section story" id="next-meal" aria-labelledby="story-title" data-story>
-            <div class="container">
-                <header class="section-head section-head--center">
-                    <p class="eyebrow" data-reveal>Meet Next Meal</p>
-                    <h2 class="h2" id="story-title" data-split>Your next meal, decided for you.</h2>
-                    <p class="lede" data-reveal>Three calm steps. Then we cook up the rest.</p>
-                </header>
-                <div class="story__grid">
-                    <div class="story__visual">
-                        <div class="phone-slot" data-phone-slot data-screen="next-meal" data-rot="0.16,0">
-                            <img class="phone-slot__img" src="/assets/shots/next-meal-560.webp" srcset="/assets/shots/next-meal-560.webp 560w, /assets/shots/next-meal-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Next Meal screen: a flagship card that builds your next meal in three guided steps" loading="lazy" decoding="async" draggable="false">
-                        </div>
-                        <div class="story__dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span></div>
-                    </div>
-                    <div class="story__steps">
-                        <article class="step" data-step data-screen="next-meal" data-shot="next-meal">
-                            <span class="step__num">1</span>
-                            <span class="chip">In the mood</span>
-                            <h3>Tell us what you fancy</h3>
-                            <p>A craving, or leave it open. It is shaped to you from the start: your diet, your time, the things you cannot eat.</p>
-                        </article>
-                        <article class="step" data-step data-screen="pantry" data-shot="pantry">
-                            <span class="step__num">2</span>
-                            <span class="chip">Four ways in</span>
-                            <h3>Pick where it&rsquo;s built from</h3>
-                            <p>There is no wrong way to begin. Pick the one that feels easiest today.</p>
-                            <div class="step__ways"><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10h18l-2 10H5z"/><path d="M8 10V6a4 4 0 0 1 8 0v4"/></svg> Your pantry</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg> A few ingredients</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="3.5"/></svg> A photo</span><span class="chip chip--quiet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1V17h6v-.2c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2z"/></svg> Just an idea</span></div>
-                        </article>
-                        <article class="step" data-step data-screen="recipe" data-shot="recipe">
-                            <span class="step__num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span>
-                            <span class="chip chip--sage">Ready to cook</span>
-                            <h3>We cook up the rest</h3>
-                            <p>You see exactly what we will make before anything happens. Then it is one tap, and the deciding is off your plate.</p>
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Savings -->
-        <section class="section savings" aria-labelledby="savings-title">
-            <div class="container grid-2">
-                <div>
-                    <div class="phone-slot phone-slot--dark" data-phone-slot data-screen="savings" data-rot="-0.22,0">
-                        <img class="phone-slot__img" src="/assets/shots/savings-560.webp" srcset="/assets/shots/savings-560.webp 560w, /assets/shots/savings-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The takeaway savings screen, tallying the money saved by cooking instead of ordering" loading="lazy" decoding="async" draggable="false">
-                    </div>
-                </div>
-                <div>
-                    <p class="eyebrow" data-reveal>Worth it</p>
-                    <h2 class="h2" id="savings-title" data-split>Cook what you have. Keep what you&rsquo;d have spent.</h2>
-                    <p class="lede mt-3" data-reveal>Every meal you cook instead of ordering quietly adds up. Tell Just Cooked your usual takeaway cost and it keeps a gentle tally of what you save.</p>
-                    <ul class="check-list mt-4" role="list" data-reveal-stagger>
-                        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>Built from the pantry you already have</strong>, so there is less going to waste.</span></li>
-                        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>Logging a meal you made is free</strong> and keeps your savings and history complete.</span></li>
-                        <li><span class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg></span><span><strong>Watch it add up over time</strong>, with encouragement rather than judgement.</span></li>
-                    </ul>
-                    <div class="mt-4" data-reveal><a href="/download" class="btn btn--sage">Start saving <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Support hub (the one dark beat) -->
-        <section class="beat" aria-labelledby="support-title">
-            <div class="container">
-                <header class="section-head section-head--center">
-                    <p class="eyebrow" data-reveal>The Support hub</p>
-                    <h2 class="h2" id="support-title" data-split>A calm toolbox for the hard food moments.</h2>
-                    <p class="lede" data-reveal>The one space in Just Cooked made for the harder days. Seven gentle tools, picked for you from what you share during setup.</p>
-                </header>
-                <div class="stage">
-                    <div>
-                        <div class="phone-slot phone-slot--dark" data-phone-slot data-screen="support" data-rot="0.12,0">
-                            <img class="phone-slot__img" src="/assets/shots/support-560.webp" srcset="/assets/shots/support-560.webp 560w, /assets/shots/support-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Support home screen, with a panic button for the hardest moments and a takeaway savings summary" loading="lazy" decoding="async" draggable="false">
-                        </div>
-                        <p class="stage__caption mt-3"><span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.5-1.4 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .9-4.5 2.5C10.5 3.9 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.1 3 5.5l7 7z"/></svg> Your toolbox</span>Support, when you need it</p>
-                    </div>
-                    <div class="stage__second-wrap">
-                        <div class="stage__second"><img src="/assets/shots/support-settings-560.webp" srcset="/assets/shots/support-settings-560.webp 560w, /assets/shots/support-settings-980.webp 980w" sizes="300px" width="1274" height="2668" loading="lazy" decoding="async" draggable="false" alt="The Support settings screen, where you switch on only the tools that help you"></div>
-                        <p class="stage__caption mt-3 hide-mobile"><span class="chip chip--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3"/><path d="M1 14h6M9 8h6M17 16h6"/></svg> Yours to set</span>Switch on only what helps</p>
-                    </div>
-                </div>
-                <div class="tools" data-tools>
-                    <div class="tools__head">
-                        <h3>Seven gentle tools, picked for you.</h3>
-                        <div class="tools__progress" aria-hidden="true"><i></i></div>
-                    </div>
-                    <div class="tools__track"><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><path d="m4.9 4.9 4.3 4.3M14.8 14.8l4.3 4.3M14.8 9.2l4.3-4.3M9.2 14.8l-4.3 4.3"/></svg></span><h3>Panic button</h3><p>For the hardest moments. Slow guided breathing, plus the helplines and the people you trust, a tap away.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 2v7a3 3 0 0 0 6 0V2"/><path d="M6 12v10"/><path d="M19 2a4 4 0 0 0-4 4v6h4v10"/></svg></span><h3>I need to eat</h3><p>When eating feels like too much, it finds a meal in about five minutes from what you have. No decisions, no numbers.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 9h2v4h-2"/><path d="M5 11a7 7 0 0 1 7-7h3a6 6 0 0 1 4 10.5V19h-3l-1-2H9l-1 2H5v-4.2A7 7 0 0 1 5 11z"/><path d="M15 10h.01"/></svg></span><h3>Takeaway savings</h3><p>Tell it your usual takeaway cost, and every meal you cook instead adds to what you have saved. It really adds up.</p></article><article class="beat-card"><span class="icon icon--sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 3.8a5 5 0 0 0-7 0L4 13v7h7l9.2-9.2a5 5 0 0 0 0-7z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg></span><h3>Gentle mode</h3><p>Soften the whole app whenever you want. Quietly hide numbers, streaks and goals so food feels lighter.</p></article><article class="beat-card"><span class="icon icon--orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span><h3>Choose your focus</h3><p>Pick one small, doable thing to follow this week. Change it whenever, with no streaks lost.</p></article><article class="beat-card"><span class="icon icon--sage"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22c4.4 0 7-2.9 7-7 0-3-2-5.5-3.5-7-.5 2-1.5 3-2.5 3.5C13 9 12.5 6 10 3c-1 3-2 4.5-3.5 6.5S5 13 5 15c0 4.1 2.6 7 7 7z"/></svg></span><h3>Calorie goal</h3><p>A gentle daily calorie number to aim for, if a target helps you. An estimate, not a rule, and always optional.</p></article><article class="beat-card"><span class="icon icon--rose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7v10M18 7v10M3 9v6M21 9v6M6 12h12"/></svg></span><h3>Protein goal</h3><p>A gentle daily protein target across your meals, when that is useful to you. Optional, and easy to switch off.</p></article></div>
-                    <p class="tools__hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg> Swipe to see every tool</p>
-                </div>
-                <p class="beat__note" data-reveal>Just Cooked is not a medical or therapeutic tool. On the hardest days, it points you toward people who can help.</p>
-            </div>
-        </section>
-
-        <!-- Final CTA -->
-        <section class="section cta" aria-labelledby="cta-title">
-            <div class="container container--narrow">
-                <div class="card card--solid cta__box" data-reveal>
-                    <p class="eyebrow" style="justify-content:center">No judgement</p>
-                    <h2 class="h2" id="cta-title">Start where you are.</h2>
-                    <p class="lede mt-3" style="margin-inline:auto">Any amount counts and any meal is enough. Download Just Cooked and let us take the deciding off your plate.</p>
-                    <a href="/download" class="btn btn--lg">Start where you are. <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-                    <div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div>
+                <div class="phone-slot" data-phone-slot data-screen="home" data-rot="-0.42,0.06">
+                    <img class="phone-slot__img" src="/assets/shots/home-560.webp" srcset="/assets/shots/home-560.webp 560w, /assets/shots/home-980.webp 980w" sizes="(min-width: 900px) 360px, 70vw" width="1274" height="2668" alt="The Just Cooked home screen on a phone, showing a gentle meals tracker and recent cooking activity" fetchpriority="high" draggable="false">
                 </div>
             </div>
         </section>
     </main>
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__top">
-                <p class="footer__tag" data-reveal>Not perfect. <em>Just cooked.</em></p>
-                <div data-reveal><div class="stores"><a class="store store--apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a><a class="store store--google" href="https://play.google.com/store/apps/details?id=com.justcooked.app" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22.018 13.298l-3.919 2.218-3.515-3.493 3.543-3.521 3.891 2.202a1.49 1.49 0 0 1 0 2.594zM1.337.924a1.486 1.486 0 0 0-.112.568v21.017c0 .217.045.419.124.6l11.155-11.087L1.337.924zm12.207 10.065l3.258-3.238L3.45.195a1.466 1.466 0 0 0-.946-.179l11.04 10.973zm0 2.067l-11 10.933c.298.036.612-.016.906-.183l13.324-7.54-3.23-3.21z"/></svg><span><small>Get it on</small><strong>Google Play</strong></span></a></div></div>
-            </div>
-            <div class="footer__grid">
-                <div class="footer__brand">
-                    <img src="/assets/JustCookIcon.svg" alt="Just Cooked" width="927" height="135">
-                    <p>Helping you find your way back to food, one small meal at a time.</p>
-                </div>
-                <div class="footer__col">
-                    <h4>Explore</h4>
-                    <ul role="list"><li><a href="/">Home</a></li><li><a href="/faq">FAQ</a></li><li><a href="/support">Support</a></li><li><a href="/download">Download</a></li></ul>
-                </div>
-                <div class="footer__col">
-                    <h4>Legal</h4>
-                    <ul role="list"><li><a href="/terms">Terms of Use</a></li><li><a href="/privacy">Privacy Policy</a></li><li><a href="/cookies">Cookie &amp; Tracking Policy</a></li><li><a href="/disclaimer">Disclaimer</a></li><li><a href="/eula">EULA</a></li><li><a href="/delete">Account deletion</a></li></ul>
-                </div>
-                <div class="footer__col">
-                    <h4>Contact</h4>
-                    <ul role="list"><li><a href="mailto:support@justcooked.app">support@justcooked.app</a></li><li><a href="tel:+443301333988">+44 330 133 3988</a></li></ul>
-                </div>
-            </div>
-            <div class="footer__bottom">
-                <p>&copy; 2026 Hyaico Ltd. All Rights Reserved. Just Cooked&trade; is a trademark of Hyaico Ltd.</p>
-                <p>Made with care in the UK.</p>
-            </div>
-        </div>
-        <div class="footer__big" aria-hidden="true">Just Cooked</div>
-    </footer>
 </body>
 </html>

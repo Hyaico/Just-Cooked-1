@@ -435,7 +435,20 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     .topbar-cta:active { transform: scale(0.97); }
 
     .stack { padding-top: 16px; }
-    .stack > * + * { margin-top: 14px; }
+    .col > * + * { margin-top: 14px; }
+    .col-body { margin-top: 14px; }
+    .col-body > :first-child { margin-top: 0; }
+
+    /* Desktop: the page opens up to a two-column spread; the dish stays in view while you read. */
+    @media (min-width: 1024px) {
+      .notebook, .topbar-inner, .foot { max-width: 1240px; }
+      .nb-inner { padding: 0 32px 100px; }
+      .stack { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 28px; align-items: start; padding-top: 24px; }
+      .col-lead { position: sticky; top: 86px; }
+      .col-body { margin-top: 0; }
+      .hero { aspect-ratio: 4 / 3; }
+      .lock-section { max-height: 520px; }
+    }
 
     /* ── Hero ── */
     .hero {
@@ -561,7 +574,7 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
     /* ── Footer (site chrome, kept inside the notebook width) ── */
     .foot { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; padding: 8px 20px 40px; text-align: center; border-top: 1px solid rgba(224,213,194,0.8); }
     .foot::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(233,75,31,0.4), transparent); }
-    .foot-tag { margin-top: 30px; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.05; color: #1A1815; }
+    .foot-tag { margin-top: 30px; font-size: 28px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.05; color: #1A1815; max-width: 16ch; margin-inline: auto; }
     .foot-tag em { font-style: normal; color: #E94B1F; }
     .foot-sub { margin-top: 8px; color: #8B847C; font-size: 13px; }
     .foot-sub a { color: #E94B1F; text-decoration: none; font-weight: 600; }
@@ -600,26 +613,26 @@ function renderRecipePage(recipe, ownerUsername, thumbnailUrl, deepLink, canonic
 
     <div class="nb-inner">
       <div class="stack">
-
-        <div class="hero"${heroStyle}>${heroInner}</div>
-
-        <div class="title-card">
-          <h1 class="dish-title">${name}</h1>
-          <div class="byline">${attribution}</div>
-          ${desc ? `<p class="dish-desc">${desc}</p>` : ''}
-          ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
+        <div class="col col-lead">
+          <div class="hero"${heroStyle}>${heroInner}</div>
+          <div class="title-card">
+            <h1 class="dish-title">${name}</h1>
+            <div class="byline">${attribution}</div>
+            ${desc ? `<p class="dish-desc">${desc}</p>` : ''}
+            ${metaHtml ? `<div class="meta-row">${metaHtml}</div>` : ''}
+          </div>
         </div>
-
-        ${ingredientsHtml}
-        ${nutritionHtml}
-        ${methodHtml}
-        ${detailsHtml}
-
+        <div class="col col-body">
+          ${ingredientsHtml}
+          ${nutritionHtml}
+          ${methodHtml}
+          ${detailsHtml}
+        </div>
       </div>
     </div>
 
     <footer class="foot">
-      <p class="foot-tag">Not perfect. <em>Just cooked.</em></p>
+      <p class="foot-tag">For when food feels hard. <em>Just Cooked.</em></p>
       <p class="foot-sub">Made with <a href="https://www.justcooked.app">Just Cooked</a>, your kitchen companion.</p>
       <div class="foot-stores">
         <a class="foot-store apple" href="https://apps.apple.com/us/app/just-cooked-smart-recipes/id6754169071" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Download on the</small><strong>App Store</strong></span></a>

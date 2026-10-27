@@ -1,14 +1,15 @@
-/* Just Cooked — 3D scene (v2).
-   One procedurally built phone lives on a fixed, transparent canvas. It is
-   pinned exactly to whichever "phone slot" is nearest the viewport centre
-   (blending between two slots when both are on screen), swaps the app screen
-   on its display, and reacts to the mouse, the finger, the gyroscope, scroll
-   speed and drag-to-spin. Clay shapes in the brand palette dress the hero.
-   Layout is measured once (and on resize), never per frame. */
+/* Just Cooked — 3D scene (v3).
+   One procedurally built phone on a fixed, transparent canvas. It sits exactly
+   on the page's single phone slot (which the home-page timeline moves around
+   the stage), shows whichever app screen the play asks for, and reacts to the
+   mouse, the finger, the gyroscope, scroll speed and drag-to-spin. Stylised
+   food and utensils (js/props.js) float around the hero and, more quietly,
+   around the phone during the three steps. */
 
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { MAKERS } from './props.js';
 
 const SCREEN_KEYS = ['home', 'next-meal', 'recipe', 'pantry', 'savings', 'support', 'support-settings'];
 const screenUrl = (key) => '/assets/screens/' + key + '.webp';
@@ -16,10 +17,9 @@ const screenUrl = (key) => '/assets/screens/' + key + '.webp';
 const PHONE = { w: 1, h: 2.07, d: 0.082, r: 0.15, bevel: 0.016 };
 const SCREEN = { w: 0.925, h: 2.008 };
 const GLASS = { w: 0.962, h: 2.036, r: 0.128 };
-const ASPECT = 1274 / 2668; // framed shot ratio, matches the slot's aspect-ratio
+const ASPECT = 1274 / 2668;
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
-const smoothstep = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
 const lerp = (a, b, t) => a + (b - a) * t;
 const easeOut = (t) => 1 - Math.pow(1 - clamp(t, 0, 1), 3);
 
@@ -89,20 +89,57 @@ function buildPhone(screenMat) {
   return group;
 }
 
-const clay = (hex, flat = false) => new THREE.MeshStandardMaterial({ color: hex, roughness: 0.62, metalness: 0, flatShading: flat });
-
-// Offsets are in phone-heights relative to the hero phone, so the arrangement scales with the layout.
-const SHAPES = [
-  { make: () => new THREE.TorusGeometry(0.42, 0.16, 24, 48), color: 0xE94B1F, off: [-0.34, 0.44, -0.9], rot: [0.9, 0.35, 0], spin: [0.12, 0.2, 0], par: 1.25, amp: 0.05, s: 0.8 },
-  { make: () => new THREE.SphereGeometry(0.33, 32, 24), color: 0x9CB58A, off: [0.62, -0.34, 0.3], rot: [0, 0, 0], spin: [0, 0, 0], par: 0.85, amp: 0.07, s: 1 },
-  { make: () => new THREE.CapsuleGeometry(0.12, 0.44, 8, 16), color: 0xF5E6B8, off: [0.6, 0.36, -0.5], rot: [0, 0, -0.7], spin: [0, 0.3, 0.12], par: 1.1, amp: 0.06, s: 1 },
-  { make: () => new RoundedBoxGeometry(0.32, 0.32, 0.32, 4, 0.1), color: 0xFBF6EC, off: [-0.4, -0.36, 0.4], rot: [0.5, 0.6, 0], spin: [0.25, 0.3, 0.1], par: 0.9, amp: 0.05, s: 0.9 },
-  { make: () => new THREE.IcosahedronGeometry(0.16, 0), color: 0xF0D4D4, off: [0.22, 0.6, -0.3], rot: [0.3, 0.2, 0], spin: [0.3, 0.4, 0.2], par: 1.3, amp: 0.08, s: 0.8, flat: true },
-  { make: () => new THREE.SphereGeometry(0.11, 24, 16), color: 0xFF6B35, off: [0.4, -0.62, 0.7], rot: [0, 0, 0], spin: [0, 0, 0], par: 0.75, amp: 0.06, s: 1 },
-  { make: () => new THREE.TorusGeometry(0.15, 0.055, 16, 32), color: 0x6B8159, off: [0.74, 0.04, -0.3], rot: [1.2, 0, 0], spin: [0.2, 0.4, 0], par: 1.05, amp: 0.05, s: 1 },
+/* Prop layouts. Offsets are fractions: for anchor "phone" in phone-heights from the
+   phone centre (the phone spans x ±0.24, y ±0.5); for anchor "copy" in fractions of
+   the hero text block's width/height from its top-left corner (outside the box). */
+const HERO_DESKTOP = [
+  { make: 'egg', anchor: 'phone', off: [-0.42, 0.42, -0.6], rot: [0.5, -0.35, 0.3], s: 1.0, spin: [0, 0.15, 0.05] },
+  { make: 'tomato', anchor: 'phone', off: [0.38, -0.42, 0.4], rot: [0.2, 0.4, 0.1], s: 0.85, spin: [0, 0.3, 0] },
+  { make: 'lemon', anchor: 'phone', off: [0.4, 0.36, -0.3], rot: [0.2, 0.35, 0.3], s: 0.78, spin: [0.05, 0.2, 0.1] },
+  { make: 'broccoli', anchor: 'phone', off: [-0.5, -0.3, 0.5], rot: [0.1, 0.3, -0.2], s: 0.8, spin: [0, 0.25, 0] },
+  { make: 'whisk', anchor: 'phone', off: [0.44, 0.0, -0.5], rot: [0.1, 0, 0.22], s: 1.1, spin: [0, 0.4, 0] },
+  { make: 'basil', anchor: 'phone', off: [0.18, 0.64, -0.2], rot: [0.5, 0.3, 0.7], s: 0.6, spin: [0.1, 0.2, 0.15] },
+  { make: 'spoon', anchor: 'phone', off: [-0.66, 0.06, 0.2], rot: [0.15, 0.1, -0.6], s: 1.05, spin: [0, 0.2, 0] },
+  { make: 'mushroom', anchor: 'phone', off: [0.22, -0.66, 0.6], rot: [0.3, 0.2, 0.3], s: 0.62, spin: [0, 0.3, 0] },
+  { make: 'fork', anchor: 'copy', off: [-0.1, 0.24], rot: [0.1, 0.2, -0.55], s: 0.95, spin: [0, 0.15, 0] },
+  { make: 'knife', anchor: 'copy', off: [0.3, -0.12], rot: [0.05, -0.2, 1.25], s: 0.95, spin: [0, -0.1, 0] },
+  { make: 'rollingPin', anchor: 'copy', off: [0.14, 1.12], rot: [0.2, 0, 0.22], s: 1.1, spin: [0, 0, 0.05] },
+  { make: 'chilli', anchor: 'copy', off: [-0.1, 0.66], rot: [0.2, 0.3, 0.4], s: 0.85, spin: [0.1, 0.25, 0] },
+  { make: 'avocado', anchor: 'copy', off: [0.93, 1.1], rot: [0.1, -0.2, 0.3], s: 0.9, spin: [0, 0.18, 0] },
+  { make: 'carrot', anchor: 'copy', off: [1.05, 0.18], rot: [0.2, 0.3, -0.5], s: 0.95, spin: [0.08, 0.2, 0] },
+];
+const HERO_MOBILE = [
+  { make: 'egg', anchor: 'phone', off: [-0.4, 0.4, -0.6], rot: [0.5, -0.35, 0.3], s: 0.8, spin: [0, 0.15, 0.05] },
+  { make: 'tomato', anchor: 'phone', off: [0.42, -0.3, 0.4], rot: [0.2, 0.4, 0.1], s: 0.7, spin: [0, 0.3, 0] },
+  { make: 'lemon', anchor: 'phone', off: [0.42, 0.32, -0.3], rot: [0.2, 0.35, 0.3], s: 0.65, spin: [0.05, 0.2, 0.1] },
+  { make: 'broccoli', anchor: 'phone', off: [-0.42, -0.26, 0.5], rot: [0.1, 0.3, -0.2], s: 0.65, spin: [0, 0.25, 0] },
+  { make: 'spoon', anchor: 'phone', off: [-0.48, 0.05, 0.2], rot: [0.15, 0.1, -0.6], s: 0.85, spin: [0, 0.2, 0] },
+  { make: 'basil', anchor: 'phone', off: [0.46, 0.02, -0.2], rot: [0.5, 0.3, 0.7], s: 0.5, spin: [0.1, 0.2, 0.15] },
+];
+// Step props sit in the corners of the stage (anchor "stage": viewport fractions), away from captions.
+const STEPS_DESKTOP = [
+  { make: 'pan', anchor: 'stage', off: [0.86, 0.17, -0.6], rot: [0.55, -0.5, 0.25], s: 1.0, spin: [0, 0.12, 0] },
+  { make: 'basil', anchor: 'stage', off: [0.13, 0.18, -0.3], rot: [0.5, 0.3, 0.7], s: 0.6, spin: [0.1, 0.2, 0.15] },
+  { make: 'carrot', anchor: 'stage', off: [0.17, 0.84, 0.3], rot: [0.2, 0.3, 0.8], s: 0.85, spin: [0.08, 0.2, 0] },
+  { make: 'mushroom', anchor: 'stage', off: [0.85, 0.85, 0.4], rot: [0.3, 0.2, 0.3], s: 0.65, spin: [0, 0.3, 0] },
+  { make: 'lemon', anchor: 'stage', off: [0.38, 0.12, -0.5], rot: [0.2, 0.35, 0.3], s: 0.62, spin: [0.05, 0.2, 0.1] },
+  { make: 'tomato', anchor: 'stage', off: [0.63, 0.9, -0.2], rot: [0.2, 0.4, 0.1], s: 0.7, spin: [0, 0.3, 0] },
+];
+const STEPS_MOBILE = [
+  { make: 'lemon', anchor: 'stage', off: [0.1, 0.5, -0.3], rot: [0.2, 0.35, 0.3], s: 0.5, spin: [0.05, 0.2, 0.1] },
+  { make: 'tomato', anchor: 'stage', off: [0.9, 0.42, -0.3], rot: [0.2, 0.4, 0.1], s: 0.5, spin: [0, 0.3, 0] },
+  { make: 'basil', anchor: 'stage', off: [0.1, 0.72, 0.2], rot: [0.5, 0.3, 0.7], s: 0.4, spin: [0.1, 0.2, 0.15] },
+  { make: 'mushroom', anchor: 'stage', off: [0.9, 0.7, 0.2], rot: [0.3, 0.2, 0.3], s: 0.42, spin: [0, 0.3, 0] },
 ];
 
-export async function start(canvas) {
+export async function start(canvas, opts = {}) {
+  const play = opts.state || null; // { keys, screenIndex, ry, rx, shapes, ambient } driven by the page timeline
+  const slot = document.querySelector('[data-phone-slot]');
+  if (!slot) throw new Error('no phone slot');
+  const heroAnchor = document.querySelector('.play__anchor--hero') || slot;
+  const copyAnchor = document.querySelector('[data-scene="hero"] .scene__block');
+  const slotRot = (slot.dataset.rot || '0,0').split(',').map(Number);
+
   const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -155,13 +192,7 @@ export async function start(canvas) {
     ].join('\n'),
   });
 
-  const slots = [...document.querySelectorAll('[data-phone-slot]')].map((el) => {
-    const rot = (el.dataset.rot || '0,0').split(',').map(Number);
-    return { el, ry: rot[0] || 0, rx: rot[1] || 0, hero: el.hasAttribute('data-hero-slot'), sticky: null, absTop: 0, absLeft: 0, w: 1, h: 1 };
-  });
-  if (!slots.length) throw new Error('no phone slots');
-
-  const firstKey = slots[0].el.dataset.screen || 'home';
+  const firstKey = slot.dataset.screen || 'home';
   const firstTex = await loadTex(firstKey);
   screenMat.uniforms.tA.value = firstTex;
   screenMat.uniforms.tB.value = firstTex;
@@ -179,55 +210,38 @@ export async function start(canvas) {
     screenMat.uniforms.uMix.value = 0;
     fading = true;
   };
-
-  const wanted = [...new Set(slots.map((s) => s.el.dataset.screen).concat([...document.querySelectorAll('[data-step]')].map((s) => s.dataset.screen)).filter(Boolean))];
+  const wanted = play && play.keys ? play.keys.slice() : [];
   (async () => {
     for (const k of wanted.concat(SCREEN_KEYS)) { if (SCREEN_KEYS.includes(k) && !textures[k]) { try { await loadTex(k); } catch { /* keep going */ } } }
   })();
 
-  // ---- phone + shapes
+  // ---- phone + props
   const phone = buildPhone(screenMat);
   scene.add(phone);
-  const shapesGroup = new THREE.Group();
-  scene.add(shapesGroup);
-  const shapes = SHAPES.map((d) => {
-    const mesh = new THREE.Mesh(d.make(), clay(d.color, !!d.flat));
-    mesh.rotation.set(d.rot[0], d.rot[1], d.rot[2]);
-    shapesGroup.add(mesh);
-    return { mesh, d, phase: Math.random() * Math.PI * 2 };
-  });
+  const mobile = () => (canvas.clientWidth || innerWidth) < 900;
+  const buildGroup = (defs) => {
+    const g = new THREE.Group();
+    const items = defs.map((d) => {
+      const mesh = MAKERS[d.make]();
+      mesh.rotation.set(d.rot[0], d.rot[1], d.rot[2]);
+      g.add(mesh);
+      return { mesh, d, phase: Math.random() * Math.PI * 2 };
+    });
+    scene.add(g);
+    return { group: g, items };
+  };
+  let hero = buildGroup(mobile() ? HERO_MOBILE : HERO_DESKTOP);
+  let steps = buildGroup(mobile() ? STEPS_MOBILE : STEPS_DESKTOP);
+  let builtMobile = mobile();
+  const rebuildProps = () => {
+    [hero, steps].forEach((set) => { scene.remove(set.group); set.items.forEach((it) => it.mesh.traverse((o) => { if (o.geometry) o.geometry.dispose(); })); });
+    hero = buildGroup(mobile() ? HERO_MOBILE : HERO_DESKTOP);
+    steps = buildGroup(mobile() ? STEPS_MOBILE : STEPS_DESKTOP);
+    builtMobile = mobile();
+  };
 
-  // ---- layout: measured on resize / content changes, derived per frame from scrollY only
+  // ---- sizing
   let vw = 1, vh = 1, wpp = 1, visH = 1;
-  function measure() {
-    const sy = window.scrollY, sx = window.scrollX;
-    for (const s of slots) {
-      const r = s.el.getBoundingClientRect();
-      s.w = r.width; s.h = r.height; s.absLeft = r.left + sx;
-      let anc = s.el.parentElement, sticky = null;
-      while (anc && anc !== document.body) {
-        if (getComputedStyle(anc).position === 'sticky') { sticky = anc; break; }
-        anc = anc.parentElement;
-      }
-      if (sticky) {
-        const sr = sticky.getBoundingClientRect();
-        const cr = sticky.parentElement.getBoundingClientRect();
-        s.sticky = { top: parseFloat(getComputedStyle(sticky).top) || 0, contTop: cr.top + sy, contBottom: cr.bottom + sy, h: sr.height, inner: r.top - sr.top };
-      } else {
-        s.sticky = null;
-        s.absTop = r.top + sy;
-      }
-    }
-  }
-  function rectOf(s) {
-    const sy = window.scrollY;
-    let top;
-    if (s.sticky) {
-      const st = s.sticky;
-      top = Math.min(Math.max(st.contTop - sy, st.top), st.contBottom - st.h - sy) + st.inner;
-    } else top = s.absTop - sy;
-    return { left: s.absLeft - window.scrollX, top, width: s.w, height: s.h };
-  }
   const resize = () => {
     vw = canvas.clientWidth || innerWidth;
     vh = canvas.clientHeight || innerHeight;
@@ -238,17 +252,11 @@ export async function start(canvas) {
     camera.updateProjectionMatrix();
     visH = 2 * camera.position.z * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
     wpp = visH / vh;
-    measure();
+    if (mobile() !== builtMobile) rebuildProps();
   };
   resize();
   let resizeTimer = 0;
   addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(resize, 120); });
-  addEventListener('load', measure);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  if ('ResizeObserver' in window) {
-    let raf = 0;
-    new ResizeObserver(() => { cancelAnimationFrame(raf); raf = requestAnimationFrame(measure); }).observe(document.body);
-  }
 
   // ---- input: mouse, finger, gyroscope, drag-to-spin
   const fine = matchMedia('(pointer: fine)').matches;
@@ -271,7 +279,6 @@ export async function start(canvas) {
   }, { passive: true });
   addEventListener('touchend', () => { touch.active = false; }, { passive: true });
   addEventListener('touchcancel', () => { touch.active = false; }, { passive: true });
-  // gyroscope where it needs no permission prompt (Android); iOS keeps finger + scroll reactions
   if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission !== 'function' && matchMedia('(pointer: coarse)').matches) {
     addEventListener('deviceorientation', (e) => {
       if (e.gamma == null || e.beta == null) return;
@@ -281,14 +288,12 @@ export async function start(canvas) {
     }, { passive: true });
   }
   const drag = { active: false, x0: 0, y0: 0, ry: 0, rx: 0 };
-  slots.forEach((s) => {
-    s.el.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0) return;
-      drag.active = true;
-      drag.x0 = e.clientX - drag.ry / 0.012;
-      drag.y0 = e.clientY - drag.rx / 0.004;
-      try { s.el.setPointerCapture(e.pointerId); } catch { /* optional */ }
-    });
+  slot.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    drag.active = true;
+    drag.x0 = e.clientX - drag.ry / 0.012;
+    drag.y0 = e.clientY - drag.rx / 0.004;
+    try { slot.setPointerCapture(e.pointerId); } catch { /* optional */ }
   });
   addEventListener('pointermove', (e) => {
     if (!drag.active) return;
@@ -299,21 +304,57 @@ export async function start(canvas) {
   addEventListener('pointerup', endDrag);
   addEventListener('pointercancel', endDrag);
 
+  // ---- props placement
+  function layoutProps(set, vis, t, dt, phoneRect, copyRect, spread) {
+    set.group.visible = vis > 0.01;
+    if (!set.group.visible) return;
+    const H = Math.min(phoneRect.height, phoneRect.width / ASPECT) * wpp;
+    const pcx = (phoneRect.left + phoneRect.width / 2 - vw / 2) * wpp;
+    const pcy = -(phoneRect.top + phoneRect.height / 2 - vh / 2) * wpp;
+    const base = H * 0.3;
+    set.group.position.set(pointer.x * 0.14, pointer.y * 0.1, 0);
+    set.items.forEach((it, i) => {
+      const d = it.d;
+      let x, y, z;
+      if (d.anchor === 'copy' && !copyRect) { it.mesh.visible = false; return; }
+      it.mesh.visible = true;
+      if (d.anchor === 'copy' && copyRect) {
+        x = (copyRect.left + d.off[0] * copyRect.width - vw / 2) * wpp;
+        y = -(copyRect.top + d.off[1] * copyRect.height - vh / 2) * wpp;
+        z = 0.2;
+      } else if (d.anchor === 'stage') {
+        x = (d.off[0] * vw - vw / 2) * wpp;
+        y = -(d.off[1] * vh - vh / 2) * wpp;
+        z = d.off[2] * 0.8;
+      } else {
+        x = pcx + d.off[0] * H * spread;
+        y = pcy + d.off[1] * H * spread;
+        z = d.off[2] * Math.min(H, 2.2) * 0.5;
+      }
+      const ei = easeOut((intro - 0.1 - i * 0.05) / 0.9);
+      const bob = Math.sin(t * 0.7 + it.phase) * 0.04 * base;
+      it.mesh.position.set(x, y + bob, z);
+      it.mesh.scale.setScalar(base * d.s * ei * vis);
+      it.mesh.rotation.x += d.spin[0] * dt;
+      it.mesh.rotation.y += d.spin[1] * dt;
+      it.mesh.rotation.z += d.spin[2] * dt;
+    });
+  }
+
   // ---- frame loop
-  const state = { x: 0, y: 0, s: 0.0001, rx: 0, ry: 0, rz: 0 };
+  const state = { s: 0.0001, rx: 0, ry: 0, rz: 0 };
   let velSmooth = 0, lastY = window.scrollY, intro = 0, cleared = false, prev = performance.now();
-  const offscreen = (y, s) => Math.abs(y) > visH / 2 + (s * PHONE.h) / 2 + 0.3;
 
   function tick(now) {
     const dt = clamp((now - prev) / 1000, 0.001, 0.05);
     prev = now;
     const t = now / 1000;
-    const kf = (k) => 1 - Math.pow(1 - k, dt * 60); // frame-rate independent easing
+    const kf = (k) => 1 - Math.pow(1 - k, dt * 60);
     intro = Math.min(1, intro + dt / 1.5);
     const e = easeOut(intro);
 
     const sy = window.scrollY;
-    const vel = (sy - lastY) / dt; // px per second
+    const vel = (sy - lastY) / dt;
     lastY = sy;
     velSmooth = lerp(velSmooth, clamp(vel, -4000, 4000), kf(0.12));
 
@@ -322,46 +363,31 @@ export async function start(canvas) {
     pointer.y = lerp(pointer.y, useGyro ? gyro.y * 0.7 : pointer.ty, kf(0.16));
     if (!drag.active) { drag.ry = lerp(drag.ry, 0, kf(0.07)); drag.rx = lerp(drag.rx, 0, kf(0.07)); }
 
-    // nearest slot wins; two on-screen slots blend by distance to the viewport centre
-    let sumW = 0, px = 0, py = 0, ph = 0, rx = 0, ry = 0, best = null, bestD = Infinity, bestRect = null, heroRect = null;
-    for (const s of slots) {
-      const r = rectOf(s);
-      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-      const d = Math.abs(cy - vh / 2) / (vh / 2 + r.height / 2); // 0 centred, 1 just off screen
-      if (s.hero) heroRect = r;
-      if (d < bestD) { bestD = d; best = s; bestRect = r; }
-      const w = 1 - smoothstep(0.55, 1.0, d);
-      if (w <= 0) continue;
-      sumW += w; px += cx * w; py += cy * w; ph += Math.min(r.height, r.width / ASPECT) * w; rx += s.rx * w; ry += s.ry * w;
-    }
-    let tx = 0, ty = 0, ts = 0.0001, trx = 0, try_ = 0;
-    if (sumW > 0) {
-      tx = (px / sumW - vw / 2) * wpp; ty = -(py / sumW - vh / 2) * wpp; ts = ((ph / sumW) * wpp) / PHONE.h; trx = rx / sumW; try_ = ry / sumW;
-    } else if (bestRect) {
-      tx = (bestRect.left + bestRect.width / 2 - vw / 2) * wpp; ty = -(bestRect.top + bestRect.height / 2 - vh / 2) * wpp;
-      ts = (Math.min(bestRect.height, bestRect.width / ASPECT) * wpp) / PHONE.h; trx = best.rx; try_ = best.ry;
-    }
-    const centreOff = bestRect ? (bestRect.top + bestRect.height / 2 - vh / 2) / vh : 0; // where the active slot sits (-0.5 top .. 0.5 bottom)
+    // the slot is the single source of truth for where the phone is and how big it is
+    const r = slot.getBoundingClientRect();
+    const fitH = Math.max(0, Math.min(r.height, r.width / ASPECT));
+    const px = (r.left + r.width / 2 - vw / 2) * wpp;
+    const py = -(r.top + r.height / 2 - vh / 2) * wpp;
+    const ts = (fitH * wpp) / PHONE.h;
+    state.s = Math.abs(state.s - ts) > 0.6 ? ts : lerp(state.s, ts, kf(0.5));
 
-    // position is pinned to the page (no lag); size eases; a jump while fully out of view is invisible
-    state.x = tx; state.y = ty;
-    state.s = offscreen(state.y, state.s) && offscreen(ty, ts) ? ts : lerp(state.s, ts, kf(0.35));
-
+    const baseRy = play ? play.ry : slotRot[0] || 0;
+    const baseRx = play ? play.rx : slotRot[1] || 0;
     const swing = clamp(velSmooth * 0.00022, -0.4, 0.4);
-    const targetRy = (try_ + pointer.x * 0.34 + swing + drag.ry + centreOff * 0.5) * e;
-    const targetRx = (trx - pointer.y * 0.22 + drag.rx - centreOff * 0.16) * e;
-    state.ry = lerp(state.ry, targetRy, kf(0.18));
-    state.rx = lerp(state.rx, targetRx, kf(0.18));
+    state.ry = lerp(state.ry, (baseRy + pointer.x * 0.34 + swing + drag.ry) * e, kf(0.18));
+    state.rx = lerp(state.rx, (baseRx - pointer.y * 0.22 + drag.rx) * e, kf(0.18));
     state.rz = lerp(state.rz, (-swing * 0.12 + Math.sin(t * 0.6) * 0.012) * e, kf(0.1));
 
-    phone.visible = !offscreen(state.y, state.s);
-    phone.position.set(state.x, state.y + Math.sin(t * 0.9) * 0.02 * state.s * e, 0);
+    const onScreen = Math.abs(py) < visH / 2 + (state.s * PHONE.h) / 2 + 0.3;
+    phone.visible = state.s > 0.004 && onScreen;
+    phone.position.set(px, py + Math.sin(t * 0.9) * 0.02 * state.s * e, 0);
     phone.scale.setScalar(state.s);
     phone.rotation.set(state.rx, state.ry, state.rz);
-    if (best) setScreen(best.el.dataset.screen || screenTarget);
 
+    const wantKey = play && play.keys ? play.keys[clamp(Math.round(play.screenIndex), 0, play.keys.length - 1)] : slot.dataset.screen;
+    if (wantKey) setScreen(wantKey);
     if (fading) {
-      screenMat.uniforms.uMix.value = Math.min(1, screenMat.uniforms.uMix.value + dt / 0.5);
+      screenMat.uniforms.uMix.value = Math.min(1, screenMat.uniforms.uMix.value + dt / 0.45);
       if (screenMat.uniforms.uMix.value >= 1) {
         screenMat.uniforms.tA.value = screenMat.uniforms.tB.value;
         screenMat.uniforms.uMix.value = 0;
@@ -372,31 +398,17 @@ export async function start(canvas) {
       setScreen(screenTarget);
     }
 
-    // hero clay shapes: arranged around the hero slot, parallaxed against scroll, scaled in on arrival
-    const heroVis = heroRect ? 1 - smoothstep(0.75, 1.15, Math.abs(heroRect.top + heroRect.height / 2 - vh / 2) / (vh / 2 + heroRect.height / 2)) : 0;
-    shapesGroup.visible = heroVis > 0.01;
-    if (shapesGroup.visible) {
-      const H = Math.min(heroRect.height, heroRect.width / ASPECT) * wpp;
-      const cx = (heroRect.left + heroRect.width / 2 - vw / 2) * wpp;
-      const cy = -(heroRect.top + heroRect.height / 2 - vh / 2) * wpp;
-      const scrolled = sy * wpp;
-      const small = vw < 700 ? 0.72 : 1;
-      shapesGroup.position.set(pointer.x * 0.14, pointer.y * 0.1, 0);
-      shapes.forEach((sh, i) => {
-        const d = sh.d;
-        sh.mesh.visible = !(small < 1 && Math.abs(d.off[1]) > 0.5); // phones stack text above/below the slot
-        if (!sh.mesh.visible) return;
-        const ei = easeOut((intro - 0.1 - i * 0.07) / 0.9);
-        const bob = Math.sin(t * 0.7 + sh.phase) * d.amp * H * 0.6;
-        sh.mesh.position.set(cx + d.off[0] * H, cy + d.off[1] * H + bob - scrolled * (d.par - 1), d.off[2] * Math.min(H, 2.2) * 0.5);
-        sh.mesh.scale.setScalar(H * 0.3 * d.s * small * heroVis * ei);
-        sh.mesh.rotation.x += d.spin[0] * dt;
-        sh.mesh.rotation.y += d.spin[1] * dt;
-        sh.mesh.rotation.z += d.spin[2] * dt;
-      });
-    }
+    // props: hero set around the hero phone + beside the copy; step set around the centred phone
+    const heroVis = play ? clamp(play.shapes, 0, 1) : 1;
+    const ambientVis = play ? clamp(play.ambient, 0, 1) : 0;
+    if (heroVis > 0.01) {
+      const copyRect = copyAnchor && !mobile() ? copyAnchor.getBoundingClientRect() : null;
+      layoutProps(hero, heroVis, t, dt, heroAnchor.getBoundingClientRect(), copyRect, 1 + (1 - heroVis) * 0.9);
+    } else hero.group.visible = false;
+    if (ambientVis > 0.01) layoutProps(steps, ambientVis, t, dt, r, null, 1 + (1 - ambientVis) * 0.5);
+    else steps.group.visible = false;
 
-    if (!phone.visible && !shapesGroup.visible) {
+    if (!phone.visible && !hero.group.visible && !steps.group.visible) {
       if (!cleared) { renderer.clear(); cleared = true; }
       return;
     }
@@ -409,12 +421,11 @@ export async function start(canvas) {
   tick(performance.now());
 
   const settle = () => { // jump to the resting state (used by screenshot tooling)
-    measure();
     intro = 1;
     velSmooth = 0;
-    for (let i = 0; i < 40; i++) tick(performance.now() + i * 16);
+    for (let i = 0; i < 60; i++) tick(performance.now() + i * 16);
     if (fading) { screenMat.uniforms.tA.value = screenMat.uniforms.tB.value; screenMat.uniforms.uMix.value = 0; screenCurrent = screenTarget; fading = false; }
-    tick(performance.now() + 700);
+    tick(performance.now() + 1000);
   };
-  return { setScreen, settle, measure, renderer, scene };
+  return { setScreen, settle, renderer, scene };
 }
