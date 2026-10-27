@@ -50,7 +50,7 @@ Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 screen to show, resting angle, how visible the props are). The phone reacts to the mouse,
 the finger while scrolling, the gyroscope on Android, scroll speed, and can be dragged to
 spin. `js/props.js` builds the food and utensils from primitives; their positions are
-declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`).
+declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`), anchored to the phone, the text block or the stage.
 
 ## Editing a policy
 
