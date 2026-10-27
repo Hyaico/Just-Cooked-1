@@ -219,7 +219,7 @@ function initPlay() {
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
     // where the hands meet, as fractions of the stage; the flash and the ripple sit on that point
-    const clasp = desktop ? [0.5, 0.47] : [0.5, 0.44];
+    const clasp = desktop ? [0.5, 0.58] : [0.5, 0.6]; // the grip on the reaching wrist; the open hand rises above it, clear of the nav
     const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
     const ringK = Math.hypot(sw, sh) / (0.1523 * Math.max(sw, sh)); // ring scale per unit of reveal, so its bright edge rides the night's edge
     night.style.setProperty('--cx', clasp[0] * 100 + '%');
@@ -295,7 +295,7 @@ function initPlay() {
     tl.to(stars, { opacity: 1, duration: 1.3, ease: 'sine.inOut' }, ts + 4.6);
     tl.set(handsState, { active: 0 }, ts + 5.6);
     if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 0 }, ts + 5.6);
-    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 5.2);
+    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 5.4);
     tl.addLabel('support', ts + 6.1);
     tl.to(titleBlock, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut' }, ts + 6.8);
     const nightIn = ts + 3.3;

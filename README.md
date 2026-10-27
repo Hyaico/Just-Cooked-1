@@ -31,7 +31,7 @@ terms.html privacy.html cookies.html disclaimer.html eula.html delete.html
 css/site.css          Design system: tokens from the V1.2c rebrand spec, components, pages
 js/site.js            Nav, reveals, Next Meal story, dusk tint, FAQ/TOC helpers
 js/scene.js           Three.js scene (lazy-loaded by site.js on the home page only)
-js/hands.js           The reach: two hands of starlight (GPU-skinned point clouds) on their own canvas
+js/hands.js           The reach: two skinned 3D hands (built from capsules at load) on their own canvas
 api/recipe/[shareId].js   Vercel function that renders a shared recipe
 assets/screens/       Screen-only crops used as 3D phone textures
 assets/shots/         Framed phone shots (560w / 980w WebP) used as fallbacks
@@ -59,11 +59,14 @@ Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 
 `js/hands.js` draws the two hands on a second transparent canvas that only renders during
 the passage. Each hand is a small 3D skeleton (forearm, palm, thumb, four fingers) wrapped
-in tapered capsules; the capsule surfaces are sampled once into a few thousand points plus
-a faint constellation of joints and bones, and every frame only uploads about 22 bone
-matrices per hand, so the reach, the curl of the fingers, the gathering from dust and the
-dissolve all run in the vertex shader. The timeline drives it through `handsState` in
-`js/site.js` (`reachA`, `reachB`, `curl`, `dissolve`, `reveal`).
+in tapered capsules; at load the capsules are melted into one smooth surface with marching
+cubes (a few hundred milliseconds, off the critical path), the surface is skinned to the
+bones, and from then on it is an ordinary skinned mesh with a warm physical material. One
+hand reaches up from below, the other comes in from the side and closes around its wrist;
+they condense out of stardust and fray back into it through a noise threshold in the
+fragment shader, with a few hundred stars riding on the surface. The timeline drives it
+through `handsState` in `js/site.js` (`reachA`, `reachB`, `curl`, `dissolve`, `reveal`),
+and the staging numbers live in `TUNE` at the top of the module.
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which

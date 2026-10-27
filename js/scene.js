@@ -212,17 +212,25 @@ export async function start(canvas, opts = {}) {
     }, undefined, reject);
   });
 
+  // the screen is a plain quad, so its corners are rounded here: anything outside the display's
+  // rounded rectangle is discarded (with a soft edge) and the black glass shows through
   const screenMat = new THREE.ShaderMaterial({
-    uniforms: { tA: { value: null }, tB: { value: null }, uMix: { value: 0 } },
+    uniforms: { tA: { value: null }, tB: { value: null }, uMix: { value: 0 }, uHalf: { value: new THREE.Vector2(SCREEN.w / 2, SCREEN.h / 2) }, uRadius: { value: 0.11 } },
     vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
     fragmentShader: [
-      'uniform sampler2D tA; uniform sampler2D tB; uniform float uMix; varying vec2 vUv;',
+      'uniform sampler2D tA; uniform sampler2D tB; uniform float uMix, uRadius; uniform vec2 uHalf; varying vec2 vUv;',
       'void main(){',
+      '  vec2 p = abs(vUv - 0.5) * uHalf * 2.0 - (uHalf - uRadius);',
+      '  float d = length(max(p, 0.0)) - uRadius;',
+      '  float aa = max(fwidth(d), 0.0005);',
+      '  float alpha = 1.0 - smoothstep(-aa, aa, d);',
+      '  if (alpha <= 0.002) discard;',
       '  vec4 a = texture2D(tA, vUv); vec4 b = texture2D(tB, vUv);',
-      '  gl_FragColor = mix(a, b, uMix);',
+      '  gl_FragColor = vec4(mix(a, b, uMix).rgb, alpha);',
       '  #include <colorspace_fragment>',
       '}',
     ].join('\n'),
+    transparent: true,
   });
 
   const firstKey = slot.dataset.screen || 'home';
