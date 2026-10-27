@@ -231,7 +231,8 @@ function initPlay() {
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
     // where the hands meet, as fractions of the stage; the flash and the ripple sit on that point
-    const clasp = desktop ? [0.46, 0.74] : [0.42, 0.72]; // the centre of the reaching palm, beneath the words
+    const clasp = desktop ? [0.46, 0.78] : [0.42, 0.74]; // the centre of the reaching palm, beneath the words
+    handsState.tune = desktop ? {} : { bArm: 36, bAngle: 262 }; // on phones the helping forearm runs off flatter, clear of the words
     const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
     const ringK = Math.hypot(sw, sh) / (0.1523 * Math.max(sw, sh)); // ring scale per unit of reveal, so its bright edge rides the night's edge
     night.style.setProperty('--cx', clasp[0] * 100 + '%');

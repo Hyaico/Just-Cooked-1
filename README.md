@@ -64,15 +64,16 @@ the passage. A hand is modelled as a smooth surface: a tapered, gently domed pal
 pad and a heel pad, fingers swept along smooth curves, a slim wrist and a forearm, all
 melted together and turned into a mesh with marching cubes at load (about a second, off
 the critical path), then smoothed and skinned to a small skeleton. From then on it is an
-ordinary skinned mesh with a warm physical material. The reaching hand (a left hand, palm
-toward us) rises from the lower right; the helping hand (a right hand, palm toward it)
-comes down from the upper right across it and closes round the far edge of the palm while
-the reaching fingers close a little in return. They condense out of stardust and fray back
-into it through a noise threshold in the fragment shader, with a few hundred stars riding
-on the surface. The timeline drives it through `handsState` in `js/site.js` (`reachA`,
-`reachB`, `curl`, `dissolve`, `reveal`), and the staging numbers live in `TUNE` at the top
-of the module. An uncommitted `dev-hands.html` at the repo root renders the hands alone
-with query parameters for tuning.
+ordinary skinned mesh with a warm physical material. The reaching hand (them, in soft
+pink-lavender, palm toward us) comes up from the lower left; the helping hand (us, in the
+deep starry violet) comes down from the upper right, turns at the wrist to lie across the
+reaching palm and closes round its far edge while the reaching fingers close a little in
+return. They condense out of stardust and fray back into it through a noise threshold in
+the fragment shader, with stars riding on the surface. The timeline drives it through
+`handsState` in `js/site.js` (`reachA`, `reachB`, `curl`, `dissolve`, `reveal`, and a
+per-breakpoint `tune`), and the staging numbers live in `TUNE` at the top of the module.
+An uncommitted `dev-hands.html` at the repo root renders the hands alone with query
+parameters for tuning.
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which

@@ -28,33 +28,40 @@ const FINGERS = [
   { k: [1.02, -0.158], dir: -9, ph: [0.37, 0.28, 0.22], r: [0.105, 0.07], w: 1.05 },
   { k: [0.886, -0.369], dir: -19, ph: [0.3, 0.21, 0.17], r: [0.092, 0.062], w: 1.1 },
 ];
-const THUMB = { base: [0.14, 0.27, 0.05], dirZ: 50, dirY: -12, bend: [-14, -12], ph: [0.48, 0.3, 0.26], r: [0.14, 0.085] };
+const THUMB = { base: [0.16, 0.27, 0.05], dirZ: 58, dirY: -12, bend: [-14, -12], ph: [0.5, 0.3, 0.26], r: [0.125, 0.08] };
 const POSES = {
   open: { f: [-8, -12, -6], t: [-4, -4, -6, -4] },            // reaching, relaxed: knuckle, middle, tip; thumb: [z, y] at the base, then two bends
   hold: { f: [-12, -18, -10], t: [-8, 6, -8, -6] },           // the reaching hand closes a little, fingers still showing
-  grip: { f: [-38, -64, -40], t: [16, 10, -8, -6] },          // the helping hand closes round the reaching palm's far edge, thumb spread flat across it
+  grip: { f: [-38, -64, -40], t: [20, 12, -6, -4] },          // the helping hand closes round the reaching palm's far edge, thumb spread flat across it
 };
 /* the staging, in palm widths and degrees: tweakable from the dev page.
-   The reaching hand (a left hand, palm toward us) rises from the lower right; the helping hand (a right
-   hand, palm toward it) comes down from the upper right across it, its knuckles at the far edge of the
-   reaching palm, and closes round it. Both arms sweep in from the right. */
+   The reaching hand (them: a right hand, palm toward us) comes up from the lower left; the helping hand
+   (us: a right hand, palm toward it) comes down from the upper right, turns at the wrist to lie across the
+   reaching palm with its knuckles at the far edge, and closes round it. */
 const TUNE = {
-  aAngle: 118,     // the reaching hand's finger direction (degrees, counter-clockwise from +x)
-  bAngle: 208,     // the helping hand's finger direction: across the reaching palm
-  bAlong: -0.04,   // the helping palm centre, from the reaching palm centre: along the reaching fingers...
-  bAcross: 0.1,    // ...and along the helping fingers (so its knuckles clear the far edge)
+  aAngle: 32,      // the reaching hand's finger direction (degrees, counter-clockwise from +x): up and to the right
+  bAngle: 268,     // the helping hand's finger direction: down across the reaching palm
+  bArm: 44,        // the helping forearm runs off toward this direction (up and to the right); the wrist bends to match
+  bAlong: 0.0,     // the helping palm centre, from the reaching palm centre: along the reaching fingers...
+  bAcross: -0.02,  // ...and along the helping fingers (so its knuckles sit on the far edge)
   bZ: 0.27,        // ...and toward us
   bRoll: -8,       // the helping hand rolls about its fingers: negative shows a little more of its thumb side
-  sizeK: 0.19,     // palm width as a share of the viewport height (phones are capped by their width instead)
+  sizeK: 0.17,     // palm width as a share of the viewport height (phones are capped by their width instead)
   holdK: 1,        // scale of the reaching hand's closing
   gripK: 1,        // scale of the helping hand's grip
 };
+const THEM = { arm: 0xa77fe0, palm: 0xc49af0, tip: 0xf0cdfb, emissive: 0x4a2a7a, stars: 170 }; // the hand reaching for help
+const US = { arm: 0x4c40cf, palm: 0x6d5ae6, tip: 0xa492f8, emissive: 0x2a1e86, stars: 340 };  // the hand that comes to take it
 const GRAD_LO = -2.05, GRAD_SPAN = 4.1; // where along the hand a point sits: 0 at the arm's end, 1 at the fingertips
 
-/* bones: 0 = everything that does not bend (palm, wrist, forearm, pads); then 3 per finger, 3 for the thumb */
+/* bones: 0 = the palm (with the wrist and the pads), 1 = the forearm (so the wrist can turn); then 3 per
+   finger, 3 for the thumb */
 function buildSkeleton(pose) {
   const root = new THREE.Bone();
-  const bones = [root];
+  const fore = new THREE.Bone();
+  fore.position.set(-0.05, 0, 0);
+  root.add(fore);
+  const bones = [root, fore];
   const chains = [];
   FINGERS.forEach((f) => {
     let parent = root;
@@ -77,7 +84,7 @@ function buildSkeleton(pose) {
   });
   chains.push({ def: { ph: THUMB.ph, r: THUMB.r }, bones: tc, thumb: true });
   root.updateMatrixWorld(true);
-  return { root, bones, chains };
+  return { root, fore, bones, chains };
 }
 function posePose(sk, pose, k) {
   sk.chains.forEach((c) => {
@@ -121,7 +128,7 @@ function buildPrims(sk) {
     const nx = (x - cx) / rx, ny = (y - cy) / ry, nz = (z - cz) / rz;
     return (Math.hypot(nx, ny, nz) - 1) * Math.min(rx, ry, rz);
   } });
-  ell(0.32, 0.26, 0.02, 0.28, 0.19, 0.14, 0.12);
+  ell(0.32, 0.24, 0.02, 0.26, 0.16, 0.13, 0.12);
   ell(0.4, -0.33, 0.0, 0.36, 0.17, 0.125, 0.1);
   // the wrist and the forearm
   const cap = (ax, ay, az, bx, by, bz, r0, r1, flat, k) => {
@@ -252,16 +259,18 @@ function buildSurface(sk, grid, bounds) {
   }
   pos.needsUpdate = true;
   geo.computeVertexNormals();
-  // skinning: each vertex follows the two nearest bones; the unbending parts all belong to the root
+  // skinning: each vertex follows the two nearest bones; the palm, pads and wrist belong to the root, the forearm to its own bone
   const v = new THREE.Vector3();
-  const chords = [{ bone: 0, f: (x, y, z) => Math.min(...prims.slice(0, 5).map((p) => p.f(x, y, z))) }];
+  const chords = [
+    { bone: 0, f: (x, y, z) => Math.min(...prims.slice(0, 4).map((p) => p.f(x, y, z))) },
+    { bone: 1, f: (x, y, z) => prims[4].f(x, y, z) },
+  ];
   sk.chains.forEach((c) => c.bones.forEach((b, j) => {
     const a = v.set(0, 0, 0).applyMatrix4(b.matrixWorld).clone(), e = v.set(c.def.ph[j], 0, 0).applyMatrix4(b.matrixWorld).clone();
     const r = lerp(c.def.r[0], c.def.r[1], (j + 0.5) / 3);
     chords.push({ bone: sk.bones.indexOf(b), f: (x, y, z) => segDist(x, y, z, a.x, a.y, a.z, e.x, e.y, e.z) - r });
   }));
-  const skinIndex = new Uint16Array(n * 4), skinWeight = new Float32Array(n * 4), color = new Float32Array(n * 3);
-  const cArm = new THREE.Color(0x5346cf), cPalm = new THREE.Color(0x7b62e6), cTip = new THREE.Color(0xd6a8f0), cTmp = new THREE.Color();
+  const skinIndex = new Uint16Array(n * 4), skinWeight = new Float32Array(n * 4);
   for (let i = 0; i < n; i++) {
     const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
     let b1 = 0, d1 = 1e9, b2 = 0, d2 = 1e9;
@@ -272,22 +281,22 @@ function buildSurface(sk, grid, bounds) {
     const w2 = Math.exp(-(d2 - d1) / 0.04), s = 1 + w2;
     skinIndex[i * 4] = b1; skinIndex[i * 4 + 1] = b2;
     skinWeight[i * 4] = 1 / s; skinWeight[i * 4 + 1] = w2 / s;
-    const g = clamp((x - GRAD_LO) / GRAD_SPAN, 0, 1);
-    cTmp.copy(cArm).lerp(cPalm, smooth(0.3, 0.6, g)).lerp(cTip, smooth(0.68, 1.0, g));
-    color[i * 3] = cTmp.r; color[i * 3 + 1] = cTmp.g; color[i * 3 + 2] = cTmp.b;
   }
   geo.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(skinIndex, 4));
   geo.setAttribute('skinWeight', new THREE.Float32BufferAttribute(skinWeight, 4));
-  geo.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
   return geo;
 }
-/* the same hand as a right hand: mirrored across the thumb axis, faces turned the other way round */
-function mirrored(geo) {
+/* a copy of the hand in its own colours, running from the arm to the fingertips */
+function coloured(geo, c) {
   const g = geo.clone();
-  const p = g.attributes.position, nrm = g.attributes.normal;
-  for (let i = 0; i < p.count; i++) { p.setY(i, -p.getY(i)); nrm.setY(i, -nrm.getY(i)); }
-  const idx = g.index.array;
-  for (let t = 0; t < idx.length; t += 3) { const b = idx[t + 1]; idx[t + 1] = idx[t + 2]; idx[t + 2] = b; }
+  const pos = g.attributes.position, n = pos.count, color = new Float32Array(n * 3);
+  const cArm = new THREE.Color(c.arm), cPalm = new THREE.Color(c.palm), cTip = new THREE.Color(c.tip), cTmp = new THREE.Color();
+  for (let i = 0; i < n; i++) {
+    const gg = clamp((pos.getX(i) - GRAD_LO) / GRAD_SPAN, 0, 1);
+    cTmp.copy(cArm).lerp(cPalm, smooth(0.3, 0.6, gg)).lerp(cTip, smooth(0.68, 1.0, gg));
+    color[i * 3] = cTmp.r; color[i * 3 + 1] = cTmp.g; color[i * 3 + 2] = cTmp.b;
+  }
+  g.setAttribute('color', new THREE.Float32BufferAttribute(color, 3));
   return g;
 }
 
@@ -299,12 +308,12 @@ const NOISE = [
   '             mix(mix(hash3(i + vec3(0,0,1)), hash3(i + vec3(1,0,1)), f.x), mix(hash3(i + vec3(0,1,1)), hash3(i + vec3(1,1,1)), f.x), f.y), f.z); }',
 ].join('\n');
 
-function makeSkinMaterial(u) {
+function makeSkinMaterial(u, emissive) {
   const mat = new THREE.MeshPhysicalMaterial({
     vertexColors: true, roughness: 0.55, metalness: 0, envMapIntensity: 0.7,
     sheen: 1.0, sheenRoughness: 0.45, sheenColor: new THREE.Color(0xffc4b4),
     clearcoat: 0.25, clearcoatRoughness: 0.55,
-    emissive: new THREE.Color(0x2e2086), emissiveIntensity: 0.3,
+    emissive: new THREE.Color(emissive), emissiveIntensity: 0.3,
   });
   mat.onBeforeCompile = (shader) => {
     shader.uniforms.uForm = u.uForm;
@@ -391,13 +400,13 @@ export function start(canvas, state) {
   const rim = new THREE.DirectionalLight(0xcdbcff, 1.5); rim.position.set(500, 600, -900); scene.add(rim);
   scene.add(new THREE.HemisphereLight(0xdcd2ff, 0x1e1848, 0.5));
 
-  const tune = Object.assign({}, TUNE, state.tune || {});
+  let tune = Object.assign({}, TUNE, state.tune || {}); // the page may set state.tune per breakpoint before relayout()
   const mobile = () => (canvas.clientWidth || innerWidth) < 900;
   const dpr = Math.min(devicePixelRatio || 1, 2);
   const hands = [];
   let built = false, boneCount = 16;
 
-  const makeHand = (geo, seed, back) => {
+  const makeHand = (geo, seed, back, look) => {
     const group = new THREE.Group();
     group.matrixAutoUpdate = false;
     const sk = buildSkeleton(POSES.open);
@@ -405,7 +414,7 @@ export function start(canvas, state) {
     sk.root.updateMatrixWorld(true);
     const skeleton = new THREE.Skeleton(sk.bones);
     const u = { uForm: { value: 0 }, uNight: { value: 0 }, uGlow: { value: new THREE.Vector3(0.82, 0.74, 1.0) } };
-    const mesh = new THREE.SkinnedMesh(geo, makeSkinMaterial(u));
+    const mesh = new THREE.SkinnedMesh(geo, makeSkinMaterial(u, look.emissive));
     mesh.frustumCulled = false;
     group.add(mesh);
     mesh.bind(skeleton);
@@ -413,7 +422,7 @@ export function start(canvas, state) {
     // stars that ride on the surface, skinned by the same bones
     let s = seed >>> 0;
     const rnd = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
-    const n = 300, pos = geo.attributes.position, si = geo.attributes.skinIndex, sw = geo.attributes.skinWeight;
+    const n = look.stars, pos = geo.attributes.position, si = geo.attributes.skinIndex, sw = geo.attributes.skinWeight;
     const sp = [], skin = [], scatter = [], size = [], sd = [], kind = [];
     for (let i = 0; i < n; i++) {
       const v = Math.floor(rnd() * pos.count);
@@ -445,7 +454,7 @@ export function start(canvas, state) {
     const fine = !mobile();
     const geo = buildSurface(sk, fine ? [172, 86, 42] : [130, 66, 32], { min: [-2.2, -0.78, -0.42], max: [2.2, 1.3, 0.58] });
     boneCount = sk.bones.length;
-    hands.push(makeHand(mirrored(geo), 11, false), makeHand(geo, 29, true)); // a left hand reaching, a right hand helping
+    hands.push(makeHand(coloured(geo, THEM), 11, false, THEM), makeHand(coloured(geo, US), 29, true, US)); // them reaching, us helping
     built = true;
     place();
   };
@@ -464,29 +473,34 @@ export function start(canvas, state) {
     camera.position.set(0, 0, D);
     camera.lookAt(0, 0, 0);
     camera.updateProjectionMatrix();
-    W = clamp(Math.min(vw * 0.33, vh * tune.sizeK), 84, 200); // palm width in px
     place();
   };
   /* the staging: state.cx/cy (stage fractions, y down) is the centre of the reaching palm; see TUNE. */
   const place = () => {
+    tune = Object.assign({}, TUNE, state.tune || {});
+    W = clamp(Math.min(vw * 0.33, vh * tune.sizeK), 84, 200); // palm width in px
     clasp.set(((state.cx ?? 0.5) - 0.5) * vw, (0.5 - (state.cy ?? 0.66)) * vh);
     const C = new THREE.Vector3(clasp.x, clasp.y, 0);
     const diag = Math.hypot(vw, vh);
     const aDir = new THREE.Vector3(Math.cos(tune.aAngle * DEG), Math.sin(tune.aAngle * DEG), 0);
     const bDir = new THREE.Vector3(Math.cos(tune.bAngle * DEG), Math.sin(tune.bAngle * DEG), 0);
+    const bArm = new THREE.Vector3(Math.cos(tune.bArm * DEG), Math.sin(tune.bArm * DEG), 0);
     hands.forEach((h) => {
       h.su.uD.value = D;
       if (!h.back) {
         h.rot.makeRotationZ(tune.aAngle * DEG);
+        h.sk.fore.rotation.set(0, 0, 0);
         const palm = C.clone();
         h.rest.copy(palm).sub(new THREE.Vector3(0.56 * W, 0, 0).applyMatrix4(h.rot)); // the wrist, so the palm centre lands there
         h.from.copy(h.rest).addScaledVector(aDir, -diag * 0.8);
       } else {
         h.rot.makeRotationZ(tune.bAngle * DEG).multiply(new THREE.Matrix4().makeRotationX(Math.PI + tune.bRoll * DEG)); // palm toward the other hand
+        // the forearm turns at the wrist so it runs off toward bArm (its y axis is flipped with the palm)
+        h.sk.fore.rotation.set(0, 0, (180 - (tune.bArm - tune.bAngle)) * DEG);
         const palm = C.clone().addScaledVector(aDir, tune.bAlong * W).addScaledVector(bDir, tune.bAcross * W);
         palm.z = tune.bZ * W;
         h.rest.copy(palm).sub(new THREE.Vector3(0.56 * W, 0, 0).applyMatrix4(h.rot));
-        h.from.copy(h.rest).addScaledVector(bDir, -diag * 0.8);
+        h.from.copy(h.rest).addScaledVector(bArm, diag * 0.8);
       }
     });
   };
