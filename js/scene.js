@@ -117,13 +117,13 @@ const HERO_DESKTOP = [
   { model: 'utensil-fork', anchor: 'stage', off: [0.1, 0.25, 0.1], rot: [0.8, 0.1, -0.9], s: 0.8 },
 ];
 const HERO_MOBILE = [
-  { model: 'egg-cooked', anchor: 'stage', off: [0.1, 0.1, -0.4], rot: [0.95, 0.2, 0.3], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.88, 0.07, 0.3], rot: [0.4, 0.3, 0], s: 0.62 },
-  { model: 'utensil-spoon', anchor: 'stage', off: [0.07, 0.28, 0.1], rot: [0.8, 0, -0.9], s: 0.85 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.91, 0.23, -0.3], rot: [0.85, 0.3, 0.3], s: 0.55 },
-  { model: 'broccoli', anchor: 'stage', off: [0.12, 0.46, 0.4], rot: [0.3, 0.4, 0], s: 0.62 },
-  { model: 'strawberry', anchor: 'stage', off: [0.84, 0.4, -0.2], rot: [0.5, 0.3, 0.2], s: 0.42 },
-  { model: 'mushroom', anchor: 'stage', off: [0.91, 0.5, 0.2], rot: [0.4, 0.3, 0.2], s: 0.42 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.1, 0.11, -0.4], rot: [0.95, 0.2, 0.3], s: 0.85 },
+  { model: 'tomato', anchor: 'stage', off: [0.88, 0.08, 0.3], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.07, 0.29, 0.1], rot: [0.8, 0, -0.9], s: 0.95 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.91, 0.24, -0.3], rot: [0.85, 0.3, 0.3], s: 0.62 },
+  { model: 'broccoli', anchor: 'stage', off: [0.12, 0.47, 0.4], rot: [0.3, 0.4, 0], s: 0.7 },
+  { model: 'strawberry', anchor: 'stage', off: [0.84, 0.4, -0.2], rot: [0.5, 0.3, 0.2], s: 0.48 },
+  { model: 'mushroom', anchor: 'stage', off: [0.91, 0.52, 0.2], rot: [0.4, 0.3, 0.2], s: 0.48 },
 ];
 const STEPS_DESKTOP = [
   { model: 'frying-pan', anchor: 'stage', off: [0.9, 0.14, -0.6], rot: [0.95, -0.5, 0.2], s: 1.0 },
@@ -150,8 +150,8 @@ const FINALE_DESKTOP = [
   { model: 'broccoli', anchor: 'stage', off: [0.06, 0.92, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
   { model: 'tomato', anchor: 'stage', off: [0.16, 0.9, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
   { model: 'rollingPin', anchor: 'stage', off: [0.27, 0.88, 0.1], rot: [0.7, 0.2, 0.25], s: 1.0 },
-  { model: 'cheese-cut', anchor: 'stage', off: [0.8, 0.9, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
-  { model: 'croissant', anchor: 'stage', off: [0.9, 0.92, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85 },
+  { model: 'cheese-cut', anchor: 'stage', off: [0.37, 0.93, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
+  { model: 'croissant', anchor: 'stage', off: [0.95, 0.9, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85 },
   { model: 'mushroom', anchor: 'stage', off: [0.42, 0.11, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
 ];
 const FINALE_MOBILE = [

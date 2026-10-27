@@ -25,12 +25,13 @@ plain content. `prefers-reduced-motion` turns the motion off.
 ## Files
 
 ```
-index.html            Home (the play: hero, three steps, the hands, Support hub, download)
+index.html            Home (the play: hero, three steps, the reach, Support hub, the day-sheet finale)
 faq.html support.html download.html 404.html
 terms.html privacy.html cookies.html disclaimer.html eula.html delete.html
 css/site.css          Design system: tokens from the V1.2c rebrand spec, components, pages
 js/site.js            Nav, reveals, Next Meal story, dusk tint, FAQ/TOC helpers
 js/scene.js           Three.js scene (lazy-loaded by site.js on the home page only)
+js/hands.js           The reach: two hands of starlight (GPU-skinned point clouds) on their own canvas
 api/recipe/[shareId].js   Vercel function that renders a shared recipe
 assets/screens/       Screen-only crops used as 3D phone textures
 assets/shots/         Framed phone shots (560w / 980w WebP) used as fallbacks
@@ -42,14 +43,27 @@ scripts/build-assets.py   Regenerates assets/screens, assets/shots and the downl
 
 The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
 page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
-place: hero, three steps around the centred phone, then the Support passage: the phone
-fades, one starry hand reaches out and another takes it (`.play__hands`, three SVG layers
-that slide in; the fingers curl from `data-open` to `data-curl` degrees), the night sky
-arrives behind them, the phone returns with the Support screen and each of its two
-screens gets its own message (`.hub--a`, `.hub--b`), then the download ask. Each scene is a
-`.scene` block; the invisible `.play__anchor` boxes tell the timeline where the phone
-rests in the hero and download scenes, so moving them in CSS moves the phone.
+place: hero, three steps around the centred phone, then the reach: the phone fades, a hand
+of starlight gathers from dust and reaches in from the lower left, a second takes it from
+the upper right, and where they touch a flash and a ripple of light carry the night across
+the sky (`.play__night` is clipped to a circle whose radius is the `--reveal` variable the
+timeline tweens). The hands lift away into the stars, the title lands, the phone returns
+with the Support screen and each of its two screens gets its own message (`.hub--a`,
+`.hub--b`). For the finale the cream page comes back as a day sheet (`.play__sheet`) with
+one curved edge over the night: the phone sits on the line between the two worlds and the
+words sit on the cream. While the night is on screen the nav bar turns to night glass
+(`.nav.is-night`, with the `theme-color` meta to match). Each scene is a `.scene` block;
+the invisible `.play__anchor` boxes tell the timeline where the phone rests in the hero
+and download scenes, so moving them in CSS moves the phone.
 Append `?nosnap` to the URL to turn off scroll snapping while tuning.
+
+`js/hands.js` draws the two hands on a second transparent canvas that only renders during
+the passage. Each hand is a small 3D skeleton (forearm, palm, thumb, four fingers) wrapped
+in tapered capsules; the capsule surfaces are sampled once into a few thousand points plus
+a faint constellation of joints and bones, and every frame only uploads about 22 bone
+matrices per hand, so the reach, the curl of the fingers, the gathering from dust and the
+dissolve all run in the vertex shader. The timeline drives it through `handsState` in
+`js/site.js` (`reachA`, `reachB`, `curl`, `dissolve`, `reveal`).
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which

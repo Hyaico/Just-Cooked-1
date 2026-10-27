@@ -253,7 +253,7 @@
   .nav.is-scrolled .nav__bar { background: rgba(251, 246, 236, 0.88); box-shadow: 0 14px 36px rgba(26, 24, 21, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.6); border-color: rgba(233, 75, 31, 0.16); }
   .nav.is-hidden .nav__bar { transform: translateY(-120%); }
   .nav__brand { grid-column: 1; justify-self: start; display: inline-flex; align-items: center; transition: transform 0.3s var(--ease-out); }
-  .nav__brand img { height: 26px; width: auto; }
+  .nav__brand img { height: 26px; width: auto; transition: filter 0.4s; }
   .nav__brand:hover { transform: scale(1.03); }
   .nav__links { grid-column: 2; display: none; align-items: center; gap: 2px; }
   .nav__links a { position: relative; display: inline-block; padding: 9px 16px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; letter-spacing: -0.005em; color: var(--ink-body); transition: color 0.2s, background 0.2s; }
@@ -275,6 +275,17 @@
     .nav__toggle { display: none; }
     .nav__brand img { height: 28px; }
   }
+  /* night glass: while the dark passage of the home page is on screen the bar turns blue-violet (set by js/site.js) */
+  .nav.is-night .nav__bar { background: rgba(26, 30, 80, 0.62); border-color: rgba(255, 255, 255, 0.16); box-shadow: 0 10px 30px rgba(4, 7, 18, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+  .nav.is-night .nav__brand img { filter: brightness(0) invert(1); }
+  .nav.is-night .nav__links a { color: rgba(245, 239, 230, 0.8); }
+  .nav.is-night .nav__links a:hover { color: #FFFFFF; background: rgba(255, 255, 255, 0.08); }
+  .nav.is-night .nav__links a[aria-current="page"] { color: #CFC4FF; }
+  .nav.is-night .nav__links a[aria-current="page"]::after { background: #CFC4FF; }
+  .nav.is-night .nav__toggle { color: var(--cream-raised); }
+  .nav.is-night .nav__toggle:hover { background: rgba(255, 255, 255, 0.1); }
+  .nav.is-night .nav__cta { background: var(--cream-raised); color: var(--night); box-shadow: 0 6px 16px rgba(4, 7, 18, 0.25); }
+  .nav.is-night .nav__cta:hover { background: #FFFFFF; }
 
   .menu { pointer-events: auto; position: fixed; inset: 0; z-index: 45; padding: calc(var(--nav-h) + 28px) 16px 24px; background: rgba(245, 239, 230, 0.96); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); display: flex; flex-direction: column; justify-content: space-between; opacity: 0; visibility: hidden; transition: opacity 0.35s var(--ease-out), visibility 0.35s; }
   .menu.is-open { opacity: 1; visibility: visible; }
@@ -425,16 +436,18 @@
   .play { position: relative; height: 1000vh; }
   .play__stage { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: clip; isolation: isolate; }
 
-  /* atmosphere, bottom to top: dusk veil, dawn, night sky, stars. All sit under the 3D canvas. */
-  .play__dusk { position: absolute; inset: 0; z-index: 1; opacity: 0; background: linear-gradient(180deg, #EFE5EF 0%, #DECFE3 55%, #CFBCD8 100%); will-change: opacity; }
-  .play__dawn { position: absolute; inset: 0; z-index: 1; opacity: 0; background: radial-gradient(70% 55% at 50% 104%, rgba(251, 227, 210, 0.95) 0%, rgba(243, 149, 104, 0.3) 34%, rgba(245, 239, 230, 0) 70%); will-change: opacity; }
-  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity, transform;
+  /* atmosphere, bottom to top: dusk veil, night sky (revealed from the clasp with a clip-path circle), stars, then the
+     day sheet of the finale. All sit under the 3D canvas. */
+  .play__dusk { position: absolute; inset: 0; z-index: 1; opacity: 0; background: linear-gradient(180deg, #EFE5EF 0%, #DACAE3 55%, #C9B4D8 100%); will-change: opacity; }
+  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity;
+    clip-path: circle(calc(var(--reveal, 142) * 1%) at var(--cx, 50%) var(--cy, 46%));
     background: linear-gradient(180deg, #17214F 0%, #0F1737 45%, #0B1128 100%); }
-  .play__night::before { content: ""; position: absolute; inset: 0;
+  /* the nebula and the vignette live on their own layer so the clipped sky stays cheap to repaint while it spreads */
+  .play__glow { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity;
     background: radial-gradient(45% 40% at 78% 16%, rgba(140, 110, 210, 0.34) 0%, rgba(140, 110, 210, 0) 70%),
                 radial-gradient(50% 45% at 16% 88%, rgba(196, 150, 232, 0.22) 0%, rgba(196, 150, 232, 0) 70%),
-                radial-gradient(60% 50% at 50% 48%, rgba(120, 140, 220, 0.12) 0%, rgba(120, 140, 220, 0) 70%); }
-  .play__night::after { content: ""; position: absolute; inset: 0; background: radial-gradient(90% 80% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(4, 7, 18, 0.5) 100%); }
+                radial-gradient(60% 50% at 50% 48%, rgba(120, 140, 220, 0.12) 0%, rgba(120, 140, 220, 0) 70%),
+                radial-gradient(90% 80% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(4, 7, 18, 0.5) 100%); }
   .play__stars { position: absolute; inset: 0; z-index: 3; opacity: 0; overflow: hidden; will-change: opacity; }
   .play__stars i { position: absolute; inset: -8%; background: url('/assets/stars-a.svg') center / cover no-repeat; animation: twinkle 4.6s ease-in-out infinite alternate, drift-a 36s ease-in-out infinite alternate; will-change: transform, opacity; }
   .play__stars i + i { background-image: url('/assets/stars-b.svg'); animation: twinkle 3.3s ease-in-out -1.7s infinite alternate-reverse, drift-b 50s ease-in-out -18s infinite alternate; }
@@ -444,28 +457,39 @@
   @keyframes drift-b { from { transform: translate(3%, 2.5%) rotate(0.9deg); } to { transform: translate(-3%, -2.5%) rotate(-0.9deg); } }
   @keyframes star-pulse { from { opacity: 0.08; transform: scale(0.45); } to { opacity: 1; transform: scale(1.35); } }
   @media (prefers-reduced-motion: reduce) { .play__stars i, .play__stars b { animation: none; opacity: 0.8; } }
-  /* the two hands that open the Support passage: an SVG covering the stage, under the words, above the sky */
-  .play__hands { position: absolute; inset: 0; z-index: 4; overflow: hidden; pointer-events: none; opacity: 0; visibility: hidden; }
-  .hand-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .hands__halo { position: absolute; inset: 0; margin: auto; width: 150vmin; height: 110vmin; max-width: 1500px; max-height: 1100px; border-radius: 50%; opacity: 0; background: radial-gradient(50% 50% at 50% 50%, rgba(213, 200, 255, 0.5), rgba(154, 134, 232, 0.16) 45%, rgba(154, 134, 232, 0) 70%); }
+  /* the day sheet: in the finale the cream page returns over the night with one clean curved edge, never a blend.
+     On phones it rises from below (its top edge a soft hill); on desktop it slides in from the right (a bowed left edge). */
+  .play__sheet { position: absolute; z-index: 4; left: -40vw; right: -40vw; top: 48vh; top: 48dvh; bottom: -20vh; bottom: -20dvh; border-radius: 90vw 90vw 0 0 / 30vh 30vh 0 0; pointer-events: none; opacity: 0; visibility: hidden; will-change: transform;
+    background: linear-gradient(180deg, #FCF8F1 0%, #F6F0E7 55%, #F0E8DA 100%);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), 0 -10px 60px rgba(176, 158, 255, 0.3), 0 -30px 140px rgba(120, 100, 220, 0.22); }
+  @media (min-width: 900px) {
+    .play__sheet { left: 39vw; right: -12vw; top: -40vh; bottom: -40vh; border-radius: 42vw 0 0 42vw / 90vh 0 0 90vh;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6), -10px 0 60px rgba(176, 158, 255, 0.3), -30px 0 140px rgba(120, 100, 220, 0.22); }
+  }
+  /* the reach: two hands of starlight drawn on their own canvas (js/hands.js), above the sky, under the words */
+  .play__hands { position: absolute; inset: 0; z-index: 5; width: 100%; height: 100%; pointer-events: none; opacity: 0; visibility: hidden; }
+  /* where the hands meet: a soft flash, and a ripple of light whose bright edge carries the night across the sky */
+  .play__flash, .play__ring { position: absolute; z-index: 5; left: 50%; top: 46%; width: 44vmax; height: 44vmax; border-radius: 50%; pointer-events: none; opacity: 0; will-change: transform, opacity; }
+  .play__flash { background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(216, 206, 255, 0.6) 16%, rgba(160, 140, 255, 0.2) 38%, rgba(160, 140, 255, 0) 60%); }
+  .play__ring { background: radial-gradient(circle, rgba(0, 0, 0, 0) 60%, rgba(205, 195, 255, 0.3) 66%, rgba(255, 255, 255, 0.8) 69.5%, rgba(205, 195, 255, 0.3) 73%, rgba(0, 0, 0, 0) 79%); }
 
   /* layout anchors: invisible boxes, laid out in the flow of their scene, that tell the timeline where the phone rests */
-  .play__anchor { flex: none; pointer-events: none; visibility: hidden; position: relative; height: var(--ah); width: calc(var(--ah) * 0.4775); --ah: 38vh; --ah: 38dvh; }
+  .play__anchor { flex: none; pointer-events: none; visibility: hidden; position: relative; height: var(--ah); width: calc(var(--ah) * 0.4775); --ah: 41vh; --ah: min(41dvh, calc(100dvh - 330px)); }
   .play__aura { position: absolute; left: 50%; top: 50%; width: 320%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none; z-index: -1; visibility: visible;
     background: radial-gradient(50% 50% at 50% 50%, rgba(233, 75, 31, 0.18) 0%, rgba(243, 149, 104, 0.11) 35%, rgba(156, 181, 138, 0.07) 55%, transparent 72%);
     animation: aura 16s ease-in-out infinite alternate; }
   @keyframes aura { 0% { transform: translate(-4%, 2%) scale(1); } 100% { transform: translate(5%, -4%) scale(1.12); } }
 
   /* the one phone slot: a resting box, GSAP owns its transform (no CSS translate here) */
-  .play .phone-slot { --ph: 38vh; --ph: 38dvh; --cy: 31vh; --cy: 31dvh; position: absolute; height: var(--ph); width: calc(var(--ph) * 0.4775); aspect-ratio: auto; left: calc(50% - var(--ph) * 0.4775 / 2); top: calc(var(--cy) - var(--ph) / 2); margin: 0; z-index: 7; }
+  .play .phone-slot { --ph: 41vh; --ph: min(41dvh, calc(100dvh - 330px)); --cy: 33vh; --cy: 33dvh; position: absolute; height: var(--ph); width: calc(var(--ph) * 0.4775); aspect-ratio: auto; left: calc(50% - var(--ph) * 0.4775 / 2); top: calc(var(--cy) - var(--ph) / 2); margin: 0; z-index: 7; }
   .play .phone-slot::before { content: ""; position: absolute; inset: -16% -40%; z-index: -1; border-radius: 50%; pointer-events: none;
     background: radial-gradient(50% 50% at 50% 46%, rgba(233, 75, 31, 0.16), rgba(243, 149, 104, 0.07) 45%, transparent 76%); }
 
   /* scenes: on phones the phone sits on top and the words fit underneath; on desktop they sit side by side */
-  .scene { position: absolute; inset: 0; z-index: 6; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 53vh 16px 4vh; padding: 53dvh 16px 4dvh; }
+  .scene { position: absolute; inset: 0; z-index: 6; pointer-events: none; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 56vh 16px 4vh; padding: 56dvh 16px 4dvh; }
   .scene > * { pointer-events: auto; }
   .scene > .play__anchor { pointer-events: none; }
-  .scene--hero, .scene--download { padding: 12vh 16px 4vh; padding: max(12dvh, calc(var(--nav-h) + 30px)) 16px 4dvh; gap: 14px; }
+  .scene--hero, .scene--download { padding: 12vh 16px 3vh; padding: max(12dvh, calc(var(--nav-h) + 30px)) 16px 3dvh; gap: 14px; }
   .scene--hero .play__anchor { order: -1; }
   .scene__block { width: 100%; max-width: 560px; text-align: center; }
   .scene__block .lede { margin-inline: auto; }
@@ -480,20 +504,33 @@
   .scene--hero .trust span { display: inline-flex; align-items: center; gap: 7px; }
   .scene--hero .trust svg { width: 16px; height: 16px; color: var(--sage-btn); }
   @media (max-width: 899px) {
-    .scene--hero h1 { font-size: clamp(2rem, 1.3rem + 3.6vw, 2.6rem); }
-    .scene--hero .lede { font-size: 1rem; }
+    .scene--hero h1 { font-size: clamp(2.1rem, 1.4rem + 4vw, 2.8rem); }
+    .scene--hero .lede { font-size: 1rem; margin-top: 10px; }
+    .scene--hero .cta { margin-top: 14px; }
     .scene--hero .btn--ghost { display: none; }
     .scene--hero .cta .btn { width: 100%; max-width: 360px; }
     .scene--hero .trust { display: none; }
+  }
+  /* tall phones (toolbars tucked away): bigger words to fill the room */
+  @media (max-width: 899px) and (min-height: 780px) {
+    .scene--hero h1 { font-size: clamp(2.4rem, 1.6rem + 4.4vw, 3rem); }
+    .scene--hero .lede { font-size: 1.05rem; }
+    .scene--step .scene__block h2 { font-size: 1.9rem; }
+    .scene--step .scene__block p { font-size: 1.02rem; }
+    .scene--hub h2 { font-size: 1.95rem; }
+    .scene--hub .hub > p:not(.eyebrow) { font-size: 0.98rem; }
+    .finale__title { font-size: 2.3rem; }
   }
   @media (max-width: 899px) and (max-height: 620px) {
     .scene--hero .play__anchor, .scene--download .play__anchor { --ah: 30dvh; }
     .scene--hero .lede, .scene--download p, .play__foot .copy { display: none; }
     .scene--hero, .scene--download { gap: 8px; }
     .finale__title { font-size: 1.5rem; }
+    .scene--step .scene__block p { font-size: 0.86rem; }
+    .scene--step .things { display: none; } /* the smallest phones keep the caption and drop the pills */
   }
   @media (max-width: 899px) and (max-height: 720px) {
-    .scene--hero h1 { font-size: 1.85rem; }
+    .scene--hero h1 { font-size: 2rem; }
     .scene--hero .lede { font-size: 0.92rem; margin-top: 8px; }
     .scene--hero .cta { margin-top: 12px; }
     .scene--hero .cta .btn { height: 52px; }
@@ -569,6 +606,7 @@
 
     .scene { flex-direction: row; align-items: center; justify-content: space-between; padding: 0 6vw; }
     .scene--hero, .scene--download { justify-content: center; gap: clamp(36px, 4.5vw, 80px); padding: var(--nav-h) 5vw 0; }
+    .scene--download { gap: clamp(64px, 8vw, 130px); } /* the phone stays on the night side of the sheet's edge, the words on the cream */
     .scene--hero .play__anchor { order: 0; --ah: min(74vh, 700px); --ah: min(74dvh, 700px); }
     .scene--download .play__anchor { --ah: min(64vh, 620px); --ah: min(64dvh, 620px); }
     .scene__block { width: min(40vw, 580px); max-width: none; text-align: left; }
@@ -616,7 +654,7 @@
     .finale__trust { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; color: var(--ink-muted); font-weight: 600; font-size: 0.875rem; }
     .finale__trust span { display: inline-flex; align-items: center; gap: 7px; }
     .finale__trust svg { width: 16px; height: 16px; color: var(--sage-btn); }
-    .play__foot { bottom: 18px; }
+    .play__foot { bottom: 18px; left: calc(46vw + 24px); right: 24px; } /* on the cream side of the sheet's edge */
     .play__foot a.extra { display: inline; }
   }
   /* short desktop windows: the finale keeps the badges, drops the extras */
@@ -629,12 +667,12 @@
   html:not(.js) .play, .play--static { height: auto; }
   html:not(.js) .play__stage, .play--static .play__stage { position: static; height: auto; display: grid; gap: 56px; padding: calc(var(--nav-h) + 48px) var(--gutter) 48px; }
   html:not(.js) .play__night, .play--static .play__night, html:not(.js) .play__anchor, .play--static .play__anchor,
-  html:not(.js) .play__dusk, .play--static .play__dusk, html:not(.js) .play__stars, .play--static .play__stars, html:not(.js) .play__dawn, .play--static .play__dawn, html:not(.js) .scene__num, .play--static .scene__num { display: none; }
+  html:not(.js) .play__dusk, .play--static .play__dusk, html:not(.js) .play__stars, .play--static .play__stars, html:not(.js) .play__sheet, .play--static .play__sheet, html:not(.js) .play__glow, .play--static .play__glow, html:not(.js) .scene__num, .play--static .scene__num { display: none; }
   html:not(.js) .scene, .play--static .scene { position: static; padding: 0; flex-direction: column; }
   html:not(.js) .scene > *, .play--static .scene > * { position: static !important; width: auto !important; max-width: 640px; margin-inline: auto; text-align: center; }
   html:not(.js) .scene--title, .play--static .scene--title, html:not(.js) .scene--hub, .play--static .scene--hub { background: var(--night); border-radius: var(--r-xxl); padding: 48px 24px; }
   html:not(.js) .goals, .play--static .goals { margin-top: 16px; display: flex; justify-content: center; }
-  html:not(.js) .play__hands, .play--static .play__hands { display: none; }
+  html:not(.js) .play__hands, .play--static .play__hands, html:not(.js) .play__flash, .play--static .play__flash, html:not(.js) .play__ring, .play--static .play__ring { display: none; }
   html:not(.js) .scene--hub .scene__block, .play--static .scene--hub .scene__block { display: block; }
   html:not(.js) .hub + .hub, .play--static .hub + .hub { margin-top: 36px; }
   html:not(.js) .play .phone-slot, .play--static .phone-slot { position: static; height: min(60vh, 540px); width: auto; aspect-ratio: 1274 / 2668; margin-inline: auto; order: 1; }

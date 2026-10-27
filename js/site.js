@@ -1,4 +1,4 @@
-/* Just Cooked — site behaviour (buildless ES module, v7).
+/* Just Cooked — site behaviour (buildless ES module, v8).
    The home page is "the play": one pinned stage whose timeline is driven by
    scroll (GSAP ScrollTrigger). Interior pages use light reveals. Everything
    degrades to a static layout if GSAP fails to arrive or motion is reduced. */
@@ -18,6 +18,9 @@ if (hasST) {
 /* Shared with the 3D scene: what the phone shows, how it rests, which props are out. */
 const SCREENS = ['home', 'next-meal', 'pantry', 'recipe', 'support', 'support-settings'];
 export const playState = { keys: SCREENS, screenIndex: 0, ry: -0.42, rx: 0.06, shapes: 1, ambient: 0, finale: 0 };
+/* Shared with the reach (js/hands.js): how far each hand has come in, how closed the hold is, how far the hands
+   have dissolved into the sky, how far the night has spread from the clasp, and where the clasp is (stage fractions). */
+export const handsState = { active: 0, alpha: 0, reachA: 0, reachB: 0, curl: 0, dissolve: 0, reveal: 0, cx: 0.5, cy: 0.46 };
 
 /* ---------------------------------------------------------------- scrolling helpers */
 const navOffset = () => (parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 62) + 24;
@@ -152,11 +155,13 @@ function initPlay() {
   const slot = q('[data-phone-slot]');
   const heroAnchor = q('.play__anchor--hero');
   const dlAnchor = q('.play__anchor--download');
+  const stage = q('.play__stage');
   const aura = q('.play__aura');
   const dusk = q('.play__dusk');
   const night = q('.play__night');
+  const glow = q('.play__glow');
   const stars = q('.play__stars');
-  const dawn = q('.play__dawn');
+  const sheet = q('.play__sheet');
   const heroScene = q('[data-scene="hero"]');
   const steps = [...play.querySelectorAll('[data-scene="step"]')];
   const titleBlock = q('[data-scene="title"] .scene__block');
@@ -165,20 +170,22 @@ function initPlay() {
   const hubAside = q('.hub__aside');
   const goals = [...play.querySelectorAll('[data-scene="hub"] .goal')];
   const canvas = document.getElementById('scene');
-  // the two starry hands: each hand is its own stage-sized SVG layer that slides in, then every .finger__j curls from data-open to data-curl degrees
-  const hands = q('.play__hands');
-  const handA = hands ? [...hands.querySelectorAll('.hand--a, .hand--a-thumb')] : [];
-  const handB = hands ? hands.querySelector('.hand--b') : null;
-  const halo = hands ? hands.querySelector('.hands__halo') : null;
-  const fingers = hands ? [...hands.querySelectorAll('.finger')] : [];
-  const curl = { t: 0 };
-  const applyCurl = () => fingers.forEach((f) => {
-    const o = +f.dataset.open, c = +f.dataset.curl, sx = +(f.dataset.sx || 1);
-    f.firstElementChild.setAttribute('transform', 'rotate(' + (o + (c - o) * curl.t) + ') scale(' + (1 + (sx - 1) * curl.t) + ' 1)');
-  });
+  // the reach: two hands of starlight on their own canvas (js/hands.js reads handsState every frame), plus a flash
+  // and a ripple of light where they meet
+  const handsCanvas = q('.play__hands');
+  const flash = q('.play__flash');
+  const ring = q('.play__ring');
   const dlBlock = q('[data-scene="download"] .scene__block');
   const dlFoot = q('[data-scene="download"] .play__foot');
   const idx = (key) => Math.max(0, SCREENS.indexOf(key));
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  let wasNight = false;
+  const setNight = (on) => { // the nav turns to night glass while the dark passage is on screen
+    if (on === wasNight) return;
+    wasNight = on;
+    if (nav) nav.classList.toggle('is-night', on);
+    if (themeMeta) themeMeta.setAttribute('content', on ? '#141B45' : '#F5EFE6');
+  };
 
   const mm = gsap.matchMedia();
   mm.add({ desktop: '(min-width: 900px)', mobile: '(max-width: 899px)' }, (ctx) => {
@@ -196,8 +203,8 @@ function initPlay() {
 
     // resting states
     gsap.set(slot, { x: heroPos.x, y: heroPos.y, scale: heroPos.scale });
-    gsap.set(night, { opacity: 0 });
-    gsap.set([dusk, stars, dawn], { opacity: 0 });
+    gsap.set(night, { opacity: 0, '--reveal': 0 });
+    gsap.set([dusk, stars, glow].filter(Boolean), { opacity: 0 });
     gsap.set(heroScene, { autoAlpha: 1, x: 0, y: 0 });
     gsap.set(aura, { opacity: 1 });
     const stepTexts = steps.map((s) => s.querySelector('.scene__block'));
@@ -211,17 +218,21 @@ function initPlay() {
     gsap.set(goals, { autoAlpha: 0, y: 14, scale: 0.96 });
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
-    if (hands) {
-      gsap.set(hands, { autoAlpha: 0 });
-      gsap.set(handA, { xPercent: -70, yPercent: 78 });
-      gsap.set(handB, { xPercent: 72, yPercent: -82 });
-      gsap.set(halo, { opacity: 0 });
-      curl.t = 0;
-      applyCurl();
-    }
+    // where the hands meet, as fractions of the stage; the flash and the ripple sit on that point
+    const clasp = desktop ? [0.5, 0.47] : [0.5, 0.44];
+    const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
+    const ringK = Math.hypot(sw, sh) / (0.1523 * Math.max(sw, sh)); // ring scale per unit of reveal, so its bright edge rides the night's edge
+    night.style.setProperty('--cx', clasp[0] * 100 + '%');
+    night.style.setProperty('--cy', clasp[1] * 100 + '%');
+    Object.assign(handsState, { active: 0, alpha: 0, reachA: 0, reachB: 0, curl: 0, dissolve: 0, reveal: 0, cx: clasp[0], cy: clasp[1] });
+    if (window.__jcHands) window.__jcHands.relayout();
+    if (handsCanvas) gsap.set(handsCanvas, { autoAlpha: 0 });
+    gsap.set([flash, ring].filter(Boolean), { left: clasp[0] * 100 + '%', top: clasp[1] * 100 + '%', xPercent: -50, yPercent: -50, scale: 0.1, opacity: 0 });
+    if (sheet) gsap.set(sheet, { autoAlpha: 0, xPercent: desktop ? 100 : 0, yPercent: desktop ? 0 : 100 });
     gsap.set(dlBlock, { autoAlpha: 0, y: 24 });
     gsap.set(dlFoot, { autoAlpha: 0 });
     Object.assign(playState, { screenIndex: idx('home'), ry: -0.42, rx: 0.06, shapes: 1, ambient: 0, finale: 0 });
+    setNight(false);
 
     const tl = gsap.timeline({
       defaults: { ease: 'power2.inOut' },
@@ -254,33 +265,43 @@ function initPlay() {
       t = out + 0.55;
     });
 
-    // ── a hand reaches out, another takes it, and only then does the night arrive behind them
+    // ── the reach: a hand of starlight gathers and reaches in, another takes it, and the night spreads out from
+    //    the point where they meet
     const ts = t;
     tl.to(playState, { ambient: 0, duration: 0.7, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(dusk, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(fade, { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, ts - 0.1);
-    if (hands) {
-      tl.set(hands, { autoAlpha: 1 }, ts);
-      tl.to(handA, { xPercent: 0, yPercent: 0, duration: 1.3, ease: 'sine.out' }, ts + 0.15);
-      tl.to(handB, { xPercent: 0, yPercent: 0, duration: 1.2, ease: 'sine.inOut' }, ts + 0.9);
-      tl.to(curl, { t: 1, duration: 0.55, ease: 'sine.inOut', onUpdate: applyCurl }, ts + 1.95);
-      tl.to(halo, { opacity: 1, duration: 0.8, ease: 'sine.out' }, ts + 2.0);
+    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 1 }, ts - 0.05);
+    tl.set(handsState, { active: 1 }, ts - 0.05);
+    tl.to(handsState, { alpha: 1, duration: 0.5, ease: 'sine.out' }, ts);
+    tl.to(handsState, { reachA: 1, duration: 1.8, ease: 'power2.out' }, ts);
+    tl.to(handsState, { reachB: 1, duration: 1.6, ease: 'power2.inOut' }, ts + 0.9);
+    tl.to(handsState, { curl: 1, duration: 0.6, ease: 'power2.inOut' }, ts + 2.3);
+    // a pool of light gathers where they are about to meet, then the touch: a flash, and a ripple of light that
+    // carries the night across the whole sky (the night is clipped to a circle whose radius is the --reveal variable)
+    if (flash) {
+      tl.fromTo(flash, { scale: 0.5, opacity: 0 }, { scale: 1.1, opacity: 0.45, duration: 1.6, ease: 'sine.inOut' }, ts + 0.7);
+      tl.to(flash, { scale: 1, opacity: 1, duration: 0.3, ease: 'power2.out' }, ts + 2.55);
+      tl.to(flash, { scale: 1.8, opacity: 0, duration: 1.0, ease: 'power2.out' }, ts + 2.9);
     }
-    tl.to(night, { opacity: 1, duration: 1.5, ease: 'sine.inOut' }, ts + 2.4);
-    tl.to(stars, { opacity: 1, duration: 1.3, ease: 'sine.inOut' }, ts + 2.9);
+    tl.set(night, { opacity: 1 }, ts + 2.7);
+    tl.fromTo(night, { '--reveal': 0 }, { '--reveal': 142, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
+    tl.to(handsState, { reveal: 1, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
+    if (ring) tl.fromTo(ring, { scale: 0.1, opacity: 0.9 }, { scale: 0.1 + ringK, opacity: 0, duration: 1.5, ease: 'power2.out' }, ts + 2.72);
+    if (glow) tl.to(glow, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts + 3.1);
     tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 2.0);
-    tl.addLabel('hands', ts + 4.0);
-    if (hands) {
-      tl.to([...handA, handB], { autoAlpha: 0, duration: 0.9, ease: 'sine.inOut' }, ts + 4.5);
-      tl.to(halo, { opacity: 0, duration: 0.9, ease: 'sine.inOut' }, ts + 4.5);
-      tl.set(hands, { autoAlpha: 0 }, ts + 5.5);
-    }
-    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 4.9);
-    tl.addLabel('support', ts + 5.8);
-    tl.to(titleBlock, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut' }, ts + 6.5);
+    tl.addLabel('hands', ts + 3.8);
+    tl.to(handsState, { dissolve: 1, duration: 1.1, ease: 'power1.in' }, ts + 4.4); // the hands lift away and become the stars
+    tl.to(stars, { opacity: 1, duration: 1.3, ease: 'sine.inOut' }, ts + 4.6);
+    tl.set(handsState, { active: 0 }, ts + 5.6);
+    if (handsCanvas) tl.set(handsCanvas, { autoAlpha: 0 }, ts + 5.6);
+    tl.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out' }, ts + 5.2);
+    tl.addLabel('support', ts + 6.1);
+    tl.to(titleBlock, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut' }, ts + 6.8);
+    const nightIn = ts + 3.3;
 
     // ── the Support hub: the phone fades back in, then each screen gets its own words
-    const th = ts + 6.9;
+    const th = ts + 7.2;
     tl.to(fade, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, th);
     tl.to(hubA, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.4);
     if (hubAside) tl.to(hubAside, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.7);
@@ -292,20 +313,25 @@ function initPlay() {
     tl.addLabel('hub2', th + 4.2);
     let tc = th + 5.0;
 
-    // ── dawn: the night lifts, the phone settles beside the ask, the food comes back
+    // ── the day sheet: the cream page comes back over the night with one clean curved edge (in from the right on
+    //    desktop, up from below on phones); the phone settles on the line between the two and the food returns
     const td = tc;
     tl.to([hubB, ...goals], { autoAlpha: 0, y: -10, duration: 0.5, ease: 'sine.inOut' }, td);
-    tl.to([night, stars], { opacity: 0, duration: 1.6, ease: 'sine.inOut' }, td + 0.2);
-    tl.to(dusk, { opacity: 0, duration: 1.4, ease: 'sine.inOut' }, td + 0.6);
-    tl.to(dawn, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, td + 0.6);
+    if (sheet) {
+      tl.set(sheet, { autoAlpha: 1 }, td + 0.2);
+      tl.to(sheet, { xPercent: 0, yPercent: 0, duration: 1.4, ease: 'power3.inOut' }, td + 0.25);
+    }
     tl.set(playState, { screenIndex: idx('home') }, td + 0.6);
     tl.to(slot, { x: dlPos.x, y: dlPos.y, scale: dlPos.scale, duration: 1.2, ease: 'sine.inOut' }, td + 0.3);
     tl.to(playState, { ry: -0.3, rx: 0.05, duration: 1.2, ease: 'sine.inOut' }, td + 0.3);
-    tl.to(playState, { finale: 1, duration: 0.9, ease: 'power2.out' }, td + 0.9);
-    tl.to(dlBlock, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, td + 0.9);
-    tl.to(dlFoot, { autoAlpha: 1, duration: 0.4 }, td + 1.3);
-    tl.addLabel('download', td + 1.7);
-    tl.to({}, { duration: 0.4 }, td + 1.7);
+    tl.to(playState, { finale: 1, duration: 0.9, ease: 'power2.out' }, td + 1.0);
+    tl.to(dlBlock, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, td + 1.15);
+    tl.to(dlFoot, { autoAlpha: 1, duration: 0.4 }, td + 1.5);
+    tl.addLabel('download', td + 1.9);
+    tl.to({}, { duration: 0.4 }, td + 1.9);
+    // on desktop the sheet covers the top edge again, so the nav goes back to cream; on phones the finale's top stays night
+    const nightOut = desktop ? td + 0.9 : Infinity;
+    tl.eventCallback('onUpdate', () => { const now = tl.time(); setNight(now >= nightIn && now < nightOut); });
 
     const go = (label) => window.scrollTo({ top: tl.scrollTrigger.labelToScroll(label), behavior: 'smooth' });
     window.__jcPlay = { tl, go }; // for the screenshot tooling
@@ -316,6 +342,7 @@ function initPlay() {
       handlers.forEach(([b, h]) => b.removeEventListener('click', h));
       tl.scrollTrigger && tl.scrollTrigger.kill();
       tl.kill();
+      setNight(false);
     };
   });
 }
@@ -391,6 +418,16 @@ async function initScene() {
     doc.classList.add('webgl');
   } catch (err) {
     console.warn('[just cooked] 3D scene unavailable, showing static screens.', err);
+  }
+  // the reach has its own small canvas and only draws while the Support passage is on screen
+  const handsCanvas = document.querySelector('.play__hands');
+  if (handsCanvas && hasST) {
+    try {
+      const mod = await import('/js/hands.js');
+      window.__jcHands = mod.start(handsCanvas, handsState);
+    } catch (err) {
+      console.warn('[just cooked] the hands are resting.', err);
+    }
   }
 }
 
