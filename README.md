@@ -43,18 +43,22 @@ scripts/build-assets.py   Regenerates assets/screens, assets/shots and the downl
 
 The home page is one pinned stage (`.play` in `index.html`). Scrolling never moves the
 page; it drives a GSAP timeline (`initPlay` in `js/site.js`) that plays the scenes in
-place: hero, three steps around the centred phone, then the wish: the phone fades and a
-speech bubble types out "I wish there was support made for me." letter by letter (the
-`typing` timeline, real time). Scrolling on sends a shooting star across the stage from
-off the left edge to off the right on its own clock (the `flight` timeline, started by a
-ScrollTrigger rather than scrubbed, so a quick scroll never rushes it); the night sky is
-painted in behind the star by a soft mask on `.play__night` whose edge (`--sweep`) rides
-the star's head, the bubble lifts away as the star reaches it, and once the star has
-crossed the hub's words land in the night ("Introducing the Support hub", "Support, for
-everything food touches.", "Support made for you."). Then the phone returns with the
-Support screen and each of its two screens gets its own message (`.hub--a`, `.hub--b`).
-Snapping between scenes is deliberately slow (0.9 to 1.7 s, with a 1.1 s scrub) so each
-scene's entrance has room to play out. For the finale the cream page comes back as a day sheet (`.play__sheet`) with
+place: hero, three steps around the centred phone, then the wish. The phone fades into
+the dusk, and arriving at the `wish` label starts the moment: one real-time timeline
+(`moment` in `initPlay`, started by a ScrollTrigger, never scrubbed) in which a speech
+bubble comes up and types out "I wish there was support made for me." letter by letter
+with a caret, stays for a beat, and then a shooting star crosses from off the left edge to
+off the right. The night sky is painted in behind the star by a soft mask on
+`.play__night` whose edge (`--sweep`) rides the star's head, the bubble lifts away as the
+star reaches it, and once the star has gone the hub's words land in the night
+("Introducing the Support hub", "Support, for everything food touches.", "Support made for
+you."). While the moment plays the page holds at the wish: scrolling on (wheel, touch,
+keys) is held and any overshoot is pulled back, scrolling back is free and resets it, and
+the hold lets go a beat after the words are in (with a safety timeout). Landing below the
+wish (a reload, a jump) shows the moment's end state straight away. Then the phone returns
+with the Support screen and each of its two screens gets its own message (`.hub--a`,
+`.hub--b`). Snapping between scenes is deliberately slow (0.9 to 1.7 s, with a 1.1 s
+scrub) so each scene's entrance has room to play out. For the finale the cream page comes back as a day sheet (`.play__sheet`) with
 one curved edge over the night: the phone sits on the line between the two worlds and the
 words sit on the cream. While the night is on screen the nav bar turns to night glass
 (`.nav.is-night`, with the `theme-color` meta to match). Each scene is a `.scene` block;
@@ -63,12 +67,16 @@ and download scenes, so moving them in CSS moves the phone.
 Append `?nosnap` to the URL to turn off scroll snapping while tuning.
 
 `js/star.js` draws the shooting star on a second transparent canvas that only renders
-while the star is in flight: a trail of about a thousand particles (a soft glow ribbon, a
-bright thin core and sparks that shed and fall) whose place, size and fade all come from
-one progress value in the vertex shader, plus a head drawn as one small quad (core,
-corona, halo and four soft rays) so it never depends on the GPU's point-size limit. The
-page drives it through `starState` in `js/site.js` (`active`, `t`, and the arc as three
-stage-fraction points, `path`).
+while the star is up. The head is one small quad (core, corona, halo and four soft rays),
+so it never depends on the GPU's point-size limit. As it goes it sheds light: a soft
+glowing cloud, a hair-thin bright streak and falling sparks, about 2,400 particles in one
+draw call. Each particle is born where the head was at its own moment and then drifts,
+spreads and fades over its own lifetime, so the trail lingers behind the star and
+dissolves into the night rather than travelling with it, and the canvas only switches off
+once the last of it has faded. The page drives it through `starState` in `js/site.js`
+(`active`, `sec` since launch, `dur` for the head to run the arc, the arc as three
+stage-fraction points in `path`, and `emit`, the visible stretch of the arc where it
+sheds light).
 
 `js/scene.js` draws the phone on a fixed, transparent canvas, pinned to the single
 `[data-phone-slot]` element. The timeline shares a small state object with it (which

@@ -439,7 +439,7 @@
   /* atmosphere, bottom to top: dusk veil, night sky (painted in behind the shooting star by a soft mask whose edge
      is the --sweep variable), stars, then the day sheet of the finale. All sit under the 3D canvas. */
   .play__dusk { position: absolute; inset: 0; z-index: 1; opacity: 0; background: linear-gradient(180deg, #EFE5EF 0%, #DACAE3 55%, #C9B4D8 100%); will-change: opacity; }
-  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity; --sweep: -20%;
+  .play__night { position: absolute; inset: 0; z-index: 2; opacity: 0; will-change: opacity; --sweep: -20%; /* the mask's angle must match SWEEP in js/site.js */
     -webkit-mask-image: linear-gradient(100deg, #000 calc(var(--sweep) - 20%), transparent var(--sweep));
     mask-image: linear-gradient(100deg, #000 calc(var(--sweep) - 20%), transparent var(--sweep));
     background: linear-gradient(180deg, #17214F 0%, #0F1737 45%, #0B1128 100%); }
@@ -552,7 +552,14 @@
   .wish__tail { position: absolute; left: 50px; bottom: -24px; width: 44px; height: 31px; color: #FFFDF9; }
   .wish__text { font-size: clamp(1.55rem, 1.05rem + 2.4vw, 2.9rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.2; text-wrap: balance; }
   .wish__text em { color: #5A4EC8; }
-  .wish__text .ch { display: inline; }
+  /* the typewriter: untyped letters keep their space; a caret follows the last letter typed, and blinks once it rests */
+  .wish__text .ww { display: inline-block; white-space: nowrap; }
+  .wish__text .ch { position: relative; }
+  .wish__text .ch.is-off { color: transparent; }
+  .wish__text .ch.is-caret::after, .wish__text .ch.is-caret-start::after { content: ""; position: absolute; top: 0.12em; bottom: 0.06em; width: 0.08em; border-radius: 2px; background: #5A4EC8; animation: caret 1s steps(1, end) infinite; }
+  .wish__text .ch.is-caret::after { left: 100%; margin-left: 0.06em; }
+  .wish__text .ch.is-caret-start::after { right: 100%; margin-right: 0.06em; }
+  @keyframes caret { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
 
   /* support title: the words land in the middle of the night once the star has crossed */
   .scene--title { justify-content: center; padding: 0 16px; }

@@ -18,9 +18,10 @@ if (hasST) {
 /* Shared with the 3D scene: what the phone shows, how it rests, which props are out. */
 const SCREENS = ['home', 'next-meal', 'pantry', 'recipe', 'support', 'support-settings'];
 export const playState = { keys: SCREENS, screenIndex: 0, ry: -0.42, rx: 0.06, shapes: 1, ambient: 0, finale: 0 };
-/* Shared with the shooting star (js/star.js): whether it is drawing, how far along its arc it is, and the arc itself
-   (start, control and end points as stage fractions). */
-export const starState = { active: 0, t: 0, alpha: 1, path: null };
+/* Shared with the shooting star (js/star.js): whether it is drawing, seconds since it launched, how long the head takes
+   to run the whole arc, the arc itself (start, control and end points as stage fractions) and the stretch of it
+   (path parameters) where it sheds light. */
+export const starState = { active: 0, sec: 0, dur: 3.8, alpha: 1, path: null, emit: [0, 1] };
 
 /* ---------------------------------------------------------------- scrolling helpers */
 const navOffset = () => (parseInt(getComputedStyle(doc).getPropertyValue('--nav-h'), 10) || 62) + 24;
@@ -121,7 +122,7 @@ function splitChars(root) {
           if (!part) return;
           if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(' ')); return; }
           const word = document.createElement('span');
-          word.className = 'wd';
+          word.className = 'ww'; // keeps the word whole when it wraps (not the clipping .wd of the word reveals)
           [...part].forEach((c) => { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; word.appendChild(s); chars.push(s); });
           frag.appendChild(word);
         });
@@ -130,7 +131,7 @@ function splitChars(root) {
     });
   };
   walk(root);
-  root.classList.add('is-split');
+  root.classList.add('is-typed');
   return chars;
 }
 
@@ -243,14 +244,33 @@ function initPlay() {
     gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
     if (wish) gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16, transformOrigin: '18% 100%' });
     if (wishBox) gsap.set(wishBox, { autoAlpha: 1, scale: 1, y: 0, transformOrigin: '50% 60%' });
-    if (wishChars.length) gsap.set(wishChars, { opacity: 0 });
+    // the typewriter: untyped letters keep their space (so the bubble never reflows) and a caret follows the last one
+    const typer = { n: 0 };
+    let typedTo = -1;
+    const renderTyping = () => {
+      const n = Math.min(wishChars.length, Math.floor(typer.n + 1e-4));
+      if (n === typedTo) return;
+      wishChars.forEach((c, i) => { c.classList.toggle('is-off', i >= n); c.classList.toggle('is-caret', i === n - 1); });
+      if (wishChars[0]) wishChars[0].classList.toggle('is-caret-start', n === 0);
+      typedTo = n;
+    };
+    renderTyping();
     gsap.set([hubA, hubB, hubAside].filter(Boolean), { autoAlpha: 0, y: 20 });
     gsap.set(goals, { autoAlpha: 0, y: 14, scale: 0.96 });
     const fade = [canvas, slot].filter(Boolean); // the phone fades in place; it never slides away
     gsap.set(fade, { opacity: 1 });
-    // the star's arc across the stage (start, control, end as stage fractions): in from the left, a gentle dip, out to the right
+    // the star's arc (start, control, end as stage fractions, y down): in from well off the left, a gentle dip, out
+    // well past the right, so it arrives from off screen and leaves off screen
     const sw = stage.clientWidth || innerWidth, sh = stage.clientHeight || innerHeight;
-    Object.assign(starState, { active: 0, t: 0, alpha: 1, path: desktop ? [[-0.2, 0.3], [0.5, 0.56], [1.32, 0.4]] : [[-0.32, 0.3], [0.5, 0.52], [1.42, 0.44]] }); // well past both edges, so it arrives from and leaves off screen
+    const path = desktop ? [[-0.2, 0.3], [0.5, 0.56], [1.32, 0.4]] : [[-0.32, 0.3], [0.5, 0.52], [1.42, 0.44]];
+    const DUR = 3.8; // seconds for the head to run the whole arc
+    const LIFE = 1.6; // the longest any of the light it sheds lingers
+    const bez = (s) => { const u = 1 - s; return [u * u * path[0][0] + 2 * u * s * path[1][0] + s * s * path[2][0], u * u * path[0][1] + 2 * u * s * path[1][1] + s * s * path[2][1]]; };
+    const sAtX = (fx) => { let lo = 0, hi = 1; for (let i = 0; i < 32; i++) { const m = (lo + hi) / 2; if (bez(m)[0] < fx) lo = m; else hi = m; } return (lo + hi) / 2; };
+    const tAtX = (fx) => sAtX(fx) * DUR; // seconds after launch when the head reaches that part of the screen
+    const emit = [Math.max(0, sAtX(-0.06)), Math.min(1, sAtX(1.04))]; // it only sheds light where it can be seen
+    const flightEnd = emit[1] * DUR + LIFE + 0.15; // by now the last of its light has faded
+    Object.assign(starState, { active: 0, sec: 0, dur: DUR, alpha: 1, path, emit });
     if (window.__jcStar) window.__jcStar.relayout();
     if (starCanvas) gsap.set(starCanvas, { autoAlpha: 0 });
     if (sheet) gsap.set(sheet, { autoAlpha: 0, xPercent: desktop ? 100 : 0, yPercent: desktop ? 0 : 100 });
@@ -291,26 +311,20 @@ function initPlay() {
       t = out + 0.55;
     });
 
-    // ── the wish: the phone fades, and someone says what they wish for
+    // ── the wish: the phone fades into the dusk. Arriving at the wish starts the moment (below, in real time): the
+    //    bubble comes up, the wish types out, sits, and the shooting star carries it away and brings in the night.
+    //    The page waits there until it has played; scrolling on from it, the hub's words leave and the phone returns.
     const ts = t;
     tl.to(playState, { ambient: 0, duration: 0.7, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(dusk, { opacity: 1, duration: 1.4, ease: 'sine.inOut' }, ts - 0.6);
     tl.to(fade, { opacity: 0, duration: 0.8, ease: 'sine.inOut' }, ts - 0.1);
-    if (wish) tl.to(wish, { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)' }, ts + 0.4);
-    const tType = ts + 0.6; // scrolling past here types the wish out, letter by letter, in real time (see below)
-    tl.addLabel('wish', ts + 1.9);
-    tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, ts + 2.0);
-    // ── the star: scrolling on from the wish sends a shooting star across the stage on its own clock (the flight
-    //    timeline below, so a quick scroll never rushes it). It paints the night in behind it, the bubble lifts away
-    //    as it passes, and once it has crossed the hub's words land in the night.
-    const tStar = ts + 2.4;
-    if (wish) tl.to(wish, { autoAlpha: 0, duration: 0.3, ease: 'sine.inOut' }, ts + 3.3); // (the flight lifts the bubble away as the star reaches it; this just makes sure)
-    tl.addLabel('support', ts + 3.6);
-    tl.fromTo(titleBlock, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut', immediateRender: false }, ts + 4.5);
-    const nightIn = ts + 2.5;
+    const wishTime = ts + 1.2;
+    tl.addLabel('wish', wishTime);
+    tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, wishTime + 0.1);
+    tl.fromTo(titleBlock, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut', immediateRender: false }, wishTime + 0.4);
 
     // ── the Support hub: the phone fades back in, then each screen gets its own words
-    const th = ts + 4.9;
+    const th = wishTime + 0.8;
     tl.to(fade, { opacity: 1, duration: 0.9, ease: 'sine.inOut' }, th);
     tl.to(hubA, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.4);
     if (hubAside) tl.to(hubAside, { autoAlpha: 1, y: 0, duration: 0.8, ease: 'sine.out' }, th + 0.7);
@@ -340,51 +354,114 @@ function initPlay() {
     tl.to({}, { duration: 0.4 }, td + 1.9);
     // on desktop the sheet covers the top edge again, so the nav goes back to cream; on phones the finale's top stays night
     const nightOut = desktop ? td + 0.9 : Infinity;
-    tl.eventCallback('onUpdate', () => { const now = tl.time(); setNight(now >= nightIn && now < nightOut); });
-
-    // the flight: real time, not scrubbed. The night's soft edge (the --sweep mask on .play__night) rides the star's
-    // head, so the star paints the sky in behind it; scrolling back above the trigger resets everything.
-    const flight = gsap.timeline({ paused: true });
-    const sweepTo = (p) => {
-      const api = window.__jcStar;
-      const hd = api ? api.head(p) : [p, 0.4];
-      const ang = 95 * Math.PI / 180, L = sw * Math.sin(ang) + sh * Math.abs(Math.cos(ang));
-      const along = (hd[0] - 0.5) * sw * Math.sin(ang) - (hd[1] - 0.5) * sh * Math.cos(ang) + L / 2;
-      night.style.setProperty('--sweep', (along / L * 100 + 14).toFixed(2) + '%'); // the edge runs a little ahead, so the head glows on dark
-    };
-    if (starCanvas) flight.set(starCanvas, { autoAlpha: 1 }, 0);
-    flight.set(starState, { active: 1 }, 0);
-    flight.fromTo(starState, { t: 0 }, { t: 1, duration: 3.8, ease: 'sine.inOut', immediateRender: false, onUpdate: () => sweepTo(starState.t) }, 0);
-    if (wishBox) flight.to(wishBox, { autoAlpha: 0, scale: 0.92, y: -22, duration: 0.55, ease: 'power2.in' }, 1.45); // the bubble lifts away as the star reaches it
-    if (glow) flight.to(glow, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, 1.5);
-    flight.to(stars, { opacity: 1, duration: 1.5, ease: 'sine.inOut' }, 2.2);
-    flight.call(() => { if (tl.time() < ts + 4.5) gsap.to(titleBlock, { autoAlpha: 1, y: 0, duration: 0.9, ease: 'sine.out', overwrite: 'auto' }); }, null, 3.0);
-    flight.call(() => night.style.setProperty('--sweep', '150%'), null, 3.85);
-    flight.set(starState, { active: 0 }, 4.6);
-    if (starCanvas) flight.set(starCanvas, { autoAlpha: 0 }, 4.6);
-    const resetFlight = () => {
-      flight.pause(0);
-      night.style.setProperty('--sweep', '-20%');
-      if (tl.time() < ts + 4.5) gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
-    };
+    let nightShown = false; // set by the moment once the star has painted the night across the top
+    const syncNight = () => { const now = tl.time(); setNight(nightShown && now >= ts && now < nightOut); };
+    tl.eventCallback('onUpdate', syncNight);
     const scrollAt = (time) => { const s = tl.scrollTrigger; return s.start + (s.end - s.start) * (time / tl.duration()); };
-    const flightTrigger = ScrollTrigger.create({ start: () => scrollAt(tStar), end: () => scrollAt(tStar) + 2, onEnter: () => flight.play(0), onLeaveBack: resetFlight });
-    // the typewriter: the wish is typed out letter by letter in real time once the bubble is up
-    const typing = gsap.timeline({ paused: true });
-    if (wishChars.length) typing.to(wishChars, { opacity: 1, duration: 0.01, stagger: 0.055, ease: 'none' }, 0.1);
-    const typingTrigger = ScrollTrigger.create({ start: () => scrollAt(tType), end: () => scrollAt(tType) + 2, onEnter: () => typing.play(0), onLeaveBack: () => typing.pause(0) });
+
+    // ── the moment: real time, not scrubbed, so a quick scroll can never cut it short. The bubble comes up, the wish
+    //    types out and sits for a beat; then the star crosses. The night is painted in behind its head (the --sweep
+    //    mask on .play__night), the bubble lifts away as the star reaches it, and once it has gone the words land.
+    const SWEEP = (100 * Math.PI) / 180; // the angle of the mask's gradient on .play__night
+    const sweepL = sw * Math.sin(SWEEP) + sh * Math.abs(Math.cos(SWEEP));
+    const sweepTo = (sec) => {
+      const hd = bez(Math.min(1, Math.max(0, sec / DUR)));
+      const along = (hd[0] - 0.5) * sw * Math.sin(SWEEP) - (hd[1] - 0.5) * sh * Math.cos(SWEEP) + sweepL / 2;
+      night.style.setProperty('--sweep', ((along / sweepL) * 100 + 14).toFixed(2) + '%'); // the edge runs a little ahead, so the head glows on dark
+    };
+    const POP = 0.2, TYPE_AT = 0.85, PER_CHAR = 0.055;
+    const typeEnd = TYPE_AT + wishChars.length * PER_CHAR;
+    const launch = typeEnd + 1.4; // the whole wish stays on screen for a beat before the star comes
+    const stageLeft = stage.getBoundingClientRect().left;
+    const bubbleLeft = wishBox ? (wishBox.getBoundingClientRect().left - stageLeft) / sw : 0.25;
+    const tTitle = launch + tAtX(0.92); // the words land once the star is nearly gone and its trail has thinned
+    const moment = gsap.timeline({ paused: true });
+    if (wish) moment.fromTo(wish, { autoAlpha: 0, scale: 0.86, y: 16 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)', immediateRender: false }, POP);
+    if (wishChars.length) moment.to(typer, { n: wishChars.length, duration: wishChars.length * PER_CHAR, ease: 'none', onUpdate: renderTyping }, TYPE_AT);
+    if (starCanvas) moment.set(starCanvas, { autoAlpha: 1 }, launch);
+    moment.set(starState, { active: 1 }, launch);
+    moment.fromTo(starState, { sec: 0 }, { sec: flightEnd, duration: flightEnd, ease: 'none', immediateRender: false, onUpdate: () => sweepTo(starState.sec) }, launch);
+    if (wishBox) moment.to(wishBox, { autoAlpha: 0, scale: 0.94, y: -26, duration: 0.75, ease: 'power2.in' }, launch + tAtX(bubbleLeft + 0.06)); // the star takes the wish
+    if (glow) moment.to(glow, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, launch + tAtX(0.3));
+    if (stars) moment.to(stars, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, launch + tAtX(0.5));
+    moment.call(() => { nightShown = true; syncNight(); }, null, launch + tAtX(0.45));
+    moment.to(titleBlock, { autoAlpha: 1, y: 0, duration: 1.1, ease: 'sine.out' }, tTitle);
+    moment.call(() => hold(false), null, tTitle + 1.3); // the words are fully in before the page lets you move on
+    moment.set(starState, { active: 0 }, launch + flightEnd);
+    if (starCanvas) moment.set(starCanvas, { autoAlpha: 0 }, launch + flightEnd);
+
+    // the hold: while the moment plays, the page waits at the wish (scrolling on is held, scrolling back is free)
+    let holdOn = false, holdTimer = 0, lastTouchY = 0;
+    const holdAt = () => scrollAt(wishTime);
+    const atHold = () => window.scrollY >= holdAt() - 2;
+    const holdKeys = new Set(['ArrowDown', 'PageDown', 'End', ' ', 'Spacebar']);
+    const onTouchStart = (e) => { if (e.touches[0]) lastTouchY = e.touches[0].clientY; };
+    const holdWheel = (e) => { if (e.deltaY > 0 && atHold() && e.cancelable) e.preventDefault(); };
+    const holdTouch = (e) => {
+      if (!e.touches[0]) return;
+      const y = e.touches[0].clientY;
+      if (y < lastTouchY && atHold() && e.cancelable) e.preventDefault();
+      lastTouchY = y;
+    };
+    const holdKey = (e) => { if (holdKeys.has(e.key) && atHold()) e.preventDefault(); };
+    const holdScroll = () => { const y = holdAt(); if (window.scrollY > y + 3) window.scrollTo(0, y); };
+    const hold = (on) => {
+      if (on === holdOn) return;
+      holdOn = on;
+      clearTimeout(holdTimer);
+      if (on) {
+        window.addEventListener('wheel', holdWheel, { passive: false });
+        window.addEventListener('touchmove', holdTouch, { passive: false });
+        window.addEventListener('keydown', holdKey);
+        window.addEventListener('scroll', holdScroll, { passive: true });
+        holdTimer = setTimeout(() => hold(false), 16000); // never strand anyone
+      } else {
+        window.removeEventListener('wheel', holdWheel);
+        window.removeEventListener('touchmove', holdTouch);
+        window.removeEventListener('keydown', holdKey);
+        window.removeEventListener('scroll', holdScroll);
+      }
+    };
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+
+    const startMoment = () => { typer.n = 0; renderTyping(); moment.play(0); hold(true); };
+    const finishMoment = () => {
+      moment.progress(1);
+      hold(false);
+      if (tl.time() > wishTime + 0.4) gsap.set(titleBlock, { autoAlpha: 0, y: -14 }); // already scrolled on past the words
+    };
+    const resetMoment = () => {
+      moment.pause(0);
+      typer.n = 0; renderTyping();
+      if (wish) gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16 });
+      if (wishBox) gsap.set(wishBox, { autoAlpha: 1, scale: 1, y: 0 });
+      gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
+      Object.assign(starState, { active: 0, sec: 0 });
+      if (starCanvas) gsap.set(starCanvas, { autoAlpha: 0 });
+      night.style.setProperty('--sweep', '-20%');
+      nightShown = false; syncNight();
+      hold(false);
+    };
+    const momentTrigger = ScrollTrigger.create({
+      start: () => holdAt() - 6, end: () => holdAt() - 4,
+      onEnter: () => {
+        // landing further down the page (a reload, a jump): nothing to wait for, show how the moment ends
+        if (window.scrollY > holdAt() + (innerHeight || 600) * 0.5) finishMoment(); else startMoment();
+      },
+      onLeaveBack: resetMoment,
+    });
 
     const go = (label) => window.scrollTo({ top: tl.scrollTrigger.labelToScroll(label), behavior: 'smooth' });
-    window.__jcPlay = { tl, go, flight, typing }; // for the screenshot tooling
+    window.__jcPlay = { tl, go, moment, hold, startMoment, finishMoment, resetMoment }; // for the screenshot tooling
     const buttons = [...play.querySelectorAll('[data-play-go]')];
     const handlers = buttons.map((b) => { const h = () => go(b.dataset.playGo); b.addEventListener('click', h); return [b, h]; });
 
     return () => {
       handlers.forEach(([b, h]) => b.removeEventListener('click', h));
-      flightTrigger.kill();
-      flight.kill();
-      typingTrigger.kill();
-      typing.kill();
+      window.removeEventListener('touchstart', onTouchStart);
+      hold(false);
+      momentTrigger.kill();
+      moment.kill();
       tl.scrollTrigger && tl.scrollTrigger.kill();
       tl.kill();
       setNight(false);
