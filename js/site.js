@@ -190,6 +190,9 @@ function initPlay() {
   const sheet = q('.play__sheet');
   const heroScene = q('[data-scene="hero"]');
   const steps = [...play.querySelectorAll('[data-scene="step"]')];
+  // the hub's words: the moment owns the inner block (it lands them); the scroll owns the outer scene (it takes them away
+  // when you scroll on, and gives them back when you return). Two elements, so neither can undo the other.
+  const titleScene = q('[data-scene="title"]');
   const titleBlock = q('[data-scene="title"] .scene__block');
   const hubA = q('.hub--a');
   const hubB = q('.hub--b');
@@ -242,8 +245,8 @@ function initPlay() {
     gsap.set(stepNums, { autoAlpha: 0, y: 30 });
     stepThings.forEach((t) => gsap.set(t, { autoAlpha: 0, y: 18 }));
     gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
-    if (wish) gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16, transformOrigin: '18% 100%' });
-    if (wishBox) gsap.set(wishBox, { autoAlpha: 1, scale: 1, y: 0, transformOrigin: '50% 60%' });
+    if (titleScene) gsap.set(titleScene, { autoAlpha: 1 });
+    if (wish) { gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16, transformOrigin: '18% 100%' }); wish.style.setProperty('--wipe', '-30%'); }
     // the typewriter: untyped letters keep their space (so the bubble never reflows) and a caret follows the last one
     const typer = { n: 0 };
     let typedTo = -1;
@@ -321,7 +324,7 @@ function initPlay() {
     const wishTime = ts + 1.2;
     tl.addLabel('wish', wishTime);
     tl.set(playState, { screenIndex: idx('support'), ry: 0.1, rx: 0 }, wishTime + 0.1);
-    tl.fromTo(titleBlock, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut', immediateRender: false }, wishTime + 0.4);
+    if (titleScene) tl.fromTo(titleScene, { autoAlpha: 1, y: 0 }, { autoAlpha: 0, y: -14, duration: 0.6, ease: 'sine.inOut', immediateRender: false }, wishTime + 0.4);
 
     // ── the Support hub: the phone fades back in, then each screen gets its own words
     const th = wishTime + 0.8;
@@ -355,7 +358,11 @@ function initPlay() {
     // on desktop the sheet covers the top edge again, so the nav goes back to cream; on phones the finale's top stays night
     const nightOut = desktop ? td + 0.9 : Infinity;
     let nightShown = false; // set by the moment once the star has painted the night across the top
-    const syncNight = () => { const now = tl.time(); setNight(nightShown && now >= ts && now < nightOut); };
+    const syncNight = () => {
+      const now = tl.time();
+      setNight(nightShown && now >= ts && now < nightOut);
+      if (stars) stars.classList.toggle('is-on', nightShown); // the sky twinkles only once it is there
+    };
     tl.eventCallback('onUpdate', syncNight);
     const scrollAt = (time) => { const s = tl.scrollTrigger; return s.start + (s.end - s.start) * (time / tl.duration()); };
 
@@ -364,16 +371,28 @@ function initPlay() {
     //    mask on .play__night), the bubble lifts away as the star reaches it, and once it has gone the words land.
     const SWEEP = (100 * Math.PI) / 180; // the angle of the mask's gradient on .play__night
     const sweepL = sw * Math.sin(SWEEP) + sh * Math.abs(Math.cos(SWEEP));
+    // the bubble dissolves left to right under the star: a soft mask on .wish whose edge (--wipe) is the head's position
+    // along the same angle, measured across the bubble's own box (its padding takes in the tail and the shadow)
+    const wishGeo = (() => {
+      if (!wish) return null;
+      const cs = getComputedStyle(wish);
+      const w = wish.offsetWidth, h = wish.offsetHeight;
+      const cy = sh / 2 + (parseFloat(cs.paddingBottom) - parseFloat(cs.paddingTop)) / 2; // the bubble itself is centred
+      return { w, h, cx: sw / 2, cy, L: w * Math.sin(SWEEP) + h * Math.abs(Math.cos(SWEEP)), right: (sw / 2 + w / 2 - parseFloat(cs.paddingRight)) / sw };
+    })();
     const sweepTo = (sec) => {
       const hd = bez(Math.min(1, Math.max(0, sec / DUR)));
       const along = (hd[0] - 0.5) * sw * Math.sin(SWEEP) - (hd[1] - 0.5) * sh * Math.cos(SWEEP) + sweepL / 2;
       night.style.setProperty('--sweep', ((along / sweepL) * 100 + 14).toFixed(2) + '%'); // the edge runs a little ahead, so the head glows on dark
+      if (wishGeo) {
+        const g = wishGeo, hx = hd[0] * sw, hy = hd[1] * sh;
+        const at = (hx - g.cx) * Math.sin(SWEEP) - (hy - g.cy) * Math.cos(SWEEP) + g.L / 2;
+        wish.style.setProperty('--wipe', ((at / g.L) * 100).toFixed(2) + '%');
+      }
     };
     const POP = 0.2, TYPE_AT = 0.85, PER_CHAR = 0.055;
     const typeEnd = TYPE_AT + wishChars.length * PER_CHAR;
     const launch = typeEnd + 1.4; // the whole wish stays on screen for a beat before the star comes
-    const stageLeft = stage.getBoundingClientRect().left;
-    const bubbleLeft = wishBox ? (wishBox.getBoundingClientRect().left - stageLeft) / sw : 0.25;
     const tTitle = launch + tAtX(0.92); // the words land once the star is nearly gone and its trail has thinned
     const moment = gsap.timeline({ paused: true });
     if (wish) moment.fromTo(wish, { autoAlpha: 0, scale: 0.86, y: 16 }, { autoAlpha: 1, scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.6)', immediateRender: false }, POP);
@@ -381,7 +400,7 @@ function initPlay() {
     if (starCanvas) moment.set(starCanvas, { autoAlpha: 1 }, launch);
     moment.set(starState, { active: 1 }, launch);
     moment.fromTo(starState, { sec: 0 }, { sec: flightEnd, duration: flightEnd, ease: 'none', immediateRender: false, onUpdate: () => sweepTo(starState.sec) }, launch);
-    if (wishBox) moment.to(wishBox, { autoAlpha: 0, scale: 0.94, y: -26, duration: 0.75, ease: 'power2.in' }, launch + tAtX(bubbleLeft + 0.06)); // the star takes the wish
+    if (wish && wishGeo) moment.set(wish, { autoAlpha: 0 }, launch + tAtX(Math.min(1.1, wishGeo.right + 0.16))); // fully wiped by now: stop painting it
     if (glow) moment.to(glow, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, launch + tAtX(0.3));
     if (stars) moment.to(stars, { opacity: 1, duration: 1.6, ease: 'sine.inOut' }, launch + tAtX(0.5));
     moment.call(() => { nightShown = true; syncNight(); }, null, launch + tAtX(0.45));
@@ -424,23 +443,34 @@ function initPlay() {
     };
     window.addEventListener('touchstart', onTouchStart, { passive: true });
 
-    const startMoment = () => { typer.n = 0; renderTyping(); moment.play(0); hold(true); };
-    const finishMoment = () => {
-      moment.progress(1);
-      hold(false);
-      if (tl.time() > wishTime + 0.4) gsap.set(titleBlock, { autoAlpha: 0, y: -14 }); // already scrolled on past the words
-    };
+    let rewinding = null;
     const resetMoment = () => {
+      if (rewinding) { rewinding.kill(); rewinding = null; }
       moment.pause(0);
       typer.n = 0; renderTyping();
-      if (wish) gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16 });
-      if (wishBox) gsap.set(wishBox, { autoAlpha: 1, scale: 1, y: 0 });
+      if (wish) { gsap.set(wish, { autoAlpha: 0, scale: 0.86, y: 16 }); wish.style.setProperty('--wipe', '-30%'); }
       gsap.set(titleBlock, { autoAlpha: 0, y: 24 });
+      gsap.set([stars, glow].filter(Boolean), { opacity: 0 });
       Object.assign(starState, { active: 0, sec: 0 });
       if (starCanvas) gsap.set(starCanvas, { autoAlpha: 0 });
+      gsap.set(night, { opacity: 1 });
       night.style.setProperty('--sweep', '-20%');
       nightShown = false; syncNight();
       hold(false);
+    };
+    const startMoment = () => { resetMoment(); moment.play(0); hold(true); };
+    const finishMoment = () => { if (rewinding) { rewinding.kill(); rewinding = null; } moment.progress(1); hold(false); };
+    // scrolling back up past the wish: the night, its stars and the words fade away together (no snap cut), then the
+    // moment is reset, ready to play again on the way back down
+    const rewindMoment = () => {
+      hold(false);
+      moment.pause();
+      nightShown = false; syncNight();
+      if (rewinding) rewinding.kill();
+      rewinding = gsap.timeline({ onComplete: () => { rewinding = null; resetMoment(); } });
+      rewinding.to([night, stars, glow].filter(Boolean), { opacity: 0, duration: 0.6, ease: 'sine.inOut' }, 0);
+      rewinding.to([titleBlock, wish].filter(Boolean), { autoAlpha: 0, duration: 0.45, ease: 'sine.inOut' }, 0);
+      if (starCanvas) rewinding.to(starCanvas, { autoAlpha: 0, duration: 0.35, ease: 'sine.inOut' }, 0);
     };
     const momentTrigger = ScrollTrigger.create({
       start: () => holdAt() - 6, end: () => holdAt() - 4,
@@ -448,11 +478,11 @@ function initPlay() {
         // landing further down the page (a reload, a jump): nothing to wait for, show how the moment ends
         if (window.scrollY > holdAt() + (innerHeight || 600) * 0.5) finishMoment(); else startMoment();
       },
-      onLeaveBack: resetMoment,
+      onLeaveBack: rewindMoment,
     });
 
     const go = (label) => window.scrollTo({ top: tl.scrollTrigger.labelToScroll(label), behavior: 'smooth' });
-    window.__jcPlay = { tl, go, moment, hold, startMoment, finishMoment, resetMoment }; // for the screenshot tooling
+    window.__jcPlay = { tl, go, moment, hold, startMoment, finishMoment, resetMoment, rewindMoment }; // for the screenshot tooling
     const buttons = [...play.querySelectorAll('[data-play-go]')];
     const handlers = buttons.map((b) => { const h = () => go(b.dataset.playGo); b.addEventListener('click', h); return [b, h]; });
 
@@ -460,6 +490,7 @@ function initPlay() {
       handlers.forEach(([b, h]) => b.removeEventListener('click', h));
       window.removeEventListener('touchstart', onTouchStart);
       hold(false);
+      if (rewinding) rewinding.kill();
       momentTrigger.kill();
       moment.kill();
       tl.scrollTrigger && tl.scrollTrigger.kill();

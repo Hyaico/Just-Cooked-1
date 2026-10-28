@@ -450,9 +450,11 @@
                 radial-gradient(60% 50% at 50% 48%, rgba(120, 140, 220, 0.12) 0%, rgba(120, 140, 220, 0) 70%),
                 radial-gradient(90% 80% at 50% 50%, rgba(0, 0, 0, 0) 55%, rgba(4, 7, 18, 0.5) 100%); }
   .play__stars { position: absolute; inset: 0; z-index: 3; opacity: 0; overflow: hidden; will-change: opacity; }
-  .play__stars i { position: absolute; inset: -8%; background: url('/assets/stars-a.svg') center / cover no-repeat; animation: twinkle 4.6s ease-in-out infinite alternate, drift-a 36s ease-in-out infinite alternate; will-change: transform, opacity; }
+  .play__stars i { position: absolute; inset: -8%; background: url('/assets/stars-a.svg') center / cover no-repeat; animation: twinkle 4.6s ease-in-out infinite alternate, drift-a 36s ease-in-out infinite alternate; }
   .play__stars i + i { background-image: url('/assets/stars-b.svg'); animation: twinkle 3.3s ease-in-out -1.7s infinite alternate-reverse, drift-b 50s ease-in-out -18s infinite alternate; }
-  .play__stars b { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); margin: calc(var(--s) / -2); border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 calc(var(--s) * 2.4) calc(var(--s) * 0.4) rgba(255, 255, 255, 0.5); animation: star-pulse var(--p) ease-in-out var(--d) infinite alternate; will-change: opacity, transform; }
+  .play__stars b { position: absolute; left: var(--x); top: var(--y); width: var(--s); height: var(--s); margin: calc(var(--s) / -2); border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 calc(var(--s) * 2.4) calc(var(--s) * 0.4) rgba(255, 255, 255, 0.5); animation: star-pulse var(--p) ease-in-out var(--d) infinite alternate; }
+  /* the sky only twinkles while it can be seen (js/site.js sets .is-on when the night arrives), so a hidden sky costs nothing */
+  .play__stars:not(.is-on) i, .play__stars:not(.is-on) b { animation-play-state: paused; }
   @keyframes twinkle { from { opacity: 0.45; } to { opacity: 1; } }
   @keyframes drift-a { from { transform: translate(-4%, -2%) rotate(-1.2deg); } to { transform: translate(4%, 2%) rotate(1.2deg); } }
   @keyframes drift-b { from { transform: translate(3%, 2.5%) rotate(0.9deg); } to { transform: translate(-3%, -2.5%) rotate(-0.9deg); } }
@@ -533,6 +535,14 @@
     .scene--hero .cta .btn { height: 52px; }
     .scene--step .scene__block h2 { font-size: 1.45rem; }
     .scene--step .scene__block p { font-size: 0.92rem; }
+    /* shorter phones: two compact pills per step, so the step never runs off the bottom */
+    .scene--step .things { gap: 6px; }
+    .scene--step .thing { padding: 8px 12px; font-size: 0.8rem; }
+    .scene--step .thing:nth-child(3) { display: none; }
+  }
+  /* the shortest of those (older Androids, 640 tall): a slightly smaller phone in the hero, so the button clears the edge */
+  @media (max-width: 899px) and (max-height: 660px) and (min-height: 621px) {
+    .scene--hero .play__anchor { --ah: min(37dvh, calc(100dvh - 360px)); }
   }
 
   /* step captions + the nice things around the phone */
@@ -546,7 +556,12 @@
 
   /* the wish: a soft speech bubble in the middle of the stage, the thing someone says before the star */
   .scene--wish { justify-content: center; padding: 0 16px; }
-  .wish { width: min(92vw, 760px); }
+  /* the bubble dissolves left to right under the shooting star: a soft mask whose edge (--wipe, set from the star's
+     head in js/site.js) sweeps across it. The padding (cancelled by the negative margins) brings the tail and the
+     soft shadow inside the masked box, so they go with it. */
+  .wish { --wipe: -30%; width: calc(min(92vw, 760px) + 140px); padding: 50px 70px 100px; margin: -50px -70px -100px; pointer-events: none;
+    -webkit-mask-image: linear-gradient(100deg, transparent calc(var(--wipe) - 10%), #000 calc(var(--wipe) + 8%));
+    mask-image: linear-gradient(100deg, transparent calc(var(--wipe) - 10%), #000 calc(var(--wipe) + 8%)); }
   .wish__box { position: relative; padding: 28px 30px 30px; border-radius: 34px; background: #FFFDF9; color: var(--ink); text-align: center;
     box-shadow: 0 28px 70px rgba(60, 40, 120, 0.2), 0 2px 6px rgba(60, 40, 120, 0.08), inset 0 1px 0 #FFFFFF; }
   .wish__tail { position: absolute; left: 50px; bottom: -24px; width: 44px; height: 31px; color: #FFFDF9; }

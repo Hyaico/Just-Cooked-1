@@ -97,70 +97,65 @@ function buildPhone(screenMat) {
    its top-left corner (outside the box). anchor "stage": viewport fractions.
    rot tilts each model so its best side faces the camera (models lie flat on y). */
 const HERO_DESKTOP = [
-  // scattered, not lined up: different sizes, depths and tilts, everywhere the title and the phone are not
-  { model: 'croissant', anchor: 'stage', off: [0.36, 0.12, 0.2], rot: [0.8, 0.5, 0.2], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.07, 0.17, -0.2], rot: [0.4, 0.3, 0], s: 0.7 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.49, 0.145, -0.4], rot: [0.85, 0.3, 0.3], s: 0.6 },
-  { model: 'egg-cooked', anchor: 'stage', off: [0.3, 0.95, -0.3], rot: [0.95, 0.2, 0.3], s: 0.82 },
-  { model: 'strawberry', anchor: 'stage', off: [0.585, 0.3, 0.3], rot: [0.5, 0.3, 0.2], s: 0.45 },
-  { model: 'bread', anchor: 'stage', off: [0.9, 0.19, 0.1], rot: [0.5, 0.6, 0.1], s: 0.85 },
-  { model: 'whisk', anchor: 'stage', off: [0.955, 0.37, -0.4], rot: [0.6, 0.2, 0.5], s: 1.0 },
-  { model: 'broccoli', anchor: 'stage', off: [0.905, 0.57, 0.4], rot: [0.3, 0.4, 0], s: 0.8 },
-  { model: 'utensil-spoon', anchor: 'stage', off: [0.965, 0.8, 0.0], rot: [0.8, 0.1, -0.6], s: 0.9 },
-  { model: 'pancakes', anchor: 'stage', off: [0.79, 0.93, 0.2], rot: [0.75, 0.4, 0], s: 0.9 },
-  { model: 'mushroom', anchor: 'stage', off: [0.61, 0.955, 0.5], rot: [0.4, 0.3, 0.2], s: 0.55 },
-  { model: 'carrot', anchor: 'stage', off: [0.47, 0.885, 0.1], rot: [0.7, 0.2, 0.9], s: 1.0 },
-  { model: 'advocado-half', anchor: 'stage', off: [0.4, 0.95, 0.3], rot: [0.7, -0.3, 0.1], s: 0.72 },
-  { model: 'cheese-cut', anchor: 'stage', off: [0.12, 0.92, 0.0], rot: [0.7, -0.3, 0.1], s: 0.85 },
-  { model: 'frying-pan', anchor: 'stage', off: [0.06, 0.66, -0.5], rot: [0.95, -0.5, 0.2], s: 1.1 },
-  { model: 'apple', anchor: 'stage', off: [0.04, 0.4, 0.2], rot: [0.4, 0.3, 0], s: 0.62 },
-  { model: 'utensil-fork', anchor: 'stage', off: [0.1, 0.25, 0.1], rot: [0.8, 0.1, -0.9], s: 0.8 },
+  // fitted (pw/propfit.mjs) so none covers the phone, the words, a button or the nav on any desktop size; the
+  // ones with min: [w, h] only appear on screens at least that big
+  { model: 'croissant', anchor: 'stage', off: [0.08, 0.22, 0.2], rot: [0.8, 0.5, 0.2], s: 0.72 },
+  { model: 'tomato', anchor: 'stage', off: [0.07, 0.415, -0.2], rot: [0.4, 0.3, 0], s: 0.59 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.945, 0.2, -0.4], rot: [0.85, 0.3, 0.3], s: 0.56 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.065, 0.915, -0.3], rot: [0.95, 0.2, 0.3], s: 0.82 },
+  { model: 'strawberry', anchor: 'stage', off: [0.9, 0.38, 0.3], rot: [0.5, 0.3, 0.2], s: 0.45 },
+  { model: 'bread', anchor: 'stage', off: [0.925, 0.545, 0.1], rot: [0.5, 0.6, 0.1], s: 0.61 },
+  { model: 'whisk', anchor: 'stage', off: [0.95, 0.705, -0.4], rot: [0.6, 0.2, 0.5], s: 0.85 },
+  { model: 'broccoli', anchor: 'stage', off: [0.91, 0.885, 0.4], rot: [0.3, 0.4, 0], s: 0.58 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.07, 0.71, 0], rot: [0.8, 0.1, -0.6], s: 0.9 },
+  { model: 'cheese-cut', anchor: 'stage', off: [0.185, 0.925, 0], rot: [0.7, -0.3, 0.1], s: 0.61, min: [1280, 850] },
+  { model: 'utensil-fork', anchor: 'stage', off: [0.1, 0.59, 0.1], rot: [0.8, 0.1, -0.9], s: 0.68, min: [1280, 850] },
 ];
 const HERO_MOBILE = [
-  { model: 'egg-cooked', anchor: 'stage', off: [0.1, 0.11, -0.4], rot: [0.95, 0.2, 0.3], s: 0.85 },
-  { model: 'tomato', anchor: 'stage', off: [0.88, 0.08, 0.3], rot: [0.4, 0.3, 0], s: 0.7 },
-  { model: 'utensil-spoon', anchor: 'stage', off: [0.07, 0.29, 0.1], rot: [0.8, 0, -0.9], s: 0.95 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.91, 0.24, -0.3], rot: [0.85, 0.3, 0.3], s: 0.62 },
-  { model: 'broccoli', anchor: 'stage', off: [0.12, 0.47, 0.4], rot: [0.3, 0.4, 0], s: 0.7 },
-  { model: 'strawberry', anchor: 'stage', off: [0.84, 0.4, -0.2], rot: [0.5, 0.3, 0.2], s: 0.48 },
-  { model: 'mushroom', anchor: 'stage', off: [0.91, 0.52, 0.2], rot: [0.4, 0.3, 0.2], s: 0.48 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.1, 0.18, -0.4], rot: [0.95, 0.2, 0.3], s: 0.85 },
+  { model: 'tomato', anchor: 'stage', off: [0.88, 0.21, 0.3], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.08, 0.3, 0.1], rot: [0.8, 0, -0.9], s: 0.95 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.91, 0.32, -0.3], rot: [0.85, 0.3, 0.3], s: 0.62 },
+  { model: 'broccoli', anchor: 'stage', off: [0.12, 0.415, 0.4], rot: [0.3, 0.4, 0], s: 0.7 },
+  { model: 'strawberry', anchor: 'stage', off: [0.22, 0.31, -0.2], rot: [0.5, 0.3, 0.2], s: 0.48 },
+  { model: 'mushroom', anchor: 'stage', off: [0.91, 0.435, 0.2], rot: [0.4, 0.3, 0.2], s: 0.35 },
 ];
 const STEPS_DESKTOP = [
-  { model: 'frying-pan', anchor: 'stage', off: [0.9, 0.14, -0.6], rot: [0.95, -0.5, 0.2], s: 1.0 },
-  { model: 'pancakes', anchor: 'stage', off: [0.1, 0.15, -0.3], rot: [0.75, 0.4, 0], s: 0.8 },
-  { model: 'croissant', anchor: 'stage', off: [0.11, 0.88, 0.3], rot: [0.8, 0.3, 0.2], s: 0.8 },
-  { model: 'mushroom', anchor: 'stage', off: [0.9, 0.88, 0.4], rot: [0.4, 0.3, 0.2], s: 0.6 },
-  { model: 'lemon-half', anchor: 'stage', off: [0.3, 0.94, -0.5], rot: [0.85, 0.3, 0.3], s: 0.6 },
-  { model: 'tomato', anchor: 'stage', off: [0.68, 0.94, -0.2], rot: [0.4, 0.3, 0], s: 0.7 },
+  { model: 'frying-pan', anchor: 'stage', off: [0.9, 0.19, -0.6], rot: [0.95, -0.5, 0.2], s: 1 },
+  { model: 'pancakes', anchor: 'stage', off: [0.1, 0.175, -0.3], rot: [0.75, 0.4, 0], s: 0.8 },
+  { model: 'croissant', anchor: 'stage', off: [0.11, 0.87, 0.3], rot: [0.8, 0.3, 0.2], s: 0.8 },
+  { model: 'mushroom', anchor: 'stage', off: [0.9, 0.87, 0.4], rot: [0.4, 0.3, 0.2], s: 0.6 },
+  { model: 'lemon-half', anchor: 'stage', off: [0.295, 0.91, -0.5], rot: [0.85, 0.3, 0.3], s: 0.6 },
+  { model: 'tomato', anchor: 'stage', off: [0.705, 0.885, -0.2], rot: [0.4, 0.3, 0], s: 0.7 },
 ];
 const STEPS_MOBILE = [
   { model: 'lemon-half', anchor: 'stage', off: [0.08, 0.2, -0.3], rot: [0.85, 0.3, 0.3], s: 0.5 },
-  { model: 'tomato', anchor: 'stage', off: [0.92, 0.18, -0.3], rot: [0.4, 0.3, 0], s: 0.5 },
+  { model: 'tomato', anchor: 'stage', off: [0.92, 0.19, -0.3], rot: [0.4, 0.3, 0], s: 0.5 },
   { model: 'strawberry', anchor: 'stage', off: [0.08, 0.47, 0.2], rot: [0.5, 0.3, 0.2], s: 0.4 },
   { model: 'mushroom', anchor: 'stage', off: [0.92, 0.46, 0.2], rot: [0.4, 0.3, 0.2], s: 0.42 },
 ];
 const FINALE_DESKTOP = [
-  { model: 'egg-cooked', anchor: 'stage', off: [0.08, 0.14, -0.6], rot: [0.95, 0.2, 0.3], s: 0.85 },
-  { model: 'pancakes', anchor: 'stage', off: [0.5, 0.11, -0.3], rot: [0.75, 0.4, 0], s: 0.85 },
-  { model: 'apple', anchor: 'stage', off: [0.92, 0.14, 0.2], rot: [0.4, 0.3, 0], s: 0.65 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.05, 0.18, -0.6], rot: [0.95, 0.2, 0.3], s: 0.85 },
+  { model: 'pancakes', anchor: 'stage', off: [0.93, 0.18, -0.3], rot: [0.75, 0.4, 0], s: 0.85 },
+  { model: 'apple', anchor: 'stage', off: [0.925, 0.365, 0.2], rot: [0.4, 0.3, 0], s: 0.55 },
   { model: 'whisk', anchor: 'stage', off: [0.04, 0.4, -0.5], rot: [0.6, 0.2, -0.4], s: 0.9 },
-  { model: 'orange', anchor: 'stage', off: [0.96, 0.4, -0.3], rot: [0.4, 0.3, 0], s: 0.65 },
-  { model: 'utensil-spoon', anchor: 'stage', off: [0.05, 0.66, 0.2], rot: [0.8, 0, -0.9], s: 0.9 },
-  { model: 'shaker-salt', anchor: 'stage', off: [0.96, 0.66, 0.3], rot: [0.3, 0.3, 0.1], s: 0.7 },
-  { model: 'broccoli', anchor: 'stage', off: [0.06, 0.92, 0.5], rot: [0.3, 0.4, 0], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.16, 0.9, 0.4], rot: [0.4, 0.3, 0], s: 0.7 },
-  { model: 'rollingPin', anchor: 'stage', off: [0.27, 0.88, 0.1], rot: [0.7, 0.2, 0.25], s: 1.0 },
-  { model: 'cheese-cut', anchor: 'stage', off: [0.37, 0.93, 0.2], rot: [0.7, -0.3, 0.1], s: 0.8 },
-  { model: 'croissant', anchor: 'stage', off: [0.95, 0.9, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85 },
-  { model: 'mushroom', anchor: 'stage', off: [0.42, 0.11, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55 },
+  { model: 'orange', anchor: 'stage', off: [0.95, 0.53, -0.3], rot: [0.4, 0.3, 0], s: 0.65 },
+  { model: 'utensil-spoon', anchor: 'stage', off: [0.055, 0.66, 0.2], rot: [0.8, 0, -0.9], s: 0.9 },
+  { model: 'shaker-salt', anchor: 'stage', off: [0.945, 0.695, 0.3], rot: [0.3, 0.3, 0.1], s: 0.7 },
+  { model: 'broccoli', anchor: 'stage', off: [0.08, 0.89, 0.5], rot: [0.3, 0.4, 0], s: 0.64 },
+  { model: 'rollingPin', anchor: 'stage', off: [0.27, 0.94, 0.1], rot: [0.7, 0.2, 0.25], s: 0.72 },
+  { model: 'cheese-cut', anchor: 'stage', off: [0.385, 0.93, 0.2], rot: [0.7, -0.3, 0.1], s: 0.68 },
+  { model: 'tomato', anchor: 'stage', off: [0.425, 0.105, 0.4], rot: [0.4, 0.3, 0], s: 0.7, min: [1280, 850] },
+  { model: 'croissant', anchor: 'stage', off: [0.795, 0.11, 0.3], rot: [0.8, 0.3, 0.2], s: 0.85, min: [1280, 850] },
+  { model: 'mushroom', anchor: 'stage', off: [0.525, 0.11, 0.6], rot: [0.4, 0.3, 0.2], s: 0.55, min: [1280, 850] },
 ];
 const FINALE_MOBILE = [
-  { model: 'egg-cooked', anchor: 'stage', off: [0.08, 0.15, -0.6], rot: [0.95, 0.2, 0.3], s: 0.75 },
-  { model: 'tomato', anchor: 'stage', off: [0.92, 0.16, 0.4], rot: [0.4, 0.3, 0], s: 0.65 },
-  { model: 'whisk', anchor: 'stage', off: [0.06, 0.3, 0.2], rot: [0.6, 0.2, -0.4], s: 0.8 },
-  { model: 'orange', anchor: 'stage', off: [0.93, 0.34, -0.3], rot: [0.4, 0.3, 0], s: 0.58 },
-  { model: 'broccoli', anchor: 'stage', off: [0.07, 0.45, 0.5], rot: [0.3, 0.4, 0], s: 0.65 },
-  { model: 'strawberry', anchor: 'stage', off: [0.92, 0.49, -0.2], rot: [0.5, 0.3, 0.2], s: 0.45 },
+  { model: 'egg-cooked', anchor: 'stage', off: [0.08, 0.155, -0.6], rot: [0.95, 0.2, 0.3], s: 0.75 },
+  { model: 'tomato', anchor: 'stage', off: [0.89, 0.185, 0.4], rot: [0.4, 0.3, 0], s: 0.65 },
+  { model: 'whisk', anchor: 'stage', off: [0.1, 0.3, 0.2], rot: [0.6, 0.2, -0.4], s: 0.8 },
+  { model: 'orange', anchor: 'stage', off: [0.925, 0.34, -0.3], rot: [0.4, 0.3, 0], s: 0.58 },
+  { model: 'broccoli', anchor: 'stage', off: [0.11, 0.415, 0.5], rot: [0.3, 0.4, 0], s: 0.65 },
+  { model: 'strawberry', anchor: 'stage', off: [0.79, 0.425, -0.2], rot: [0.5, 0.3, 0.2], s: 0.38 },
 ];
 
 export async function start(canvas, opts = {}) {
@@ -173,7 +168,8 @@ export async function start(canvas, opts = {}) {
   const dlCopy = document.querySelector('[data-scene="download"] .scene__block');
   const slotRot = (slot.dataset.rot || '0,0').split(',').map(Number);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'high-performance' });
+  // dense screens (most phones) are sharp enough without multisampling, which is a large share of the GPU's work there
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: (devicePixelRatio || 1) < 2, powerPreference: 'high-performance' });
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.NeutralToneMapping || THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
@@ -293,7 +289,7 @@ export async function start(canvas, opts = {}) {
     const g = new THREE.Group();
     const items = defs.map((d, i) => {
       const seed = ((i * 7919 + d.model.length * 131) % 97) / 97;
-      const it = { d, wrap: new THREE.Group(), ready: false, hover: 0, phase: seed * Math.PI * 2, bobSpeed: 0.45 + seed * 0.4, bobAmp: 0.025 + seed * 0.02, spin: 0.06 + seed * 0.12 };
+      const it = { d, wrap: new THREE.Group(), ready: false, hover: 0, phase: seed * Math.PI * 2, bobSpeed: 0.45 + seed * 0.4, bobAmp: 0.012 + seed * 0.01, spin: 0.06 + seed * 0.12 }; // a gentle float, small enough to stay clear of the words
       it.wrap.visible = false;
       g.add(it.wrap);
       loadModel(d.model).then((obj) => { it.wrap.add(obj.clone()); it.ready = true; it.t0 = performance.now(); }).catch(() => {});
@@ -409,6 +405,7 @@ export async function start(canvas, opts = {}) {
     set.items.forEach((it, i) => {
       const d = it.d;
       if (!it.ready || (d.anchor === 'copy' && !copyRect)) { it.wrap.visible = false; return; }
+      if (d.min && (vw < d.min[0] || vh < d.min[1])) { it.wrap.visible = false; return; } // only where there is room for it
       it.wrap.visible = true;
       let x, y, z;
       if (d.anchor === 'copy') {
@@ -505,7 +502,9 @@ export async function start(canvas, opts = {}) {
     if (finVis > 0.01) layoutProps(sets.finale, finVis, t, dt, kf, dlAnchor.getBoundingClientRect(), dlCopy && !isMobile ? dlCopy.getBoundingClientRect() : null, 1 + (1 - finVis) * 0.6);
     else sets.finale.group.visible = false;
 
-    if (!phone.visible && !sets.hero.group.visible && !sets.steps.group.visible && !sets.finale.group.visible) {
+    // nothing to draw, or the page has faded this canvas out (the wish and the star): keep the state moving, skip the GPU work
+    const faded = canvas.style.opacity !== '' && Number(canvas.style.opacity) < 0.01;
+    if (faded || (!phone.visible && !sets.hero.group.visible && !sets.steps.group.visible && !sets.finale.group.visible)) {
       if (!cleared) { renderer.clear(); cleared = true; }
       return;
     }
@@ -525,5 +524,24 @@ export async function start(canvas, opts = {}) {
     tick(performance.now() + 1000);
   };
   const ready = Promise.all([...new Set([].concat(HERO_DESKTOP, HERO_MOBILE, STEPS_DESKTOP, STEPS_MOBILE, FINALE_DESKTOP, FINALE_MOBILE).map((d) => d.model))].map((n) => loadModel(n).catch(() => null)));
-  return { setScreen, settle, ready, renderer, scene };
+  // where each visible prop is on screen (CSS px), for the layout checks in the tooling
+  const propBoxes = () => {
+    const out = [], box = new THREE.Box3(), v = new THREE.Vector3();
+    Object.entries(sets).forEach(([name, set]) => {
+      if (!set.group.visible) return;
+      set.items.forEach((it) => {
+        if (!it.ready || !it.wrap.visible) return;
+        box.setFromObject(it.wrap);
+        let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+        for (let i = 0; i < 8; i++) {
+          v.set(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).project(camera);
+          const sx = ((v.x + 1) / 2) * vw, sy = ((1 - v.y) / 2) * vh;
+          x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy);
+        }
+        out.push({ set: name, model: it.d.model, x0: Math.round(x0), y0: Math.round(y0), x1: Math.round(x1), y1: Math.round(y1) });
+      });
+    });
+    return out;
+  };
+  return { setScreen, settle, ready, renderer, scene, propBoxes };
 }

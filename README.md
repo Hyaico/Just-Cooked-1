@@ -49,12 +49,17 @@ the dusk, and arriving at the `wish` label starts the moment: one real-time time
 bubble comes up and types out "I wish there was support made for me." letter by letter
 with a caret, stays for a beat, and then a shooting star crosses from off the left edge to
 off the right. The night sky is painted in behind the star by a soft mask on
-`.play__night` whose edge (`--sweep`) rides the star's head, the bubble lifts away as the
-star reaches it, and once the star has gone the hub's words land in the night
-("Introducing the Support hub", "Support, for everything food touches.", "Support made for
-you."). While the moment plays the page holds at the wish: scrolling on (wheel, touch,
-keys) is held and any overshoot is pulled back, scrolling back is free and resets it, and
-the hold lets go a beat after the words are in (with a safety timeout). Landing below the
+`.play__night` whose edge (`--sweep`) rides the star's head, the bubble dissolves left to
+right under the star through a second soft mask on `.wish` (`--wipe`, measured across the
+bubble's own box, whose padding takes in the tail and the shadow), and once the star has
+gone the hub's words land in the night ("Introducing the Support hub", "Support, for
+everything food touches.", "Support made for you."). While the moment plays the page holds
+at the wish: scrolling on (wheel, touch, keys) is held and any overshoot is pulled back,
+and the hold lets go a beat after the words are in (with a safety timeout). Scrolling back
+up past the wish fades the night, its stars and the words away together and then resets
+the moment, ready to play again. The words have two layers so the real-time moment and
+the scroll can never undo each other: the moment lands the inner `.scene__block`, the
+scroll takes the outer `.scene--title` away as you move on to the hub. Landing below the
 wish (a reload, a jump) shows the moment's end state straight away. Then the phone returns
 with the Support screen and each of its two screens gets its own message (`.hub--a`,
 `.hub--b`). Snapping between scenes is deliberately slow (0.9 to 1.7 s, with a 1.1 s
@@ -83,9 +88,19 @@ sheds light).
 screen to show, resting angle, how visible the props are). The phone turns to face the
 mouse or finger: from its resting pose it eases to the same full turn on either side,
 reached at the screen's edge on that side, so a phone that rests angled one way still turns
-just as far the other way. It follows the gyroscope on Android and can be dragged to spin. The food and kitchen models only react
-when the mouse is over them; their positions are
-declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`), anchored to the phone, the text block or the stage.
+just as far the other way. It follows the gyroscope on Android and can be dragged to spin.
+The food and kitchen models only react when the mouse is over them. Their positions are
+declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`) as fractions of
+the stage, and they were fitted so that none covers the phone, the words, a button or the
+nav on any screen size of its class (desktop: 1024x768 up to 1920x1080; phones: 320x568
+up to 430x932). A prop with `min: [w, h]` only appears on screens at least that big,
+where there is room for it. Keep them in clear space when you move them.
+
+For speed: the phone's canvas skips drawing while the page has faded it out (the wish and
+the star), the sky's twinkling pauses until the night arrives (`.play__stars.is-on`), and
+dense screens (most phones) render without multisampling. One trap when scripting the
+page: `labelToScroll()` on the play's timeline refreshes ScrollTrigger (its trigger starts
+at 0), which cancels any snap in progress, so never call it from a scroll handler.
 
 ## Editing a policy
 
