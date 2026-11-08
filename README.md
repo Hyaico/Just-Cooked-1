@@ -89,12 +89,16 @@ screen to show, resting angle, how visible the props are). The phone turns to fa
 mouse or finger: from its resting pose it eases to the same full turn on either side,
 reached at the screen's edge on that side, so a phone that rests angled one way still turns
 just as far the other way. It follows the gyroscope on Android and can be dragged to spin.
-The food and kitchen models only react when the mouse is over them. Their positions are
-declared at the top of `js/scene.js` (`HERO_*`, `STEPS_*`, `FINALE_*`) as fractions of
-the stage, and they were fitted so that none covers the phone, the words, a button or the
-nav on any screen size of its class (desktop: 1024x768 up to 1920x1080; phones: 320x568
-up to 430x932). A prop with `min: [w, h]` only appears on screens at least that big,
-where there is room for it. Keep them in clear space when you move them.
+The food and kitchen models only react when the mouse is over them. `PROPS` at the top of
+`js/scene.js` lists the models each set (hero, steps, finale) may use, for desktop and for
+phones; where they go is worked out on each screen (`scatter`). They are scattered at
+random through whatever room the words, the buttons, the phone and the nav leave there,
+each with its own size, turn and depth, never over any of them: each scene's columns of
+words are measured at rest (with the timeline's transforms lifted for the moment it takes
+to read them), with a margin and the float to spare. The random is seeded, so a screen
+gets the same scatter on every visit (change a set's `seed` for a different one), and a
+model that finds no clear spot on a small screen is left out. On a resize, or when the
+fonts arrive, the models that are still clear stay put and the rest find new spots.
 
 For speed: the phone's canvas skips drawing while the page has faded it out (the wish and
 the star), the sky's twinkling pauses until the night arrives (`.play__stars.is-on`), and
